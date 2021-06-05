@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Affari</string>
+    <string name="settings">Настройки</string>
+    <string name="search">Поиск</string>
+    <string name="cd_create_new_task">Добавить новую задачу</string>
+</resources>
