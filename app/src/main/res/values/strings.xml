@@ -3,4 +3,24 @@
     <string name="search">Search</string>
     <string name="settings">Settings</string>
     <string name="cd_create_new_task">Create new task</string>
+    <string name="create">Create</string>
+    <string name="cd_close_menu">Close menu</string>
+    <string name="create_a_note">Create a note</string>
+    <string name="create_a_task">Create a task</string>
+    <string name="all_tasks">All tasks</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
 </resources>

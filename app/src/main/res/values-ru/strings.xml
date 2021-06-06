@@ -4,4 +4,10 @@
     <string name="settings">Настройки</string>
     <string name="search">Поиск</string>
     <string name="cd_create_new_task">Добавить новую задачу</string>
+    <string name="create">Создать</string>
+    <string name="cd_close_menu">Закрыть меню</string>
+    <string name="create_a_note">Создать заметку</string>
+    <string name="create_a_task">Создать задачу</string>
+    <string name="all_tasks">Все задачи</string>
+    <string name="title_activity_settings">Настройки</string>
 </resources>
