@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="@string/create"
+        android:text="@string/represent"
         android:textColor="@color/black"
         android:textSize="21sp"
         android:textStyle="bold"
@@ -36,7 +36,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_create_a_task"
+        android:id="@+id/tv_as_a_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -47,15 +47,16 @@
         android:paddingVertical="12dp"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:text="@string/create_a_task"
+        android:text="@string/as_a_list"
         android:textColor="@color/black"
         android:textSize="16sp"
-        app:drawableStartCompat="@drawable/ic_task"
+        app:drawableStartCompat="@drawable/ic_list_view"
+        app:drawableTint="@color/secondary_variant"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
     <TextView
-        android:id="@+id/tv_create_a_note"
+        android:id="@+id/tv_as_calendar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
@@ -65,11 +66,31 @@
         android:paddingVertical="12dp"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:text="@string/create_a_note"
+        android:text="@string/as_a_calendar"
         android:textColor="@color/black"
         android:textSize="16sp"
-        app:drawableStartCompat="@drawable/ic_note"
+        app:drawableStartCompat="@drawable/ic_calendar_view"
+        app:drawableTint="@color/secondary_variant"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_create_a_task" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_as_a_list" />
+
+    <TextView
+        android:id="@+id/tv_as_a_tree"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:drawablePadding="12dp"
+        android:focusable="true"
+        android:paddingVertical="12dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="@string/as_a_tree"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:drawableStartCompat="@drawable/ic_tree_view"
+        app:drawableTint="@color/secondary_variant"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_as_calendar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

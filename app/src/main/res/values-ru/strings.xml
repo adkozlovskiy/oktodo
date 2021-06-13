@@ -10,4 +10,9 @@
     <string name="create_a_task">Создать задачу</string>
     <string name="all_tasks">Все задачи</string>
     <string name="title_activity_settings">Настройки</string>
+    <string name="scan_qr_code">Сканировать QR</string>
+    <string name="as_a_list">Список</string>
+    <string name="as_a_calendar">Календарь</string>
+    <string name="represent">Отображать как</string>
+    <string name="as_a_tree">Дерево</string>
 </resources>
