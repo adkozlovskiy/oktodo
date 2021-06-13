@@ -14,9 +14,8 @@
             android:id="@+id/et_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginHorizontal="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
             android:background="@android:color/transparent"
             android:hint="@string/title"
             android:importantForAutofill="no"
@@ -33,7 +32,8 @@
             android:id="@+id/horizontal_scroll_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:clipToPadding="false"
+            android:paddingHorizontal="24dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/et_title">
 
@@ -41,7 +41,6 @@
                 android:id="@+id/chip_group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 app:singleLine="true">
 
                 <com.google.android.material.chip.Chip
@@ -50,7 +49,7 @@
                     android:text="@string/add_tag"
                     android:textAlignment="center"
                     android:textSize="12sp"
-                    app:chipBackgroundColor="#F8F8F8"
+                    app:chipBackgroundColor="@color/light_gray"
                     app:chipStrokeColor="@color/gray"
                     app:chipStrokeWidth="0.8dp" />
 
@@ -62,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="32dp"
             android:text="@string/folder"
             android:textColor="@color/black"
             android:textSize="16sp"
@@ -83,15 +82,17 @@
             android:id="@+id/cv_folder"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_marginHorizontal="24dp"
             android:layout_marginTop="12dp"
-            android:layout_marginEnd="24dp"
-            app:cardBackgroundColor="#F8F8F8"
-            app:cardCornerRadius="4dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardBackgroundColor="@color/light_gray"
+            app:cardCornerRadius="8dp"
             app:layout_constraintEnd_toStartOf="@id/cv_deadline"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_folder"
-            app:strokeColor="@color/black"
+            app:strokeColor="@color/gray"
             app:strokeWidth="0.8dp">
 
             <TextView
@@ -100,7 +101,7 @@
                 android:paddingHorizontal="12dp"
                 android:paddingVertical="8dp"
                 android:text="Личные дела"
-                android:textColor="@color/gray"
+                android:textColor="@color/black"
                 android:textSize="14sp"
                 app:drawableEndCompat="@drawable/ic_dropdown" />
 
@@ -111,12 +112,15 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
-            app:cardBackgroundColor="#F8F8F8"
-            app:cardCornerRadius="4dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardBackgroundColor="@color/light_gray"
+            app:cardCornerRadius="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/cv_folder"
             app:layout_constraintTop_toTopOf="@id/cv_folder"
-            app:strokeColor="@color/black"
+            app:strokeColor="@color/gray"
             app:strokeWidth="0.8dp">
 
             <TextView
@@ -125,7 +129,7 @@
                 android:paddingHorizontal="12dp"
                 android:paddingVertical="8dp"
                 android:text="Не установлен"
-                android:textColor="@color/gray"
+                android:textColor="@color/black"
                 android:textSize="14sp"
                 app:drawableEndCompat="@drawable/ic_dropdown" />
 
