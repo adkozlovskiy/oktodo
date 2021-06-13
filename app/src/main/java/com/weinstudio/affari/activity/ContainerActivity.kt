@@ -1,4 +1,4 @@
-package com.weinstudio.affari
+package com.weinstudio.affari.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.weinstudio.affari.R
 import com.weinstudio.affari.ui.view.BottomSheetFragment
 import com.weinstudio.affari.ui.view.TasksFragment
 
@@ -25,7 +26,10 @@ class ContainerActivity : AppCompatActivity() {
         }
 
         val fabCreate: FloatingActionButton = findViewById(R.id.fab_create)
-        fabCreate.setOnClickListener {}
+        fabCreate.setOnClickListener {
+            val intent = Intent(this, CreateActivity::class.java)
+            startActivity(intent)
+        }
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         toolbar.title = getString(R.string.all_tasks)

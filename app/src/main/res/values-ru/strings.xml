@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Affari</string>
+    <string name="app_name">Affari TODO</string>
     <string name="settings">Настройки</string>
     <string name="search">Поиск</string>
     <string name="cd_create_new_task">Добавить новую задачу</string>
@@ -15,4 +15,8 @@
     <string name="as_a_calendar">Календарь</string>
     <string name="represent">Отображать как</string>
     <string name="as_a_tree">Дерево</string>
+    <string name="title">Название</string>
+    <string name="add_tag">Добавить тег</string>
+    <string name="folder">Папка</string>
+    <string name="deadline">Срок</string>
 </resources>
