@@ -35,4 +35,11 @@
     <string name="deadline">Deadline</string>
     <string name="notifications">Notifications</string>
     <string name="cd_add_new_task_to_this_category">Add new task to this category</string>
+    <string name="once">Once</string>
+    <string name="periodically">Periodically</string>
+    <string name="super_task">Super task</string>
+    <string name="subtasks">Subtasks</string>
+    <string name="pre_task">Pre-task</string>
+    <string name="desc">Notes</string>
+    <string name="write_here_something">Write here something…</string>
 </resources>

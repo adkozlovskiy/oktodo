@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Affari">
-        <activity android:name=".ui.create.CreateActivity"></activity>
+        <activity android:name=".ui.create.CreateActivity" />
         <activity android:name=".ui.settings.SettingsActivity" />
         <activity android:name=".ui.main.MainActivity">
             <intent-filter>

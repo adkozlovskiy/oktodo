@@ -20,4 +20,11 @@
     <string name="folder">Папка</string>
     <string name="deadline">Срок</string>
     <string name="notifications">Уведомления</string>
+    <string name="once">Единожды</string>
+    <string name="periodically">Периодически</string>
+    <string name="super_task">Супер-задача</string>
+    <string name="subtasks">Подзадачи</string>
+    <string name="pre_task">Пред-задача</string>
+    <string name="desc">Описание</string>
+    <string name="write_here_something">Напиши здесь что-нибудь…</string>
 </resources>
