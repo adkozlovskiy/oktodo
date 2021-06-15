@@ -1,4 +1,4 @@
-package com.weinstudio.affari.ui.view
+package com.weinstudio.affari.ui.main.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,7 +18,7 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_bottom_sheet, container, false)
+        return inflater.inflate(R.layout.fragment_sheet_bottom, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

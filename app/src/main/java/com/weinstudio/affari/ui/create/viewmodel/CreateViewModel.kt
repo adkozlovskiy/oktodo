@@ -1,4 +1,4 @@
-package com.weinstudio.affari.activity.ui.main
+package com.weinstudio.affari.ui.create.viewmodel
 
 import androidx.lifecycle.ViewModel
 

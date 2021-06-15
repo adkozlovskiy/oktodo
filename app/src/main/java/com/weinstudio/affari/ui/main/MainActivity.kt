@@ -1,4 +1,4 @@
-package com.weinstudio.affari.activity
+package com.weinstudio.affari.ui.main
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,17 +9,19 @@ import androidx.appcompat.widget.Toolbar
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.weinstudio.affari.R
-import com.weinstudio.affari.ui.view.BottomSheetFragment
-import com.weinstudio.affari.ui.view.TasksFragment
+import com.weinstudio.affari.ui.create.CreateActivity
+import com.weinstudio.affari.ui.main.view.BottomSheetFragment
+import com.weinstudio.affari.ui.main.view.DataFragment
+import com.weinstudio.affari.ui.settings.SettingsActivity
 
-class ContainerActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_container)
+        setContentView(R.layout.activity_main)
 
         if (savedInstanceState == null) {
-            val tasksFragment = TasksFragment.newInstance()
+            val tasksFragment = DataFragment.newInstance()
             val transaction = supportFragmentManager.beginTransaction()
             transaction.replace(R.id.container, tasksFragment)
             transaction.commit()

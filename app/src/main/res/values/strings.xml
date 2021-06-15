@@ -33,4 +33,6 @@
     <string name="add_tag">Add tag</string>
     <string name="folder">Folder</string>
     <string name="deadline">Deadline</string>
+    <string name="notifications">Notifications</string>
+    <string name="cd_add_new_task_to_this_category">Add new task to this category</string>
 </resources>

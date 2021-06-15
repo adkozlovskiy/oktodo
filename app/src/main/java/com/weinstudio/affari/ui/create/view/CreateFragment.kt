@@ -1,14 +1,13 @@
-package com.weinstudio.affari.activity.ui.main
+package com.weinstudio.affari.ui.create.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.Toolbar
-import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.weinstudio.affari.R
+import com.weinstudio.affari.ui.create.viewmodel.CreateViewModel
 
 class CreateFragment : Fragment() {
 
