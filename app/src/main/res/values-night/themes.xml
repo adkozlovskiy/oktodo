@@ -12,4 +12,12 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
     </style>
+
+    <!-- Toolbar -->
+    <style name="Toolbar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="background">@color/black</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
 </resources>

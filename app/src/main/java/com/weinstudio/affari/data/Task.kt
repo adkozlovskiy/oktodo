@@ -1,5 +1,10 @@
 package com.weinstudio.affari.data
 
-data class Task(val title: String?, val desc: String?) {
+import java.util.*
 
-}
+data class Task(
+    val title: String?,
+    val desc: String?,
+    val deadline: Date?,
+    val priority: Priority?
+)

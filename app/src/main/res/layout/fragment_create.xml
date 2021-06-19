@@ -58,29 +58,29 @@
         </HorizontalScrollView>
 
         <TextView
-            android:id="@+id/tv_folder"
+            android:id="@+id/tv_deadline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="32dp"
-            android:text="@string/folder"
+            android:text="Дедлайн"
             android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/horizontal_scroll_view" />
 
         <TextView
-            android:id="@+id/tv_pre_tasks"
+            android:id="@+id/tv_priority"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/pre_task"
+            android:text="@string/priority"
             android:textColor="@color/black"
             android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@id/cv_deadline"
-            app:layout_constraintTop_toTopOf="@id/tv_folder" />
+            app:layout_constraintStart_toStartOf="@id/cv_priority"
+            app:layout_constraintTop_toTopOf="@id/tv_deadline" />
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cv_folder"
+            android:id="@+id/cv_deadline"
             android:layout_width="0dp"
             android:layout_height="36dp"
             android:layout_marginHorizontal="24dp"
@@ -90,25 +90,26 @@
             android:focusable="true"
             app:cardBackgroundColor="@color/light_gray"
             app:cardCornerRadius="8dp"
-            app:layout_constraintEnd_toStartOf="@id/cv_deadline"
+            app:layout_constraintEnd_toStartOf="@id/cv_priority"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_folder"
+            app:layout_constraintTop_toBottomOf="@id/tv_deadline"
             app:strokeColor="@color/gray"
             app:strokeWidth="0.8dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:drawablePadding="12dp"
                 android:paddingHorizontal="12dp"
                 android:paddingVertical="8dp"
-                android:text="Личные дела"
+                android:text="Не установлен"
                 android:textColor="@color/gray"
-                app:drawableEndCompat="@drawable/ic_dropdown" />
+                app:drawableStartCompat="@drawable/ic_calendar" />
 
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cv_deadline"
+            android:id="@+id/cv_priority"
             android:layout_width="0dp"
             android:layout_height="36dp"
             android:layout_marginEnd="24dp"
@@ -118,8 +119,8 @@
             app:cardBackgroundColor="@color/light_gray"
             app:cardCornerRadius="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/cv_folder"
-            app:layout_constraintTop_toTopOf="@id/cv_folder"
+            app:layout_constraintStart_toEndOf="@id/cv_deadline"
+            app:layout_constraintTop_toTopOf="@id/cv_deadline"
             app:strokeColor="@color/gray"
             app:strokeWidth="0.8dp">
 
@@ -145,7 +146,7 @@
             android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cv_folder" />
+            app:layout_constraintTop_toBottomOf="@id/cv_priority" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cv_set_time"
@@ -170,7 +171,7 @@
                 android:drawablePadding="12dp"
                 android:paddingHorizontal="12dp"
                 android:paddingVertical="8dp"
-                android:text="@string/once"
+                android:text="Единожды"
                 android:textColor="@color/gray"
                 app:drawableStartCompat="@drawable/ic_calendar" />
 

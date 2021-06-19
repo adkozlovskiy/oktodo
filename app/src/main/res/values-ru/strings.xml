@@ -27,4 +27,9 @@
     <string name="pre_task">Пред-задача</string>
     <string name="desc">Описание</string>
     <string name="write_here_something">Напиши здесь что-нибудь…</string>
+    <string name="priority">Приоритет</string>
+    <string name="show_hide">Show / hide</string>
+    <string name="no_priority">Не выбран</string>
+    <string name="high_priority">Высокий</string>
+    <string name="low_priority">Низкий</string>
 </resources>
