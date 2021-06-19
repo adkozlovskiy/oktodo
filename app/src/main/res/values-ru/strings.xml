@@ -28,8 +28,13 @@
     <string name="desc">Описание</string>
     <string name="write_here_something">Напиши здесь что-нибудь…</string>
     <string name="priority">Приоритет</string>
-    <string name="show_hide">Show / hide</string>
+    <string name="show_hide">Показать / скрыть</string>
     <string name="no_priority">Не выбран</string>
     <string name="high_priority">Высокий</string>
     <string name="low_priority">Низкий</string>
+    <string name="cancel">Отмена</string>
+    <string name="delete">УДАЛИТЬ</string>
+    <string name="deleted_from_yr_tasks">удалена из списка</string>
+    <string name="undo">Вернуть</string>
+    <string name="task">Задача</string>
 </resources>
