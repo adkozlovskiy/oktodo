@@ -37,4 +37,5 @@
     <string name="deleted_from_yr_tasks">удалена из списка</string>
     <string name="undo">Вернуть</string>
     <string name="task">Задача</string>
+    <string name="custom">Пользовательские</string>
 </resources>

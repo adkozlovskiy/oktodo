@@ -211,29 +211,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="32dp"
-            android:text="@string/desc"
+            android:text="@string/subtasks"
             android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cv_set_time" />
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@android:color/transparent"
-            android:drawablePadding="12dp"
-            android:hint="@string/write_here_something"
-            android:importantForAutofill="no"
-            android:inputType="textMultiLine|textCapSentences"
-            android:paddingHorizontal="24dp"
-            android:paddingVertical="8dp"
-            android:textColorHint="@color/gray"
-            android:textSize="14sp"
-            app:drawableStartCompat="@drawable/ic_create"
-            app:drawableTint="@color/gray"
-            app:layout_constraintStart_toStartOf="@id/tv_desc"
-            app:layout_constraintTop_toBottomOf="@+id/tv_desc" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

@@ -2,7 +2,7 @@ package com.weinstudio.affari.ui.create.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.weinstudio.affari.data.Priority
+import com.weinstudio.affari.data._enum.Priority
 import java.util.*
 
 class CreateViewModel : ViewModel() {

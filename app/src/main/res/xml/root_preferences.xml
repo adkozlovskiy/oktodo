@@ -1,39 +1,42 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory app:iconSpaceReserved="false" app:title="@string/messages_header">
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:title="@string/custom">
 
-        <EditTextPreference
-            app:key="signature"
+        <ListPreference
+            app:defaultValue="light"
+            app:entries="@array/theme_entries"
+            app:entryValues="@array/theme_values"
             app:iconSpaceReserved="false"
-            app:title="@string/signature_title"
+            app:key="theme"
+            app:title="Тема"
             app:useSimpleSummaryProvider="true" />
 
         <ListPreference
-            app:defaultValue="reply"
+            app:defaultValue="no"
+            app:entries="@array/filter_entries"
+            app:entryValues="@array/filter_values"
             app:iconSpaceReserved="false"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
-            app:key="reply"
-            app:title="@string/reply_title"
+            app:key="filter"
+            app:title="Сортировать задачи"
             app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:iconSpaceReserved="false" app:title="@string/sync_header">
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:title="Уведомления">
 
         <SwitchPreferenceCompat
-            app:key="sync"
             app:iconSpaceReserved="false"
-            app:title="@string/sync_title" />
+            app:key="notify_not_done"
+            app:title="Если есть невыполненные" />
 
         <SwitchPreferenceCompat
-            app:dependency="sync"
             app:iconSpaceReserved="false"
-            app:key="attachment"
-            app:summaryOff="@string/attachment_summary_off"
-            app:summaryOn="@string/attachment_summary_on"
-            app:title="@string/attachment_title" />
+            app:key="notify_close_deadline"
+            app:title="Если срок близок" />
 
     </PreferenceCategory>
-
 </PreferenceScreen>

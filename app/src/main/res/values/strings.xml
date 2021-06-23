@@ -54,4 +54,5 @@
     <string name="deleted_from_yr_tasks">deleted from your tasks</string>
     <string name="undo">Undo</string>
     <string name="task">Task</string>
+    <string name="custom">Custom</string>
 </resources>

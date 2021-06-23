@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -14,13 +13,13 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.snackbar.Snackbar
 import com.weinstudio.affari.R
 import com.weinstudio.affari.ui.main.RecyclerItemTouchHelper
-import com.weinstudio.affari.ui.main.adapter.DataAdapter
+import com.weinstudio.affari.ui.main.adapter.ProblemsAdapter
 import com.weinstudio.affari.ui.main.viewmodel.DataViewModel
 
 class DataFragment : Fragment() {
 
     private val adapter by lazy {
-        DataAdapter(requireContext())
+        ProblemsAdapter(requireContext())
     }
 
     companion object {
@@ -46,14 +45,15 @@ class DataFragment : Fragment() {
 
         refresher.setOnRefreshListener { viewModel.updateData() }
 
+        recycler.setHasFixedSize(true)
         recycler.adapter = adapter
         recycler.layoutManager = LinearLayoutManager(context)
 
         val itemTouchHelperCallback: ItemTouchHelper.SimpleCallback =
-            RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT) { holder, _, pos ->
-                if (holder is DataAdapter.TaskViewHolder) {
-                    val removedTask = adapter.removeTask(pos)
-                    val title: String = removedTask.title!!
+            RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) { holder, _, pos ->
+                if (holder is ProblemsAdapter.TaskViewHolder) {
+                    val removedProblem = adapter.removeProblem(pos)
+                    val title: String = removedProblem.title!!
 
                     val snack = Snackbar.make(
                         requireActivity().findViewById(R.id.root_layout),
@@ -61,7 +61,7 @@ class DataFragment : Fragment() {
                         Snackbar.LENGTH_LONG
                     )
                     snack.setAction(getString(R.string.undo)) {
-                        adapter.restoreTask(removedTask, pos)
+                        adapter.restoreProblem(removedProblem, pos)
                     }
                     snack.setActionTextColor(requireContext().getColor(R.color.secondary))
                     snack.anchorView = requireActivity().findViewById(R.id.fab_create)
@@ -74,7 +74,7 @@ class DataFragment : Fragment() {
         viewModel.getData()
             .observe(viewLifecycleOwner, {
                 it?.let {
-                    adapter.updateData(it)
+                    adapter.setItems(it.toMutableList())
 
                     if (refresher.isRefreshing) {
                         refresher.isRefreshing = false
