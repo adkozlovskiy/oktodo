@@ -55,4 +55,5 @@
     <string name="undo">Undo</string>
     <string name="task">Task</string>
     <string name="custom">Custom</string>
+    <string name="done">СДЕЛАНО</string>
 </resources>

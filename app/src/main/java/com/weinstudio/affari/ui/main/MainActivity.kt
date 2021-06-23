@@ -11,7 +11,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.weinstudio.affari.R
 import com.weinstudio.affari.ui.create.CreateActivity
 import com.weinstudio.affari.ui.main.view.BottomSheetFragment
-import com.weinstudio.affari.ui.main.view.DataFragment
+import com.weinstudio.affari.ui.main.view.ProblemsFragment
 import com.weinstudio.affari.ui.settings.SettingsActivity
 
 class MainActivity : AppCompatActivity() {
@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         if (savedInstanceState == null) {
-            val tasksFragment = DataFragment.newInstance()
+            val tasksFragment = ProblemsFragment.newInstance()
             val transaction = supportFragmentManager.beginTransaction()
             transaction.replace(R.id.container, tasksFragment)
             transaction.commit()

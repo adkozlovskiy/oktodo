@@ -1,5 +1,6 @@
 package com.weinstudio.affari.ui.create
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -8,6 +9,7 @@ import androidx.core.content.res.ResourcesCompat
 import com.weinstudio.affari.R
 import com.weinstudio.affari.databinding.CreateActivityBinding
 import com.weinstudio.affari.ui.create.view.CreateFragment
+import com.weinstudio.affari.ui.main.MainActivity
 
 class CreateActivity : AppCompatActivity() {
 
@@ -47,8 +49,7 @@ class CreateActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.done) {
-            return true
-
+            val intent = Intent(this, MainActivity::class.java)
         }
         return true
     }

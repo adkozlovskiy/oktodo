@@ -30,6 +30,5 @@ class CreateFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-
     }
 }

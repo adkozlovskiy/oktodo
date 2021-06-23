@@ -34,7 +34,7 @@ class ProblemsAdapter(
         oldProblems: List<Problem>,
         newProblems: List<Problem>
     ): DiffUtil.DiffResult {
-        val callback = ProblemsCallbackImpl(
+        val callback = ProblemsDiffCallback(
             oldProblems = oldProblems,
             newProblems = newProblems
         )
@@ -44,10 +44,10 @@ class ProblemsAdapter(
     override fun getItemCount(): Int = problems.size
 
     fun removeProblem(position: Int): Problem {
-        val removedTask = problems[position]
+        val removed = problems[position]
         problems.removeAt(position)
         notifyItemRemoved(position)
-        return removedTask
+        return removed
     }
 
     fun restoreProblem(problem: Problem, position: Int) {

@@ -3,7 +3,7 @@ package com.weinstudio.affari.ui.main.adapter
 import androidx.recyclerview.widget.DiffUtil
 import com.weinstudio.affari.data.Problem
 
-class ProblemsCallbackImpl(
+class ProblemsDiffCallback(
     private val oldProblems: List<Problem>,
     private val newProblems: List<Problem>
 ) : DiffUtil.Callback() {

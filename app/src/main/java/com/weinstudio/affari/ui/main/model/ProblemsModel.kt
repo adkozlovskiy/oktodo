@@ -3,7 +3,7 @@ package com.weinstudio.affari.ui.main.model
 import com.weinstudio.affari.data.Problem
 import com.weinstudio.affari.data._enum.Priority
 
-object DataModel {
+object ProblemsModel {
 
     fun loadData(): List<Problem> {
         return listOf(

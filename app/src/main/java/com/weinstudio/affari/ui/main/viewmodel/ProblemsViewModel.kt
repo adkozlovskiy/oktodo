@@ -4,19 +4,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.weinstudio.affari.data.Problem
-import com.weinstudio.affari.ui.main.model.DataModel
+import com.weinstudio.affari.ui.main.model.ProblemsModel
 
-class DataViewModel : ViewModel() {
+class ProblemsViewModel : ViewModel() {
 
     private val data: MutableLiveData<List<Problem>> by lazy {
         MutableLiveData<List<Problem>>().also {
-            DataModel.loadData()
+            ProblemsModel.loadData()
         }
     }
 
     fun getData(): LiveData<List<Problem>> = data
 
     fun updateData() {
-        data.value = DataModel.loadData()
+        data.value = ProblemsModel.loadData()
     }
 }
