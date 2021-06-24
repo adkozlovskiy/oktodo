@@ -36,7 +36,7 @@ class ProblemsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_tasks, container, false)
+        return inflater.inflate(R.layout.fragment_problems, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,8 +49,6 @@ class ProblemsFragment : Fragment() {
         val intrinsicWidth = deleteIcon.intrinsicWidth
         val intrinsicHeight = deleteIcon.intrinsicHeight
         val background = ColorDrawable()
-
-        viewModel.updateData()
 
         recycler.setHasFixedSize(true)
         recycler.adapter = adapter
@@ -72,7 +70,8 @@ class ProblemsFragment : Fragment() {
 
                     when (direction) {
                         ItemTouchHelper.LEFT -> {
-                            val removedProblem = adapter.removeProblem(position)
+                            val removedProblem = viewModel.removeProblem(position)
+
                             val title: String = removedProblem.title!!
 
                             val snack = Snackbar.make(
@@ -81,7 +80,10 @@ class ProblemsFragment : Fragment() {
                                 Snackbar.LENGTH_LONG
                             )
                             snack.setAction(getString(R.string.undo)) {
-                                adapter.restoreProblem(removedProblem, position)
+                                viewModel.insertProblem(position, removedProblem)
+                                if (position == 0) {
+                                    recycler.scrollToPosition(0)
+                                }
                             }
                             snack.setActionTextColor(requireContext().getColor(R.color.secondary))
                             snack.anchorView = requireActivity().findViewById(R.id.fab_create)
@@ -145,11 +147,10 @@ class ProblemsFragment : Fragment() {
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
         itemTouchHelper.attachToRecyclerView(recycler)
 
-        viewModel.getData()
+        viewModel.problemsLiveData
             .observe(viewLifecycleOwner, {
                 it?.let {
-                    adapter.setItems(it.toMutableList())
-
+                    adapter.setItems(it)
                 }
             })
     }

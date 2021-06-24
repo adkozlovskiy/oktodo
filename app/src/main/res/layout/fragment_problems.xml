@@ -3,15 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layoutDescription="@xml/motion_scene_collapsing_toolbar_with_subtitle">
+    app:layoutDescription="@xml/collapsing_toolbar_motion_scene">
 
     <TextView
         android:id="@+id/toolbar_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Мои дела"
+        android:text="@string/my_problems"
         android:textColor="@color/black"
         android:textSize="32sp"
+        android:textStyle="bold"
         android:transformPivotX="0sp"
         android:transformPivotY="25sp" />
 
@@ -19,7 +20,7 @@
         android:id="@+id/toolbar_subtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Выполнено - 5"
+        android:text="Выполнено — 5"
         android:textSize="16sp"
         android:transformPivotX="6sp"
         android:transformPivotY="0sp" />
@@ -42,7 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:clipToPadding="false"
-        android:paddingBottom="100dp" />
+        android:paddingBottom="60dp" />
 
 </androidx.constraintlayout.motion.widget.MotionLayout>
 

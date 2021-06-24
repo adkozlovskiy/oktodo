@@ -22,7 +22,6 @@
             android:alpha="1"
             android:scaleX="1.0"
             android:scaleY="1.0"
-            app:layout_constraintBottom_toBottomOf="@id/toolbar_background"
             app:layout_constraintStart_toStartOf="@+id/toolbar_title"
             app:layout_constraintTop_toBottomOf="@+id/toolbar_title" />
 

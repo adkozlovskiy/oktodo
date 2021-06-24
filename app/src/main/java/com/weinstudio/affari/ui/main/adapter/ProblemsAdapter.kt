@@ -4,30 +4,66 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.weinstudio.affari.R
 import com.weinstudio.affari.data.Problem
+import com.weinstudio.affari.data._enum.Priority
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ProblemsAdapter(
-    private var context: Context
+    private val context: Context
 
 ) : RecyclerView.Adapter<ProblemsAdapter.TaskViewHolder>() {
 
-    private var problems: MutableList<Problem> = mutableListOf()
+    private var oldProblems: List<Problem> = listOf()
+    private var actualProblems: List<Problem> = listOf()
 
-    override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-        holder.bind(problems[position])
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
+        return TaskViewHolder(
+            LayoutInflater.from(context).inflate(R.layout.view_problem, parent, false)
+        )
     }
 
-    fun setItems(newProblems: MutableList<Problem>) {
-        val oldProblems = problems
-        this.problems = newProblems
+    override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
+        holder.bind(actualProblems[position])
+    }
 
-        val diffResult: DiffUtil.DiffResult = calculateDiff(oldProblems, newProblems)
+    override fun getItemCount(): Int = actualProblems.size
+
+    fun setItems(newProblems: MutableList<Problem>) {
+        oldProblems = actualProblems.toList()
+        actualProblems = newProblems.toList()
+
+        val diffResult: DiffUtil.DiffResult = calculateDiff(oldProblems, actualProblems)
         diffResult.dispatchUpdatesTo(this)
+    }
+
+    class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val tvTitle = itemView.findViewById<TextView>(R.id.tv_title)
+        private val tvDeadline = itemView.findViewById<TextView>(R.id.tv_deadline)
+        private val ivPriority = itemView.findViewById<ImageView>(R.id.iv_priority)
+
+        fun bind(problem: Problem) {
+            tvTitle.text = problem.title
+
+            val dateFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
+            if (problem.deadline != null) {
+                val date = Date(problem.deadline)
+                tvDeadline.text = dateFormat.format(date)
+
+            } else {
+                tvDeadline.visibility = View.GONE
+            }
+
+            when (problem.priority) {
+                Priority.HIGH_PRIORITY -> ivPriority.setImageResource(R.drawable.ic_high_priority)
+                Priority.LOW_PRIORITY -> ivPriority.setImageResource(R.drawable.ic_low_priority)
+            }
+        }
     }
 
     private fun calculateDiff(
@@ -39,35 +75,5 @@ class ProblemsAdapter(
             newProblems = newProblems
         )
         return DiffUtil.calculateDiff(callback)
-    }
-
-    override fun getItemCount(): Int = problems.size
-
-    fun removeProblem(position: Int): Problem {
-        val removed = problems[position]
-        problems.removeAt(position)
-        notifyItemRemoved(position)
-        return removed
-    }
-
-    fun restoreProblem(problem: Problem, position: Int) {
-        problems.add(position, problem)
-        notifyItemInserted(position)
-    }
-
-    class TaskViewHolder(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
-        var message: TextView = itemView.findViewById(R.id.tv_title)
-        var viewForeground: ConstraintLayout = itemView.findViewById(R.id.view_foreground)
-
-        fun bind(problem: Problem) {
-            message.text = problem.title
-        }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
-        return TaskViewHolder(
-            LayoutInflater.from(context).inflate(R.layout.view_task, parent, false)
-        )
     }
 }

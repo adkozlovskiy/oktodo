@@ -5,112 +5,35 @@ import com.weinstudio.affari.data._enum.Priority
 
 object ProblemsModel {
 
-    fun loadData(): List<Problem> {
-        return listOf(
+    fun loadData(): ArrayList<Problem> {
+        return arrayListOf(
             Problem(
                 1,
                 "Покормить кота",
                 "2",
-                null,
+                1624552533145,
                 Priority.HIGH_PRIORITY
             ),
             Problem(
                 2,
-                "Покормить кота",
+                "Помыть посуду",
                 "2",
-                null,
+                1624552533145,
                 Priority.HIGH_PRIORITY
             ),
             Problem(
                 3,
-                "Покормить кота",
+                "Подготовиться к экзамену по английскому",
                 "2",
                 null,
                 Priority.HIGH_PRIORITY
             ),
             Problem(
                 4,
-                "Покормить кота",
+                "Купить подарок котику",
                 "2",
                 null,
-                Priority.HIGH_PRIORITY
-            ),
-            Problem(
-                5,
-                "Покормить кота",
-                "2",
-                null,
-                Priority.HIGH_PRIORITY
-            ),
-            Problem(
-                6,
-                "Покормить кота",
-                "2",
-                null,
-                Priority.HIGH_PRIORITY
-            ),
-            Problem(
-                4,
-                "Покормить кота",
-                "2",
-                null,
-                Priority.HIGH_PRIORITY
-            ),
-            Problem(
-                5,
-                "Покормить кота",
-                "2",
-                null,
-                Priority.HIGH_PRIORITY
-            ),
-            Problem(
-                6,
-                "Покормить кота",
-                "2",
-                null,
-                Priority.HIGH_PRIORITY
-            ),
-            Problem(
-                4,
-                "Покормить кота",
-                "2",
-                null,
-                Priority.HIGH_PRIORITY
-            ),
-            Problem(
-                5,
-                "Покормить кота",
-                "2",
-                null,
-                Priority.HIGH_PRIORITY
-            ),
-            Problem(
-                6,
-                "Покормить кота",
-                "2",
-                null,
-                Priority.HIGH_PRIORITY
-            ),
-            Problem(
-                4,
-                "Покормить кота",
-                "2",
-                null,
-                Priority.HIGH_PRIORITY
-            ),
-            Problem(
-                5,
-                "Покормить кота",
-                "2",
-                null,
-                Priority.HIGH_PRIORITY
-            ),
-            Problem(
-                6,
-                "Покормить кота",
-                "2",
-                null,
-                Priority.HIGH_PRIORITY
+                Priority.LOW_PRIORITY
             )
         )
     }

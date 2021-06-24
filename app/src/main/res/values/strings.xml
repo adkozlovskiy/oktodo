@@ -9,20 +9,6 @@
     <string name="create_a_task">Create a task</string>
     <string name="all_tasks">All tasks</string>
 
-    <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
-
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
-
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="scan_qr_code">Scan QR-code</string>
     <string name="title_activity_settings">Settings</string>
     <string name="as_a_list">A list</string>
@@ -34,7 +20,7 @@
     <string name="folder">Folder</string>
     <string name="deadline">Deadline</string>
     <string name="notifications">Notifications</string>
-    <string name="cd_add_new_task_to_this_category">Add new task to this category</string>
+
     <string name="once">Once</string>
     <string name="periodically">Periodically</string>
     <string name="super_task">Super task</string>
@@ -55,5 +41,6 @@
     <string name="undo">Undo</string>
     <string name="task">Task</string>
     <string name="custom">Custom</string>
-    <string name="done">СДЕЛАНО</string>
+    <string name="done">Done</string>
+    <string name="my_problems">My problems</string>
 </resources>

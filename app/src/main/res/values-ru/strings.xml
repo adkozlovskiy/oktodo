@@ -39,4 +39,5 @@
     <string name="task">Задача</string>
     <string name="custom">Пользовательские</string>
     <string name="done">СДЕЛАНО</string>
+    <string name="my_problems">Мои задачи</string>
 </resources>

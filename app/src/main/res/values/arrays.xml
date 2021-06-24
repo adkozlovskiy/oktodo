@@ -6,20 +6,22 @@
     </string-array>
 
     <string-array name="theme_values">
-        <item>Light</item>
-        <item>Dark</item>
+        <item>light</item>
+        <item>dark</item>
     </string-array>
 
     <!-- Filter -->
     <string-array name="filter_entries">
+        <item>Automatic</item>
+        <item>By add date</item>
+        <item>By deadline</item>
+        <item>Alphabetically</item>
+    </string-array>
+
+    <string-array name="filter_values">
         <item>automatic</item>
         <item>by_add_date</item>
         <item>by_deadline</item>
         <item>alphabetically</item>
-    </string-array>
-
-    <string-array name="filter_values">
-        <item>Light</item>
-        <item>Dark</item>
     </string-array>
 </resources>
