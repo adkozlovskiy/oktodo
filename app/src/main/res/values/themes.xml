@@ -44,17 +44,7 @@
         <item name="android:textColor">#242424</item>
     </style>
 
-    <style name="TextAppearance.Subtitle.Expanded" parent="TextAppearance.MaterialComponents.Subtitle1">
-
-        <item name="android:textStyle">normal</item>
-        <item name="android:textColor">@color/gray</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:letterSpacing">0</item>
-
-    </style>
-
-    <style name="TextAppearance.Subtitle.Collapsed" parent="TextAppearance.MaterialComponents.Subtitle1">
-        <item name="android:textSize">14sp</item>
+    <style name="Splash" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash</item>
     </style>
 </resources>
