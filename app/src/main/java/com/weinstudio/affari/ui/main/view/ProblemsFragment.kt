@@ -13,7 +13,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.snackbar.Snackbar
 import com.weinstudio.affari.R
 import com.weinstudio.affari.ui.main.adapter.ProblemsAdapter
@@ -44,7 +43,6 @@ class ProblemsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val recycler: RecyclerView = view.findViewById(R.id.recycler)
-        val refresher: SwipeRefreshLayout = view.findViewById(R.id.refresher)
 
         val deleteIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_swipe_delete)!!
         val doneIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_done)!!
@@ -52,7 +50,7 @@ class ProblemsFragment : Fragment() {
         val intrinsicHeight = deleteIcon.intrinsicHeight
         val background = ColorDrawable()
 
-        refresher.setOnRefreshListener { viewModel.updateData() }
+        viewModel.updateData()
 
         recycler.setHasFixedSize(true)
         recycler.adapter = adapter
@@ -152,9 +150,6 @@ class ProblemsFragment : Fragment() {
                 it?.let {
                     adapter.setItems(it.toMutableList())
 
-                    if (refresher.isRefreshing) {
-                        refresher.isRefreshing = false
-                    }
                 }
             })
     }

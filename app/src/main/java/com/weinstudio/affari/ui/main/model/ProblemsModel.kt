@@ -20,6 +20,97 @@ object ProblemsModel {
                 "2",
                 null,
                 Priority.HIGH_PRIORITY
+            ),
+            Problem(
+                3,
+                "Покормить кота",
+                "2",
+                null,
+                Priority.HIGH_PRIORITY
+            ),
+            Problem(
+                4,
+                "Покормить кота",
+                "2",
+                null,
+                Priority.HIGH_PRIORITY
+            ),
+            Problem(
+                5,
+                "Покормить кота",
+                "2",
+                null,
+                Priority.HIGH_PRIORITY
+            ),
+            Problem(
+                6,
+                "Покормить кота",
+                "2",
+                null,
+                Priority.HIGH_PRIORITY
+            ),
+            Problem(
+                4,
+                "Покормить кота",
+                "2",
+                null,
+                Priority.HIGH_PRIORITY
+            ),
+            Problem(
+                5,
+                "Покормить кота",
+                "2",
+                null,
+                Priority.HIGH_PRIORITY
+            ),
+            Problem(
+                6,
+                "Покормить кота",
+                "2",
+                null,
+                Priority.HIGH_PRIORITY
+            ),
+            Problem(
+                4,
+                "Покормить кота",
+                "2",
+                null,
+                Priority.HIGH_PRIORITY
+            ),
+            Problem(
+                5,
+                "Покормить кота",
+                "2",
+                null,
+                Priority.HIGH_PRIORITY
+            ),
+            Problem(
+                6,
+                "Покормить кота",
+                "2",
+                null,
+                Priority.HIGH_PRIORITY
+            ),
+            Problem(
+                4,
+                "Покормить кота",
+                "2",
+                null,
+                Priority.HIGH_PRIORITY
+            ),
+            Problem(
+                5,
+                "Покормить кота",
+                "2",
+                null,
+                Priority.HIGH_PRIORITY
+            ),
+            Problem(
+                6,
+                "Покормить кота",
+                "2",
+                null,
+                Priority.HIGH_PRIORITY
             )
         )
     }
