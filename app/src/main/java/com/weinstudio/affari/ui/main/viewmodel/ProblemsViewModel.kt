@@ -3,31 +3,28 @@ package com.weinstudio.affari.ui.main.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.weinstudio.affari.data.Problem
-import com.weinstudio.affari.ui.main.model.ProblemsModel
+import com.weinstudio.affari.model.ProblemsModel
 
 class ProblemsViewModel : ViewModel() {
 
-    private var problemsList = ArrayList<Problem>()
+    private var problemsList = arrayListOf<Problem>()
 
     val problemsLiveData = MutableLiveData<ArrayList<Problem>>()
 
-    init {
-        loadDataFromServer()
-    }
-
     fun insertProblem(pos: Int, p: Problem) {
-        problemsList.add(pos, p)
-        problemsLiveData.value = problemsList
+        ProblemsModel.insertProblem(pos, p)
+        getDataFromModel()
     }
 
     fun removeProblem(pos: Int): Problem {
-        val removed = problemsList.removeAt(pos)
-        problemsLiveData.value = problemsList
+        val removed = ProblemsModel.removeProblem(pos)
+        getDataFromModel()
         return removed
     }
 
-    private fun loadDataFromServer() {
-        problemsList = ProblemsModel.loadData()
+    fun getDataFromModel() {
+        problemsList.clear()
+        problemsList.addAll(ProblemsModel.problems)
         problemsLiveData.value = problemsList
     }
 }

@@ -4,6 +4,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,6 +38,11 @@ class ProblemsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_problems, container, false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getDataFromModel()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -73,6 +79,7 @@ class ProblemsFragment : Fragment() {
                             val removedProblem = viewModel.removeProblem(position)
 
                             val title: String = removedProblem.title
+                            Log.d("TAG", "onSwiped: remove $removedProblem")
 
                             val snack = Snackbar.make(
                                 requireActivity().findViewById(R.id.root_layout),

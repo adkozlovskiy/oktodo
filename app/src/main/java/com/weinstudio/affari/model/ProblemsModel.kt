@@ -1,11 +1,27 @@
-package com.weinstudio.affari.ui.main.model
+package com.weinstudio.affari.model
 
 import com.weinstudio.affari.data.Problem
 import com.weinstudio.affari.data._enum.Priority
 
 object ProblemsModel {
 
-    fun loadData(): ArrayList<Problem> {
+    val problems by lazy {
+        loadData()
+    }
+
+    fun addProblem(p: Problem) {
+        problems.add(p)
+    }
+
+    fun removeProblem(pos: Int): Problem {
+        return problems.removeAt(pos)
+    }
+
+    fun insertProblem(pos: Int, p: Problem) {
+        problems.add(pos, p)
+    }
+
+    private fun loadData(): ArrayList<Problem> {
         return arrayListOf(
             Problem(
                 1,

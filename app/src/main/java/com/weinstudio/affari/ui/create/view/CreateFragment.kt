@@ -4,7 +4,6 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
 import android.text.format.DateUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,9 +13,10 @@ import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.switchmaterial.SwitchMaterial
 import com.weinstudio.affari.R
+import com.weinstudio.affari.data.Problem
 import com.weinstudio.affari.data._enum.Priority
+import com.weinstudio.affari.model.ProblemsModel
 import com.weinstudio.affari.ui.create.FragmentController
 import com.weinstudio.affari.ui.create.viewmodel.CreateViewModel
 import java.util.*
@@ -160,7 +160,10 @@ class CreateFragment : Fragment(), FragmentController {
             .show()
     }
 
+    private var i = 6
+
     override fun onCreateButtonPressed() {
-        Log.d("FFFF", "onCreateButtonPressed: +++")
+        ProblemsModel.addProblem(Problem(i, "New", "Desc", null, Priority.HIGH_PRIORITY))
+        i++
     }
 }
