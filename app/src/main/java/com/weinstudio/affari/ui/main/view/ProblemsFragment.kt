@@ -72,7 +72,7 @@ class ProblemsFragment : Fragment() {
                         ItemTouchHelper.LEFT -> {
                             val removedProblem = viewModel.removeProblem(position)
 
-                            val title: String = removedProblem.title!!
+                            val title: String = removedProblem.title
 
                             val snack = Snackbar.make(
                                 requireActivity().findViewById(R.id.root_layout),

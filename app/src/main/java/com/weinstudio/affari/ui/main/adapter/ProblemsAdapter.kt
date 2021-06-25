@@ -24,7 +24,7 @@ class ProblemsAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         return TaskViewHolder(
-            LayoutInflater.from(context).inflate(R.layout.view_problem, parent, false)
+            LayoutInflater.from(context).inflate(R.layout.layout_problem, parent, false)
         )
     }
 

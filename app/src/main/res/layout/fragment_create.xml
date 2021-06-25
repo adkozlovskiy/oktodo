@@ -63,24 +63,56 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="32dp"
-            android:text="Дедлайн"
+            android:text="@string/deadline"
             android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/horizontal_scroll_view" />
 
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cv_deadline"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="12dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardBackgroundColor="@color/light_gray"
+            app:cardCornerRadius="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_deadline"
+            app:strokeColor="@color/gray"
+            app:strokeWidth="0.8dp">
+
+            <TextView
+                android:id="@+id/tv_deadline_prop"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawablePadding="12dp"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp"
+                android:text="@string/no_priority"
+                android:textColor="@color/gray"
+                app:drawableStartCompat="@drawable/ic_calendar" />
+
+        </com.google.android.material.card.MaterialCardView>
+
         <TextView
             android:id="@+id/tv_priority"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="36dp"
             android:text="@string/priority"
             android:textColor="@color/black"
             android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@id/cv_priority"
-            app:layout_constraintTop_toTopOf="@id/tv_deadline" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cv_deadline" />
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cv_deadline"
+            android:id="@+id/cv_priority"
             android:layout_width="0dp"
             android:layout_height="36dp"
             android:layout_marginHorizontal="24dp"
@@ -90,46 +122,19 @@
             android:focusable="true"
             app:cardBackgroundColor="@color/light_gray"
             app:cardCornerRadius="8dp"
-            app:layout_constraintEnd_toStartOf="@id/cv_priority"
+            app:layout_constraintEnd_toStartOf="@id/cv_notifications"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_deadline"
+            app:layout_constraintTop_toBottomOf="@id/tv_priority"
             app:strokeColor="@color/gray"
             app:strokeWidth="0.8dp">
 
             <TextView
+                android:id="@+id/tv_priority_prop"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:drawablePadding="12dp"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="8dp"
-                android:text="Не установлен"
-                android:textColor="@color/gray"
-                app:drawableStartCompat="@drawable/ic_calendar" />
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cv_priority"
-            android:layout_width="0dp"
-            android:layout_height="36dp"
-            android:layout_marginEnd="24dp"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardBackgroundColor="@color/light_gray"
-            app:cardCornerRadius="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/cv_deadline"
-            app:layout_constraintTop_toTopOf="@id/cv_deadline"
-            app:strokeColor="@color/gray"
-            app:strokeWidth="0.8dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="8dp"
-                android:text="Отсутствует"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp"
+                android:text="@string/no_priority"
                 android:textColor="@color/gray"
                 app:drawableEndCompat="@drawable/ic_dropdown"
                 app:drawableTint="@color/gray" />
@@ -137,48 +142,18 @@
         </com.google.android.material.card.MaterialCardView>
 
         <TextView
-            android:id="@+id/tv_notification"
+            android:id="@+id/tv_notifications"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
             android:layout_marginTop="36dp"
             android:text="@string/notifications"
             android:textColor="@color/black"
             android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cv_priority" />
+            app:layout_constraintStart_toStartOf="@id/cv_notifications"
+            app:layout_constraintTop_toBottomOf="@id/cv_deadline" />
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cv_set_time"
-            android:layout_width="0dp"
-            android:layout_height="36dp"
-            android:layout_marginHorizontal="24dp"
-            android:layout_marginTop="12dp"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardBackgroundColor="@color/light_gray"
-            app:cardCornerRadius="8dp"
-            app:layout_constraintEnd_toStartOf="@id/cv_every"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_notification"
-            app:strokeColor="@color/gray"
-            app:strokeWidth="0.8dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:drawablePadding="12dp"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="8dp"
-                android:text="Единожды"
-                android:textColor="@color/gray"
-                app:drawableStartCompat="@drawable/ic_calendar" />
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cv_every"
+            android:id="@+id/cv_notifications"
             android:layout_width="0dp"
             android:layout_height="36dp"
             android:layout_marginEnd="24dp"
@@ -188,18 +163,19 @@
             app:cardBackgroundColor="@color/light_gray"
             app:cardCornerRadius="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/cv_set_time"
-            app:layout_constraintTop_toTopOf="@id/cv_set_time"
+            app:layout_constraintStart_toEndOf="@id/cv_priority"
+            app:layout_constraintTop_toTopOf="@id/cv_priority"
             app:strokeColor="@color/gray"
             app:strokeWidth="0.8dp">
 
             <TextView
+                android:id="@+id/tv_notifications_prop"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:drawablePadding="12dp"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="8dp"
-                android:text="@string/periodically"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp"
+                android:text="@string/once"
                 android:textColor="@color/gray"
                 app:drawableStartCompat="@drawable/ic_repeat" />
 
@@ -215,7 +191,7 @@
             android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cv_set_time" />
+            app:layout_constraintTop_toBottomOf="@id/cv_priority" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

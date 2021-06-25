@@ -7,6 +7,12 @@ import java.util.*
 
 class CreateViewModel : ViewModel() {
 
+    val calendar by lazy { Calendar.getInstance() }
+
+    val datetimeData by lazy {
+        MutableLiveData<String>()
+    }
+
     val tags: MutableLiveData<List<String>> by lazy {
         MutableLiveData<List<String>>()
     }
