@@ -19,7 +19,7 @@ class CreateActivity : AppCompatActivity() {
 
         toolbar.title = getString(R.string.create)
         toolbar.navigationIcon =
-            ResourcesCompat.getDrawable(resources, R.drawable.ic_return, theme)
+            ResourcesCompat.getDrawable(resources, R.drawable.ic_close, theme)
         setSupportActionBar(toolbar)
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)

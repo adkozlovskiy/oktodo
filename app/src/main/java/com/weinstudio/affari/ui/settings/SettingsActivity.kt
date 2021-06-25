@@ -15,7 +15,7 @@ class SettingsActivity : AppCompatActivity() {
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         toolbar.title = getString(R.string.settings)
-        toolbar.navigationIcon = ResourcesCompat.getDrawable(resources, R.drawable.ic_return, theme)
+        toolbar.navigationIcon = ResourcesCompat.getDrawable(resources, R.drawable.ic_close, theme)
         setSupportActionBar(toolbar)
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)

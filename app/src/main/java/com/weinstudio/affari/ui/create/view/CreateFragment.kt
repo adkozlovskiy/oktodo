@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.widget.SwitchCompat
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -24,7 +25,7 @@ class CreateFragment : Fragment(), FragmentController {
 
     private lateinit var cvDeadline: CardView
     private lateinit var tvDeadline: TextView
-    private lateinit var switchDeadline: SwitchMaterial
+    private lateinit var switchDeadline: SwitchCompat
 
     private lateinit var cvPriority: CardView
     private lateinit var tvPriority: TextView

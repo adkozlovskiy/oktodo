@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipToPadding="false"
+    android:background="@color/background"
     android:paddingBottom="40dp"
     tools:context=".ui.create.CreateActivity">
 
@@ -71,7 +72,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cv_priority" />
 
-        <com.google.android.material.switchmaterial.SwitchMaterial
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/switch_deadline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -45,7 +45,7 @@ class ProblemsFragment : Fragment() {
         val recycler: RecyclerView = view.findViewById(R.id.recycler)
 
         val deleteIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_swipe_delete)!!
-        val doneIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_done_28dp_bg)!!
+        val doneIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_done_28dp)!!
         val intrinsicWidth = deleteIcon.intrinsicWidth
         val intrinsicHeight = deleteIcon.intrinsicHeight
         val background = ColorDrawable()
