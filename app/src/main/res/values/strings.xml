@@ -43,4 +43,6 @@
     <string name="custom">Custom</string>
     <string name="done">Done</string>
     <string name="my_problems">My problems</string>
+    <string name="no_deadline">No deadline</string>
+    <string name="choose_priority">Выберите приоритет</string>
 </resources>

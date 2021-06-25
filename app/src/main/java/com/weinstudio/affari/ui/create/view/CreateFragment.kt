@@ -11,7 +11,10 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.switchmaterial.SwitchMaterial
 import com.weinstudio.affari.R
+import com.weinstudio.affari.data._enum.Priority
 import com.weinstudio.affari.ui.create.viewmodel.CreateViewModel
 import java.util.*
 
@@ -19,6 +22,10 @@ class CreateFragment : Fragment() {
 
     private lateinit var cvDeadline: CardView
     private lateinit var tvDeadline: TextView
+    private lateinit var switchDeadline: SwitchMaterial
+
+    private lateinit var cvPriority: CardView
+    private lateinit var tvPriority: TextView
 
     companion object {
         fun newInstance() = CreateFragment()
@@ -44,6 +51,24 @@ class CreateFragment : Fragment() {
         viewModel.datetimeData.observe(viewLifecycleOwner, {
             tvDeadline.text = it
         })
+
+        cvPriority = view.findViewById(R.id.cv_priority)
+        tvPriority = view.findViewById(R.id.tv_priority_prop)
+
+        cvPriority.setOnClickListener { choosePriority() }
+        viewModel.priority.observe(viewLifecycleOwner, {
+            tvPriority.text = when (it) {
+                Priority.HIGH_PRIORITY -> getString(R.string.high_priority)
+                Priority.LOW_PRIORITY -> getString(R.string.low_priority)
+                null -> getString(R.string.no_priority)
+            }
+        })
+
+        switchDeadline = view.findViewById(R.id.switch_deadline)
+
+        switchDeadline.setOnCheckedChangeListener { _, isChecked ->
+            cvDeadline.visibility = if (isChecked) View.VISIBLE else View.GONE
+        }
     }
 
     private fun chooseDateTime() {
@@ -61,7 +86,7 @@ class CreateFragment : Fragment() {
 
     private fun showDatePickerDialog(onSelected: () -> Unit) {
         val calendar = viewModel.calendar
-        val dialog = DatePickerDialog(
+        DatePickerDialog(
             requireContext(),
             { _, year, month, dayOfMonth ->
                 with(calendar) {
@@ -76,12 +101,12 @@ class CreateFragment : Fragment() {
             calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH)
         )
-        dialog.show()
+            .show()
     }
 
     private fun showTimePickerDialog(onSelected: () -> Unit) {
         val calendar = viewModel.calendar
-        val dialog = TimePickerDialog(
+        TimePickerDialog(
             requireContext(),
             { _, hour, minute ->
                 with(calendar) {
@@ -94,6 +119,34 @@ class CreateFragment : Fragment() {
             calendar.get(Calendar.HOUR_OF_DAY),
             calendar.get(Calendar.MINUTE), true
         )
-        dialog.show()
+            .show()
+    }
+
+    private fun choosePriority() {
+        val items = arrayOf(
+            getString(R.string.no_priority),
+            getString(R.string.low_priority),
+            getString(R.string.high_priority)
+        )
+
+        var checked = when (viewModel.priority.value) {
+            null -> 0
+            Priority.LOW_PRIORITY -> 1
+            Priority.HIGH_PRIORITY -> 2
+        }
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.choose_priority))
+            .setSingleChoiceItems(items, checked) { _, id ->
+                checked = id
+            }
+            .setPositiveButton(getString(R.string.ok)) { _, _ ->
+                viewModel.priority.value = when (checked) {
+                    1 -> Priority.LOW_PRIORITY
+                    2 -> Priority.HIGH_PRIORITY
+                    else -> null
+                }
+            }
+            .show()
     }
 }

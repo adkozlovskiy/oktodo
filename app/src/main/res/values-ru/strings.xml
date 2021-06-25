@@ -29,7 +29,7 @@
     <string name="write_here_something">Напиши здесь что-нибудь…</string>
     <string name="priority">Приоритет</string>
     <string name="show_hide">Показать / скрыть</string>
-    <string name="no_priority">Не выбран</string>
+    <string name="no_priority">Без приорита</string>
     <string name="high_priority">Высокий</string>
     <string name="low_priority">Низкий</string>
     <string name="cancel">Отмена</string>
@@ -40,4 +40,6 @@
     <string name="custom">Пользовательские</string>
     <string name="done">СДЕЛАНО</string>
     <string name="my_problems">Мои задачи</string>
+    <string name="no_deadline">Бессрочно</string>
+    <string name="choose_priority">Выберите приоритет</string>
 </resources>

@@ -1,19 +1,13 @@
 package com.weinstudio.affari.ui.create
 
 import android.os.Bundle
-import android.text.format.DateUtils
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.EditText
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.cardview.widget.CardView
 import androidx.core.content.res.ResourcesCompat
 import com.weinstudio.affari.R
 import com.weinstudio.affari.ui.create.view.CreateFragment
-import java.util.*
-
 
 class CreateActivity : AppCompatActivity() {
 
@@ -49,9 +43,6 @@ class CreateActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.done) {
-
-        }
-        return true
+        return false
     }
 }
