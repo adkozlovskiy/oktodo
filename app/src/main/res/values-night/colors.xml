@@ -17,4 +17,8 @@
     <color name="icon_secondary">#5A84CD</color>
     <color name="toolbar">#2C2D2F</color>
     <color name="divider">#212121</color>
+
+    <color name="card_background">#454648</color>
+    <color name="card_stroke">#5A5A5A</color>
+    <color name="icon_inner">#abacaf</color>
 </resources>

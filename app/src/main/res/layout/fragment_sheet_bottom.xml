@@ -32,8 +32,9 @@
         android:paddingEnd="16dp"
         android:paddingBottom="16dp"
         android:src="@drawable/ic_close"
+        app:layout_constraintBottom_toBottomOf="@id/tv_title"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_title"
         app:tint="@color/icon_primary" />
 
     <TextView

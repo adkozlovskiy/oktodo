@@ -13,15 +13,6 @@
             app:title="Тема"
             app:useSimpleSummaryProvider="true" />
 
-        <ListPreference
-            app:defaultValue="no"
-            app:entries="@array/filter_entries"
-            app:entryValues="@array/filter_values"
-            app:iconSpaceReserved="false"
-            app:key="filter"
-            app:title="Сортировать задачи"
-            app:useSimpleSummaryProvider="true" />
-
     </PreferenceCategory>
 
     <PreferenceCategory

@@ -18,7 +18,7 @@
     <string name="title">Название</string>
     <string name="add_tag">Добавить тег</string>
     <string name="folder">Папка</string>
-    <string name="deadline">Срок</string>
+    <string name="deadline">Сделать до</string>
     <string name="notifications">Уведомления</string>
     <string name="once">Единожды</string>
     <string name="periodically">Периодически</string>
@@ -29,7 +29,7 @@
     <string name="write_here_something">Напиши здесь что-нибудь…</string>
     <string name="priority">Приоритет</string>
     <string name="show_hide">Показать / скрыть</string>
-    <string name="no_priority">Без приоритае</string>
+    <string name="no_priority">Без приоритета</string>
     <string name="high_priority">Высокий</string>
     <string name="low_priority">Низкий</string>
     <string name="cancel">Отмена</string>
@@ -42,4 +42,6 @@
     <string name="my_problems">Мои задачи</string>
     <string name="no_deadline">Бессрочно</string>
     <string name="choose_priority">Выберите приоритет</string>
+    <string name="theme_light">Светлая</string>
+    <string name="theme_dark">Тёмная</string>
 </resources>

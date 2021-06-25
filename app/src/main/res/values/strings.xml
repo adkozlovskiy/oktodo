@@ -44,5 +44,9 @@
     <string name="done">Done</string>
     <string name="my_problems">My problems</string>
     <string name="no_deadline">No deadline</string>
-    <string name="choose_priority">Выберите приоритет</string>
+    <string name="choose_priority">Choose priority</string>
+
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="choose_date">Выберите дату</string>
 </resources>
