@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
 import android.text.format.DateUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,10 +16,11 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.weinstudio.affari.R
 import com.weinstudio.affari.data._enum.Priority
+import com.weinstudio.affari.ui.create.FragmentController
 import com.weinstudio.affari.ui.create.viewmodel.CreateViewModel
 import java.util.*
 
-class CreateFragment : Fragment() {
+class CreateFragment : Fragment(), FragmentController {
 
     private lateinit var cvDeadline: CardView
     private lateinit var tvDeadline: TextView
@@ -67,7 +69,14 @@ class CreateFragment : Fragment() {
         switchDeadline = view.findViewById(R.id.switch_deadline)
 
         switchDeadline.setOnCheckedChangeListener { _, isChecked ->
-            cvDeadline.visibility = if (isChecked) View.VISIBLE else View.GONE
+            if (isChecked) {
+                cvDeadline.visibility = View.VISIBLE
+                cvDeadline.alpha = 0f
+                cvDeadline.animate().alpha(1f)
+
+            } else {
+                cvDeadline.visibility = View.GONE
+            }
         }
     }
 
@@ -148,5 +157,9 @@ class CreateFragment : Fragment() {
                 }
             }
             .show()
+    }
+
+    override fun onCreateButtonPressed() {
+        Log.d("FFFF", "onCreateButtonPressed: +++")
     }
 }

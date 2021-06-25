@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="secondary">#5A84CD</color>
+    <color name="secondary_variant">#314F83</color>
+    <color name="white">#e0e2e6</color>
+    <color name="black">#202020</color>
+    <color name="black_15per">#26202020</color>
+    <color name="gray">#686868</color>
+    <color name="light_gray">#F8F8F8</color>
+    <color name="green">#559858</color>
+    <color name="background">#191919</color>
+
+    <color name="text_primary">#e0e2e6</color>
+    <color name="text_secondary">#abacaf</color>
+
+    <color name="icon_primary">#e0e2e6</color>
+    <color name="icon_secondary">#5A84CD</color>
+    <color name="toolbar">#2C2D2F</color>
+    <color name="divider">#212121</color>
+</resources>

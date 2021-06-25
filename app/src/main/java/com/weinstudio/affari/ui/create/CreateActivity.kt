@@ -43,6 +43,12 @@ class CreateActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_create) {
+            val fragmentController =
+                supportFragmentManager.findFragmentById(R.id.container) as FragmentController
+            fragmentController.onCreateButtonPressed()
+            return true
+        }
         return false
     }
 }

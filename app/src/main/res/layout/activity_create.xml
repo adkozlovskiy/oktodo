@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     android:orientation="vertical"
     tools:context=".ui.create.CreateActivity">
 
@@ -12,8 +13,7 @@
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
-            style="@style/Toolbar"
-            android:background="@color/white" />
+            style="@style/Toolbar" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

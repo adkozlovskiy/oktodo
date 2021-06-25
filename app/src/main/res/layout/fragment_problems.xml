@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/my_problems"
-        android:textColor="@color/black"
+        android:textColor="@color/text_primary"
         android:textSize="32sp"
         android:textStyle="bold"
         android:transformPivotX="0sp"
@@ -21,6 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Выполнено — 5"
+        android:textColor="@color/text_secondary"
         android:textSize="16sp"
         android:transformPivotX="6sp"
         android:transformPivotY="0sp" />
@@ -36,7 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:alpha="0.5"
-        android:background="#E8E8E8" />
+        android:background="@color/divider" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"

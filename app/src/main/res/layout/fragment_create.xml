@@ -23,8 +23,8 @@
             android:importantForAutofill="no"
             android:inputType="textMultiLine|textCapSentences"
             android:padding="8dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_primary"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -66,7 +66,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="32dp"
             android:text="Сделать до"
-            android:textColor="@color/black"
+            android:textColor="@color/text_primary"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cv_priority" />
@@ -118,7 +118,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="36dp"
             android:text="@string/priority"
-            android:textColor="@color/black"
+            android:textColor="@color/text_primary"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/horizontal_scroll_view" />
@@ -159,7 +159,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="36dp"
             android:text="@string/notifications"
-            android:textColor="@color/black"
+            android:textColor="@color/text_primary"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@id/cv_notifications"
             app:layout_constraintTop_toBottomOf="@id/horizontal_scroll_view" />

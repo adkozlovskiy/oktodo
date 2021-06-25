@@ -5,7 +5,19 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#202020</color>
     <color name="black_15per">#26202020</color>
-    <color name="gray">#686868</color>
+    <color name="gray">#000000</color>
     <color name="light_gray">#F8F8F8</color>
-    <color name="green">#8BC34A</color>
+    <color name="green">#559858</color>
+    <color name="background">#FFFFFF</color>
+
+    <color name="red_primary">#C54540</color>
+    <color name="red_secondary">#853939</color>
+
+    <color name="text_primary">#191919</color>
+    <color name="text_secondary">#616161</color>
+
+    <color name="icon_primary">#202020</color>
+    <color name="icon_secondary">#853939</color>
+    <color name="toolbar">#ffffff</color>
+    <color name="divider">#E8E8E8</color>
 </resources>
