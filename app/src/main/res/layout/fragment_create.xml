@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipToPadding="false"
     android:background="@color/background"
+    android:clipToPadding="false"
     android:paddingBottom="40dp"
     tools:context=".ui.create.CreateActivity">
 
@@ -13,32 +13,38 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <EditText
-            android:id="@+id/et_title"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ti_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="12dp"
             android:layout_marginTop="16dp"
-            android:background="@android:color/transparent"
-            android:hint="@string/title"
-            android:importantForAutofill="no"
-            android:inputType="textMultiLine|textCapSentences"
-            android:padding="8dp"
-            android:textColor="@color/text_primary"
-            android:textColorHint="@color/text_primary"
-            android:textSize="24sp"
-            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <EditText
+                android:id="@+id/et_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="12dp"
+                android:background="@android:color/transparent"
+                android:hint="@string/title"
+                android:importantForAutofill="no"
+                android:inputType="textMultiLine|textCapSentences"
+                android:textColor="@color/text_primary"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <HorizontalScrollView
             android:id="@+id/horizontal_scroll_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:clipToPadding="false"
             android:paddingHorizontal="20dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_title">
+            app:layout_constraintTop_toBottomOf="@id/ti_title">
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/chip_group"
@@ -188,9 +194,9 @@
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="16dp"
-                android:text="@string/periodically"
+                android:text="@string/no_notifications"
                 android:textColor="@color/text_secondary"
-                app:drawableEndCompat="@drawable/ic_repeat"
+                app:drawableEndCompat="@drawable/ic_dropdown"
                 app:drawableTint="@color/icon_inner" />
 
         </com.google.android.material.card.MaterialCardView>

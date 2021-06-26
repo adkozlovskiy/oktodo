@@ -7,12 +7,15 @@ import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.cardview.widget.CardView
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputLayout
 import com.weinstudio.affari.R
 import com.weinstudio.affari.data.Problem
 import com.weinstudio.affari.data._enum.Priority
@@ -29,6 +32,9 @@ class CreateFragment : Fragment(), FragmentController {
 
     private lateinit var cvPriority: CardView
     private lateinit var tvPriority: TextView
+
+    private lateinit var tiTitle: TextInputLayout
+    private lateinit var etTitle: EditText
 
     companion object {
         fun newInstance() = CreateFragment()
@@ -79,6 +85,15 @@ class CreateFragment : Fragment(), FragmentController {
                 cvDeadline.visibility = View.GONE
             }
         }
+
+        tiTitle = view.findViewById(R.id.ti_title)
+        etTitle = view.findViewById(R.id.et_title)
+
+        etTitle.addTextChangedListener {
+            if (tiTitle.isErrorEnabled && etTitle.text.isNotBlank()) {
+                tiTitle.error = null
+            }
+        }
     }
 
     private fun chooseDateTime() {
@@ -96,7 +111,7 @@ class CreateFragment : Fragment(), FragmentController {
 
     private fun showDatePickerDialog(onSelected: () -> Unit) {
         val calendar = viewModel.calendar
-        DatePickerDialog(
+        val picker = DatePickerDialog(
             requireContext(),
             { _, year, month, dayOfMonth ->
                 with(calendar) {
@@ -111,7 +126,8 @@ class CreateFragment : Fragment(), FragmentController {
             calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH)
         )
-            .show()
+        picker.datePicker.minDate = Date().time
+        picker.show()
     }
 
     private fun showTimePickerDialog(onSelected: () -> Unit) {
@@ -163,7 +179,24 @@ class CreateFragment : Fragment(), FragmentController {
     private var i = 6
 
     override fun onCreateButtonPressed() {
-        ProblemsModel.addProblem(Problem(i, "New", "Desc", null, Priority.HIGH_PRIORITY))
+        if (etTitle.text.toString().isBlank()) {
+            tiTitle.error = getString(R.string.invalid_title)
+            return
+        }
+
+        val problem = Problem(
+            id = i,
+            title = etTitle.text.toString(),
+            priority = viewModel.priority.value,
+            isDone = false,
+            notifyDate = null,
+            deadline = if (switchDeadline.isChecked && viewModel.datetimeData.value != null) {
+                viewModel.calendar.timeInMillis
+            } else null
+        )
+
+        ProblemsModel.addProblem(problem)
         i++
+        activity?.finish()
     }
 }

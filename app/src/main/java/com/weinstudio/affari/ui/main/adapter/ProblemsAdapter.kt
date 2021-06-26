@@ -1,6 +1,7 @@
 package com.weinstudio.affari.ui.main.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,7 +30,7 @@ class ProblemsAdapter(
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-        holder.bind(actualProblems[position])
+        holder.bind(context, actualProblems[position])
     }
 
     override fun getItemCount(): Int = actualProblems.size
@@ -47,13 +48,16 @@ class ProblemsAdapter(
         private val tvDeadline = itemView.findViewById<TextView>(R.id.tv_deadline)
         private val ivPriority = itemView.findViewById<ImageView>(R.id.iv_priority)
 
-        fun bind(problem: Problem) {
+        fun bind(context: Context, problem: Problem) {
             tvTitle.text = problem.title
 
-            val dateFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
+            val dateFormat = SimpleDateFormat(" dd MMMM yyyy HH:mm", Locale.getDefault())
             if (problem.deadline != null) {
+                Log.d("TAG", "bind: deadline != null")
                 val date = Date(problem.deadline)
-                tvDeadline.text = dateFormat.format(date)
+                val dateString = context.getString(R.string.until) + dateFormat.format(date)
+                tvDeadline.text = dateString
+                Log.d("TAG", "bind: ${tvDeadline.text}")
 
             } else {
                 tvDeadline.visibility = View.GONE

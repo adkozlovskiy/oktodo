@@ -15,7 +15,7 @@
     <string name="as_a_calendar">A calendar</string>
     <string name="represent">Represent as</string>
     <string name="as_a_tree">A tree</string>
-    <string name="title">Title</string>
+    <string name="title">I want to…</string>
     <string name="add_tag">Add tag</string>
     <string name="folder">Folder</string>
     <string name="deadline">Deadline</string>
@@ -48,5 +48,8 @@
 
     <string name="theme_light">Light</string>
     <string name="theme_dark">Dark</string>
-    <string name="choose_date">Выберите дату</string>
+    <string name="choose_date">Choose date</string>
+    <string name="invalid_title">Why don\'t you want to do something?</string>
+    <string name="until">until</string>
+    <string name="no_notifications">Отключены</string>
 </resources>

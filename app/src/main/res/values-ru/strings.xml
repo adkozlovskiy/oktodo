@@ -15,7 +15,7 @@
     <string name="as_a_calendar">Календарь</string>
     <string name="represent">Отображать как</string>
     <string name="as_a_tree">Дерево</string>
-    <string name="title">Название</string>
+    <string name="title">Я хочу…</string>
     <string name="add_tag">Добавить тег</string>
     <string name="folder">Папка</string>
     <string name="deadline">Сделать до</string>
@@ -44,4 +44,7 @@
     <string name="choose_priority">Выберите приоритет</string>
     <string name="theme_light">Светлая</string>
     <string name="theme_dark">Тёмная</string>
+    <string name="choose_date">Выберите дату</string>
+    <string name="invalid_title">Почему бы тебе не сделать что-то?</string>
+    <string name="until">до</string>
 </resources>

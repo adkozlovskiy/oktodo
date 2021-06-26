@@ -2,8 +2,12 @@ package com.weinstudio.affari.ui.settings
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.res.ResourcesCompat
+import androidx.preference.ListPreference
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.weinstudio.affari.R
 
@@ -32,6 +36,19 @@ class SettingsActivity : AppCompatActivity() {
     class SettingsFragment : PreferenceFragmentCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
+
+            val preference = findPreference<ListPreference>("theme")
+            preference?.onPreferenceChangeListener =
+                Preference.OnPreferenceChangeListener { _, newValue ->
+                    setDefaultNightMode(
+                        if (newValue == "light") {
+                            AppCompatDelegate.MODE_NIGHT_NO
+
+                        } else AppCompatDelegate.MODE_NIGHT_YES
+                    )
+
+                    true
+                }
         }
     }
 

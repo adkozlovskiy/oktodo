@@ -24,7 +24,7 @@ class ProblemsViewModel : ViewModel() {
 
     fun getDataFromModel() {
         problemsList.clear()
-        problemsList.addAll(ProblemsModel.problems)
+        problemsList.addAll(ProblemsModel.problemsList)
         problemsLiveData.value = problemsList
     }
 }

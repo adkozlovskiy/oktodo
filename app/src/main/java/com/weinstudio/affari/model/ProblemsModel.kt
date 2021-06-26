@@ -5,20 +5,20 @@ import com.weinstudio.affari.data._enum.Priority
 
 object ProblemsModel {
 
-    val problems by lazy {
+    val problemsList by lazy {
         loadData()
     }
 
     fun addProblem(p: Problem) {
-        problems.add(p)
+        problemsList.add(p)
     }
 
     fun removeProblem(pos: Int): Problem {
-        return problems.removeAt(pos)
+        return problemsList.removeAt(pos)
     }
 
     fun insertProblem(pos: Int, p: Problem) {
-        problems.add(pos, p)
+        problemsList.add(pos, p)
     }
 
     private fun loadData(): ArrayList<Problem> {
@@ -26,30 +26,26 @@ object ProblemsModel {
             Problem(
                 1,
                 "Покормить кота",
-                "2",
                 1624552533145,
-                Priority.HIGH_PRIORITY
+                Priority.HIGH_PRIORITY, null, false
             ),
             Problem(
                 2,
                 "Помыть посуду",
-                "2",
                 1624552533145,
-                Priority.HIGH_PRIORITY
+                Priority.HIGH_PRIORITY, null, false
             ),
             Problem(
                 3,
                 "Подготовиться к экзамену по английскому",
-                "2",
                 null,
-                Priority.HIGH_PRIORITY
+                Priority.HIGH_PRIORITY, null, false
             ),
             Problem(
                 4,
                 "Купить подарок котику",
-                "2",
                 null,
-                Priority.LOW_PRIORITY
+                Priority.LOW_PRIORITY, null, false
             )
         )
     }

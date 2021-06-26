@@ -127,7 +127,7 @@ class ProblemsFragment : Fragment() {
                             itemView.left + dX.toInt(),
                             itemView.bottom
                         )
-                        background.color = Color.parseColor("#8BC34A")
+                        background.color = Color.parseColor("#5A84CD")
                         background.draw(c)
 
                         doneIcon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
