@@ -10,7 +10,7 @@ object ProblemsModel {
     }
 
     fun addProblem(p: Problem) {
-        problemsList.add(p)
+        problemsList.add(0, p)
     }
 
     fun removeProblem(pos: Int): Problem {

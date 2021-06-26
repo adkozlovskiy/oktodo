@@ -1,12 +1,12 @@
 package com.weinstudio.affari.ui.main.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.weinstudio.affari.R
@@ -53,11 +53,13 @@ class ProblemsAdapter(
 
             val dateFormat = SimpleDateFormat(" dd MMMM yyyy HH:mm", Locale.getDefault())
             if (problem.deadline != null) {
-                Log.d("TAG", "bind: deadline != null")
+                if (!tvDeadline.isVisible) {
+                    tvDeadline.visibility = View.VISIBLE
+                }
+
                 val date = Date(problem.deadline)
                 val dateString = context.getString(R.string.until) + dateFormat.format(date)
                 tvDeadline.text = dateString
-                Log.d("TAG", "bind: ${tvDeadline.text}")
 
             } else {
                 tvDeadline.visibility = View.GONE
