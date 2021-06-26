@@ -10,7 +10,7 @@ android {
     compileSdkVersion 30
 
     defaultConfig {
-        applicationId "com.weinstudio.affari"
+        applicationId "com.weinstudio.memoria"
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
@@ -58,7 +58,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
 
-    implementation "androidx.work:work-runtime-ktx:2.5.0"
+    implementation "androidx.work:work-runtime-ktx:2.6.0-beta01"
 
     implementation 'com.google.android.gms:play-services-mlkit-barcode-scanning:16.1.5'
 
