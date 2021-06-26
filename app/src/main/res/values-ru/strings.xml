@@ -47,4 +47,9 @@
     <string name="choose_date">Выберите дату</string>
     <string name="invalid_title">Почему бы тебе не сделать что-то?</string>
     <string name="until">до</string>
+    <string name="daily_notifications">Ежедневные уведомления</string>
+    <string name="daily_notifications_desc">Ежедневные уведомления в 10 утра о предстоящих задачах.</string>
+    <string name="notification_title">У вас были дела на сегодня</string>
+    <string name="notification_content">Посмотрите, что вы планировали.</string>
+    <string name="no_notifications">Отключены</string>
 </resources>

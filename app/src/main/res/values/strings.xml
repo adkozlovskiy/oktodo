@@ -51,5 +51,9 @@
     <string name="choose_date">Choose date</string>
     <string name="invalid_title">Why don\'t you want to do something?</string>
     <string name="until">until</string>
-    <string name="no_notifications">Отключены</string>
+    <string name="no_notifications">Disabled</string>
+    <string name="daily_notifications">Daily notifications</string>
+    <string name="daily_notifications_desc">Daily notifications at 10am about upcoming tasks.</string>
+    <string name="notification_title">You have tasks for today</string>
+    <string name="notification_content">See what you have planned for today.</string>
 </resources>
