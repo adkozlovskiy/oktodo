@@ -45,7 +45,7 @@
     <string name="theme_light">Светлая</string>
     <string name="theme_dark">Тёмная</string>
     <string name="choose_date">Выберите дату</string>
-    <string name="invalid_title">Почему бы тебе не сделать что-то?</string>
+    <string name="invalid_title">Почему бы вам не сделать что-то?</string>
     <string name="until">до</string>
     <string name="daily_notifications">Ежедневные уведомления</string>
     <string name="daily_notifications_desc">Ежедневные уведомления в 10 утра о предстоящих задачах.</string>

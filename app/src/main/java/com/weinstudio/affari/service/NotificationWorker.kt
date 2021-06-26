@@ -8,6 +8,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import androidx.work.*
 import com.weinstudio.affari.R
 import com.weinstudio.affari.ui.splash.SplashActivity
@@ -19,17 +20,27 @@ class NotificationWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, p
     private val context = ctx
 
     override fun doWork(): Result {
-        val timeDiff = WorkerUtil.getWorkerInitialDelay()
-        val dailyWorkRequest = OneTimeWorkRequestBuilder<NotificationWorker>()
-            .setInitialDelay(timeDiff, TimeUnit.MILLISECONDS)
-            .addTag(WorkerUtil.WORK_TAG)
-            .build()
+        val settings = getDefaultSharedPreferences(context)
+        val isEnabled = settings.getBoolean("notify_not_done", false)
+        if (isEnabled) {
+            val timeDiff = WorkerUtil.getWorkerInitialDelay()
+            val dailyWorkRequest = OneTimeWorkRequestBuilder<NotificationWorker>()
+                .setInitialDelay(timeDiff, TimeUnit.MILLISECONDS)
+                .addTag(WorkerUtil.WORK_TAG)
+                .build()
 
-        WorkManager.getInstance(applicationContext)
-            .enqueueUniqueWork(WorkerUtil.WORK_TAG, ExistingWorkPolicy.REPLACE, dailyWorkRequest)
+            WorkManager.getInstance(applicationContext)
+                .enqueueUniqueWork(
+                    WorkerUtil.WORK_TAG,
+                    ExistingWorkPolicy.REPLACE,
+                    dailyWorkRequest
+                )
 
-        showNotification()
-        return Result.success()
+            showNotification()
+            return Result.success()
+        }
+
+        return Result.failure()
     }
 
     private fun showNotification() {

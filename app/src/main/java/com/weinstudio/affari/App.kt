@@ -27,7 +27,10 @@ class App : Application() {
         }
 
         // Periodically notifications
-        configureNotificationWorker()
+        val isEnabled = settings.getBoolean("notify_not_done", false)
+        if (isEnabled) {
+            configureNotificationWorker()
+        }
     }
 
     private fun configureNotificationWorker() {

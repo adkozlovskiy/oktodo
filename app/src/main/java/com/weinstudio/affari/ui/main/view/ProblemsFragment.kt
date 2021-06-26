@@ -4,7 +4,6 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -77,9 +76,7 @@ class ProblemsFragment : Fragment() {
                     when (direction) {
                         ItemTouchHelper.LEFT -> {
                             val removedProblem = viewModel.removeProblem(position)
-
                             val title: String = removedProblem.title
-                            Log.d("TAG", "onSwiped: remove $removedProblem")
 
                             val snack = Snackbar.make(
                                 requireActivity().findViewById(R.id.root_layout),
