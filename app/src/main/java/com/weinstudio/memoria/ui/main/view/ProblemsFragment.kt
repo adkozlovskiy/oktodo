@@ -100,7 +100,8 @@ class ProblemsFragment : Fragment() {
                             val problem = adapter.actualProblems[position]
 
                             viewModel.setProblemDoneFlag(problem, !problem.isDone)
-                            adapter.notifyItemChanged(position)
+                            adapter.notifyItemRemoved(position)
+                            adapter.notifyItemInserted(position)
 
                             val controller = activity as FragmentController
                             controller.onProblemDone()
@@ -133,7 +134,7 @@ class ProblemsFragment : Fragment() {
                             itemView.left + dX.toInt(),
                             itemView.bottom
                         )
-                        background.color = Color.parseColor("#5A84CD")
+                        background.color = Color.parseColor("#559858")
                         background.draw(c)
 
                         doneIcon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
