@@ -61,7 +61,7 @@ class NotificationWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, p
         val local = getDefaultSharedPreferences(context)
         val count = local.getInt("last_saved_done_count", 0)
 
-        // I can't do it any other way without normal local storage :)
+        // I can't do it any other way without normal local storage or network :)
         val builder = NotificationCompat.Builder(context, WorkerUtil.CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_notifications)
             .setContentTitle("$title — $count")
