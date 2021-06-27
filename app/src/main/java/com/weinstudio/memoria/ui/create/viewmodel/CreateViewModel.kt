@@ -22,7 +22,9 @@ class CreateViewModel : ViewModel() {
     }
 
     val priority: MutableLiveData<Priority> by lazy {
-        MutableLiveData<Priority>()
+        MutableLiveData<Priority>().apply {
+            value = Priority.DEFAULT_PRIORITY
+        }
     }
 
     val oneTimeNotifications: MutableLiveData<Date> by lazy {

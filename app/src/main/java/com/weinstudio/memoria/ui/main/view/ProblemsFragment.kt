@@ -56,7 +56,7 @@ class ProblemsFragment : Fragment() {
         val intrinsicHeight = deleteIcon.intrinsicHeight
         val background = ColorDrawable()
 
-        recycler.setHasFixedSize(true)
+//        recycler.setHasFixedSize(true)
         recycler.adapter = adapter
         recycler.layoutManager = LinearLayoutManager(context)
 
@@ -72,7 +72,7 @@ class ProblemsFragment : Fragment() {
                 }
 
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                    val position = viewHolder.absoluteAdapterPosition
+                    val position = viewHolder.bindingAdapterPosition
 
                     when (direction) {
                         ItemTouchHelper.LEFT -> {
@@ -87,6 +87,8 @@ class ProblemsFragment : Fragment() {
                             )
                             snack.setAction(getString(R.string.undo)) {
                                 viewModel.insertProblem(position, problem)
+                                adapter.notifyItemRemoved(position)
+                                adapter.notifyItemInserted(position)
                                 if (position == 0) {
                                     recycler.scrollToPosition(0)
                                 }

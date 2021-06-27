@@ -76,6 +76,7 @@ class ProblemsAdapter(
 
                 when (problem.priority) {
                     Priority.HIGH_PRIORITY -> ivPriority.setImageResource(R.drawable.ic_high_priority)
+                    Priority.DEFAULT_PRIORITY -> ivPriority.visibility = View.INVISIBLE
                     Priority.LOW_PRIORITY -> ivPriority.setImageResource(R.drawable.ic_low_priority)
                 }
 

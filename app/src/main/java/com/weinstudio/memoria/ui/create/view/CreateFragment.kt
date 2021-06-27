@@ -18,10 +18,10 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import com.weinstudio.memoria.R
 import com.weinstudio.memoria.data.entity.Problem
-import com.weinstudio.memoria.util.enums.Priority
 import com.weinstudio.memoria.data.repository.ProblemsRepository
 import com.weinstudio.memoria.ui.create.FragmentController
 import com.weinstudio.memoria.ui.create.viewmodel.CreateViewModel
+import com.weinstudio.memoria.util.enums.Priority
 import java.util.*
 
 class CreateFragment : Fragment(), FragmentController {
@@ -68,8 +68,9 @@ class CreateFragment : Fragment(), FragmentController {
         viewModel.priority.observe(viewLifecycleOwner, {
             tvPriority.text = when (it) {
                 Priority.HIGH_PRIORITY -> getString(R.string.high_priority)
+                Priority.DEFAULT_PRIORITY -> getString(R.string.default_priority)
                 Priority.LOW_PRIORITY -> getString(R.string.low_priority)
-                null -> getString(R.string.no_priority)
+                else -> throw java.lang.IllegalStateException()
             }
         })
 
@@ -150,15 +151,16 @@ class CreateFragment : Fragment(), FragmentController {
 
     private fun choosePriority() {
         val items = arrayOf(
-            getString(R.string.no_priority),
             getString(R.string.low_priority),
+            getString(R.string.default_priority),
             getString(R.string.high_priority)
         )
 
         var checked = when (viewModel.priority.value) {
-            null -> 0
-            Priority.LOW_PRIORITY -> 1
+            Priority.LOW_PRIORITY -> 0
+            Priority.DEFAULT_PRIORITY -> 1
             Priority.HIGH_PRIORITY -> 2
+            else -> throw IllegalStateException()
         }
 
         MaterialAlertDialogBuilder(requireContext())
@@ -168,9 +170,9 @@ class CreateFragment : Fragment(), FragmentController {
             }
             .setPositiveButton(getString(R.string.ok)) { _, _ ->
                 viewModel.priority.value = when (checked) {
-                    1 -> Priority.LOW_PRIORITY
-                    2 -> Priority.HIGH_PRIORITY
-                    else -> null
+                    0 -> Priority.LOW_PRIORITY
+                    1 -> Priority.DEFAULT_PRIORITY
+                    else -> Priority.HIGH_PRIORITY
                 }
             }
             .show()
@@ -187,7 +189,7 @@ class CreateFragment : Fragment(), FragmentController {
         val problem = Problem(
             id = i,
             title = etTitle.text.toString(),
-            priority = viewModel.priority.value,
+            priority = viewModel.priority.value ?: Priority.DEFAULT_PRIORITY,
             isDone = false,
             notifyDate = null,
             deadline = if (switchDeadline.isChecked && viewModel.datetimeData.value != null) {

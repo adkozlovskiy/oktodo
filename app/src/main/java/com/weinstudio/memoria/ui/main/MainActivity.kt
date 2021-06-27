@@ -65,8 +65,8 @@ class MainActivity : AppCompatActivity(), FragmentController {
     override fun onProblemDone() {
         val anim = ValueAnimator()
         anim.setIntValues(
-            getColor(R.color.background),
-            getColor(R.color.red_primary)
+            getColor(R.color.on_appbar),
+            getColor(R.color.secondary)
         )
 
         anim.setEvaluator(ArgbEvaluator())
@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity(), FragmentController {
 
         anim.duration = 300
 
-        anim.repeatCount = 3
+        anim.repeatCount = 2
         anim.start()
     }
 }

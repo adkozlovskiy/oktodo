@@ -16,7 +16,7 @@ class ProblemsDiffCallback(
         val oldProblem = oldProblems[oldItemPosition]
         val newProblem = newProblems[newItemPosition]
 
-        return oldProblem.id == newProblem.id
+        return oldProblem == newProblem
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
