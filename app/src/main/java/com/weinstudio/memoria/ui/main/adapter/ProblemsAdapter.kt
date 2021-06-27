@@ -21,7 +21,7 @@ class ProblemsAdapter(
 ) : RecyclerView.Adapter<ProblemsAdapter.TaskViewHolder>() {
 
     private var oldProblems: List<Problem> = listOf()
-    private var actualProblems: List<Problem> = listOf()
+    var actualProblems: List<Problem> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         return TaskViewHolder(
@@ -65,9 +65,27 @@ class ProblemsAdapter(
                 tvDeadline.visibility = View.GONE
             }
 
-            when (problem.priority) {
-                Priority.HIGH_PRIORITY -> ivPriority.setImageResource(R.drawable.ic_high_priority)
-                Priority.LOW_PRIORITY -> ivPriority.setImageResource(R.drawable.ic_low_priority)
+            if (!problem.isDone) {
+                if (problem.deadline != null) {
+                    if (Date().time > problem.deadline) {
+                        tvDeadline.setTextColor(context.getColor(R.color.red_primary))
+                    } else {
+                        tvDeadline.setTextColor(context.getColor(R.color.text_secondary))
+                    }
+                }
+
+                when (problem.priority) {
+                    Priority.HIGH_PRIORITY -> ivPriority.setImageResource(R.drawable.ic_high_priority)
+                    Priority.LOW_PRIORITY -> ivPriority.setImageResource(R.drawable.ic_low_priority)
+                }
+
+            } else {
+                if (problem.deadline != null) {
+                    tvDeadline.setTextColor(context.getColor(R.color.text_secondary))
+
+                }
+
+                ivPriority.setImageResource(R.drawable.ic_problem_done)
             }
         }
     }

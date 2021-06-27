@@ -1,5 +1,7 @@
 package com.weinstudio.memoria.ui.main
 
+import android.animation.ArgbEvaluator
+import android.animation.ValueAnimator
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -13,7 +15,7 @@ import com.weinstudio.memoria.ui.main.view.BottomSheetFragment
 import com.weinstudio.memoria.ui.main.view.ProblemsFragment
 import com.weinstudio.memoria.ui.settings.SettingsActivity
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), FragmentController {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,8 +42,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private var eyeItem: MenuItem? = null
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.bottom_app_bar, menu)
+        eyeItem = menu?.findItem(R.id.show_hide)
         return true
     }
 
@@ -55,5 +60,25 @@ class MainActivity : AppCompatActivity() {
 
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onProblemDone() {
+        val anim = ValueAnimator()
+        anim.setIntValues(
+            getColor(R.color.background),
+            getColor(R.color.red_primary)
+        )
+
+        anim.setEvaluator(ArgbEvaluator())
+        anim.addUpdateListener { valueAnimator ->
+            eyeItem?.icon?.setTint(
+                (valueAnimator.animatedValue as Int)
+            )
+        }
+
+        anim.duration = 300
+
+        anim.repeatCount = 3
+        anim.start()
     }
 }

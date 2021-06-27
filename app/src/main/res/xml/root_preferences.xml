@@ -10,24 +10,25 @@
             app:entryValues="@array/theme_values"
             app:iconSpaceReserved="false"
             app:key="theme"
-            app:title="Тема"
+            app:title="@string/theme"
             app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
 
     <PreferenceCategory
         app:iconSpaceReserved="false"
-        app:title="Уведомления">
+        app:title="@string/notifications">
 
         <SwitchPreferenceCompat
+            app:defaultValue="true"
             app:iconSpaceReserved="false"
             app:key="notify_not_done"
-            app:title="Если есть невыполненные" />
+            app:title="@string/notifications_upcoming" />
 
         <SwitchPreferenceCompat
             app:iconSpaceReserved="false"
             app:key="notify_close_deadline"
-            app:title="Если срок близок" />
+            app:title="@string/notifications_on_deadline" />
 
     </PreferenceCategory>
 </PreferenceScreen>

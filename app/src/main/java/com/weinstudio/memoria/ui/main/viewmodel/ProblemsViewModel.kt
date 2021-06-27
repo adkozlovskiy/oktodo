@@ -16,10 +16,14 @@ class ProblemsViewModel : ViewModel() {
         getDataFromModel()
     }
 
-    fun removeProblem(pos: Int): Problem {
-        val removed = ProblemsRepository.removeProblem(pos)
+    fun removeProblem(p: Problem) {
+        ProblemsRepository.removeProblem(p)
         getDataFromModel()
-        return removed
+    }
+
+    fun setProblemDoneFlag(p: Problem, f: Boolean) {
+        ProblemsRepository.setProblemDoneFlag(p, f)
+        getDataFromModel()
     }
 
     fun getDataFromModel() {

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.weinstudio.memoria.R
+import com.weinstudio.memoria.ui.main.FragmentController
 import com.weinstudio.memoria.ui.main.adapter.ProblemsAdapter
 import com.weinstudio.memoria.ui.main.viewmodel.ProblemsViewModel
 
@@ -75,8 +76,9 @@ class ProblemsFragment : Fragment() {
 
                     when (direction) {
                         ItemTouchHelper.LEFT -> {
-                            val removedProblem = viewModel.removeProblem(position)
-                            val title: String = removedProblem.title
+                            val problem = adapter.actualProblems[position]
+                            viewModel.removeProblem(problem)
+                            val title: String = problem.title
 
                             val snack = Snackbar.make(
                                 requireActivity().findViewById(R.id.root_layout),
@@ -84,7 +86,7 @@ class ProblemsFragment : Fragment() {
                                 Snackbar.LENGTH_LONG
                             )
                             snack.setAction(getString(R.string.undo)) {
-                                viewModel.insertProblem(position, removedProblem)
+                                viewModel.insertProblem(position, problem)
                                 if (position == 0) {
                                     recycler.scrollToPosition(0)
                                 }
@@ -95,7 +97,13 @@ class ProblemsFragment : Fragment() {
                         }
 
                         ItemTouchHelper.RIGHT -> {
+                            val problem = adapter.actualProblems[position]
 
+                            viewModel.setProblemDoneFlag(problem, !problem.isDone)
+                            adapter.notifyItemChanged(position)
+
+                            val controller = activity as FragmentController
+                            controller.onProblemDone()
                         }
                     }
                 }
@@ -104,6 +112,7 @@ class ProblemsFragment : Fragment() {
                     c: Canvas, rv: RecyclerView, holder: RecyclerView.ViewHolder,
                     dX: Float, dY: Float, aState: Int, isActive: Boolean
                 ) {
+
                     val itemView = holder.itemView
                     val itemHeight = itemView.bottom - itemView.top
 

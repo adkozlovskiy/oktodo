@@ -195,7 +195,7 @@ class CreateFragment : Fragment(), FragmentController {
             } else null
         )
 
-        ProblemsRepository.addProblem(problem)
+        ProblemsRepository.insertProblem(0, problem)
         i++
         activity?.finish()
     }

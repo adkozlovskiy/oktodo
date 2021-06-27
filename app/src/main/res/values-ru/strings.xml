@@ -34,7 +34,7 @@
     <string name="low_priority">Низкий</string>
     <string name="cancel">Отмена</string>
     <string name="delete">УДАЛИТЬ</string>
-    <string name="deleted_from_yr_tasks">удалена из списка</string>
+    <string name="deleted_from_yr_tasks">удалено из списка</string>
     <string name="undo">Вернуть</string>
     <string name="task">Задача</string>
     <string name="custom">Пользовательские</string>
@@ -52,4 +52,8 @@
     <string name="notification_title">У вас были дела на сегодня</string>
     <string name="notification_content">Посмотрите, что вы планировали.</string>
     <string name="no_notifications">Отключены</string>
+    <string name="theme">Тема</string>
+    <string name="notifications_upcoming">Если есть предстоящие</string>
+    <string name="notifications_on_deadline">Если есть близкие по сроку</string>
+    <string name="marked_as_done">помечено как сделанное</string>
 </resources>
