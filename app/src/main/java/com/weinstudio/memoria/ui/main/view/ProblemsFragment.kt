@@ -15,11 +15,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.weinstudio.memoria.R
-import com.weinstudio.memoria.ui.main.FragmentController
+import com.weinstudio.memoria.ui.main.EyeButtonCallback
+import com.weinstudio.memoria.ui.main.MainActivity
 import com.weinstudio.memoria.ui.main.adapter.ProblemsAdapter
 import com.weinstudio.memoria.ui.main.viewmodel.ProblemsViewModel
 
-class ProblemsFragment : Fragment() {
+class ProblemsFragment : Fragment(), EyeButtonCallback {
 
     private val adapter by lazy {
         ProblemsAdapter(requireContext())
@@ -56,7 +57,6 @@ class ProblemsFragment : Fragment() {
         val intrinsicHeight = deleteIcon.intrinsicHeight
         val background = ColorDrawable()
 
-//        recycler.setHasFixedSize(true)
         recycler.adapter = adapter
         recycler.layoutManager = LinearLayoutManager(context)
 
@@ -80,22 +80,25 @@ class ProblemsFragment : Fragment() {
                             viewModel.removeProblem(problem)
                             val title: String = problem.title
 
-                            val snack = Snackbar.make(
-                                requireActivity().findViewById(R.id.root_layout),
-                                title + " — " + getString(R.string.deleted_from_yr_tasks),
-                                Snackbar.LENGTH_LONG
-                            )
-                            snack.setAction(getString(R.string.undo)) {
-                                viewModel.insertProblem(position, problem)
-                                adapter.notifyItemRemoved(position)
-                                adapter.notifyItemInserted(position)
-                                if (position == 0) {
-                                    recycler.scrollToPosition(0)
+                            if (!problem.isDone) {
+
+                                val snack = Snackbar.make(
+                                    requireActivity().findViewById(R.id.root_layout),
+                                    title + " — " + getString(R.string.deleted_from_yr_tasks),
+                                    Snackbar.LENGTH_LONG
+                                )
+                                snack.setAction(getString(R.string.undo)) {
+                                    viewModel.insertProblem(position, problem)
+                                    adapter.notifyItemRemoved(position)
+                                    adapter.notifyItemInserted(position)
+                                    if (position == 0) {
+                                        recycler.scrollToPosition(0)
+                                    }
                                 }
+                                snack.setActionTextColor(requireContext().getColor(R.color.secondary))
+                                snack.anchorView = requireActivity().findViewById(R.id.fab_create)
+                                snack.show()
                             }
-                            snack.setActionTextColor(requireContext().getColor(R.color.secondary))
-                            snack.anchorView = requireActivity().findViewById(R.id.fab_create)
-                            snack.show()
                         }
 
                         ItemTouchHelper.RIGHT -> {
@@ -104,9 +107,6 @@ class ProblemsFragment : Fragment() {
                             viewModel.setProblemDoneFlag(problem, !problem.isDone)
                             adapter.notifyItemRemoved(position)
                             adapter.notifyItemInserted(position)
-
-                            val controller = activity as FragmentController
-                            controller.onProblemDone()
                         }
                     }
                 }
@@ -166,7 +166,18 @@ class ProblemsFragment : Fragment() {
         viewModel.problemsLiveData
             .observe(viewLifecycleOwner, {
                 it?.let {
-                    adapter.setItems(it)
+                    val isEyeEnabled =
+                        (activity as MainActivity).viewModel.isEyeEnabled.value ?: false
+
+                    var items = it
+
+                    if (!isEyeEnabled) {
+                        items = items.filter {
+                            !it.isDone
+                        }.toMutableList()
+                    }
+
+                    adapter.setItems(items)
                 }
             })
     }
@@ -184,5 +195,14 @@ class ProblemsFragment : Fragment() {
         }
 
         return Pair(iconLeft, iconRight)
+    }
+
+    override fun onEyeButtonPressed(isEnabled: Boolean) {
+        if (isEnabled) {
+            viewModel.getDataFromModel()
+
+        } else {
+            viewModel.filterProblems()
+        }
     }
 }

@@ -7,9 +7,9 @@ import com.weinstudio.memoria.data.repository.ProblemsRepository
 
 class ProblemsViewModel : ViewModel() {
 
-    private var problemsList = arrayListOf<Problem>()
+    private var problemsList = mutableListOf<Problem>()
 
-    val problemsLiveData = MutableLiveData<ArrayList<Problem>>()
+    val problemsLiveData = MutableLiveData<MutableList<Problem>>()
 
     fun insertProblem(pos: Int, p: Problem) {
         ProblemsRepository.insertProblem(pos, p)
@@ -24,6 +24,14 @@ class ProblemsViewModel : ViewModel() {
     fun setProblemDoneFlag(p: Problem, f: Boolean) {
         ProblemsRepository.setProblemDoneFlag(p, f)
         getDataFromModel()
+    }
+
+    fun filterProblems() {
+        problemsList = problemsList.filter {
+            !it.isDone
+        }.toMutableList()
+
+        problemsLiveData.value = problemsList
     }
 
     fun getDataFromModel() {
