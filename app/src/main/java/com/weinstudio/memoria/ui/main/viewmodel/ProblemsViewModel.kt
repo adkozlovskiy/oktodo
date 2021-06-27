@@ -28,7 +28,10 @@ class ProblemsViewModel : ViewModel() {
 
     fun getDataFromModel() {
         problemsList.clear()
-        problemsList.addAll(ProblemsRepository.problemsList)
+        problemsList.addAll(
+            ProblemsRepository.problemsList
+                .sortedWith(compareBy(Problem::deadline, Problem::priority))
+        )
         problemsLiveData.value = problemsList
     }
 }

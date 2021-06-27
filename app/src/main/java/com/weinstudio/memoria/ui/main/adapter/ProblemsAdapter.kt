@@ -52,17 +52,22 @@ class ProblemsAdapter(
             tvTitle.text = problem.title
 
             val dateFormat = SimpleDateFormat(" dd MMMM yyyy HH:mm", Locale.getDefault())
-            if (problem.deadline != null) {
-                if (!tvDeadline.isVisible) {
-                    tvDeadline.visibility = View.VISIBLE
-                }
 
+            if (!tvDeadline.isVisible) {
+                tvDeadline.visibility = View.VISIBLE
+            }
+
+            if (problem.deadline != null) {
                 val date = Date(problem.deadline)
                 val dateString = context.getString(R.string.until) + dateFormat.format(date)
                 tvDeadline.text = dateString
 
             } else {
                 tvDeadline.visibility = View.GONE
+            }
+
+            if (!ivPriority.isVisible) {
+                ivPriority.visibility = View.VISIBLE
             }
 
             if (!problem.isDone) {
@@ -72,6 +77,9 @@ class ProblemsAdapter(
                     } else {
                         tvDeadline.setTextColor(context.getColor(R.color.text_secondary))
                     }
+
+                } else {
+                    tvDeadline.visibility = View.GONE
                 }
 
                 when (problem.priority) {
@@ -84,6 +92,8 @@ class ProblemsAdapter(
                 if (problem.deadline != null) {
                     tvDeadline.setTextColor(context.getColor(R.color.text_secondary))
 
+                } else {
+                    tvDeadline.visibility = View.GONE
                 }
 
                 ivPriority.setImageResource(R.drawable.ic_problem_done)
