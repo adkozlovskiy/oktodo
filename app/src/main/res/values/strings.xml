@@ -61,6 +61,7 @@
     <string name="notifications_on_deadline">If there are on deadline</string>
     <string name="marked_as_done">marked as done</string>
     <string name="default_priority">Default</string>
-    <string name="eye_disabled">Completed tasks are hidden.</string>
-    <string name="eye_enabled">Completed tasks are shown.</string>
+    <string name="eye_disabled">Completed tasks will be hidden.</string>
+    <string name="eye_enabled">Completed tasks will be shown.</string>
+    <string name="cd_priority">Priority of your problem.</string>
 </resources>

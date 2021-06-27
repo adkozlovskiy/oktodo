@@ -2,13 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/show_hide"
+        android:id="@+id/action_eye"
         android:icon="@drawable/ic_eye_close"
         android:title="@string/show_hide"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/settings"
+        android:id="@+id/action_settings"
         android:icon="@drawable/ic_settings"
         android:title="@string/settings"
         app:showAsAction="ifRoom" />

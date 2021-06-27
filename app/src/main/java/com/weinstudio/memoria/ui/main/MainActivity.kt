@@ -13,18 +13,18 @@ import com.google.android.material.snackbar.Snackbar
 import com.weinstudio.memoria.R
 import com.weinstudio.memoria.ui.create.CreateActivity
 import com.weinstudio.memoria.ui.main.view.BottomSheetFragment
-import com.weinstudio.memoria.ui.main.view.ProblemsFragment
+import com.weinstudio.memoria.ui.main.view.MainFragment
 import com.weinstudio.memoria.ui.settings.SettingsActivity
 
 class MainActivity : AppCompatActivity() {
 
-    val viewModel: MainViewModel by lazy {
-        ViewModelProvider(this).get(MainViewModel::class.java)
+    private val callback by lazy {
+        supportFragmentManager.findFragmentByTag("problems fragment")
+                as EyeButtonListener
     }
 
-    val cb by lazy {
-        supportFragmentManager.findFragmentByTag("problems fragment")
-                as EyeButtonCallback
+    val viewModel: MainViewModel by lazy {
+        ViewModelProvider(this).get(MainViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,22 +32,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         if (savedInstanceState == null) {
-            val tasksFragment = ProblemsFragment.newInstance()
+            val tasksFragment = MainFragment.newInstance()
             val transaction = supportFragmentManager.beginTransaction()
             transaction.replace(R.id.container, tasksFragment, "problems fragment")
             transaction.commit()
         }
-
-        viewModel.isEyeEnabled.observe(this, {
-            cb.onEyeButtonPressed(it)
-
-            if (it) {
-                eyeItem?.icon = AppCompatResources.getDrawable(this, R.drawable.ic_eye_close)
-
-            } else {
-                eyeItem?.icon = AppCompatResources.getDrawable(this, R.drawable.ic_eye_open)
-            }
-        })
 
         val fabCreate: FloatingActionButton = findViewById(R.id.fab_create)
         fabCreate.setOnClickListener {
@@ -61,31 +50,54 @@ class MainActivity : AppCompatActivity() {
             val fragment = BottomSheetFragment.newInstance()
             fragment.show(supportFragmentManager, "bottom sheet")
         }
+
+        viewModel.isEyeEnabled.observe(this, {
+            callback.onEyeButtonPressed(it)
+
+            eyeItem?.icon = if (it) AppCompatResources.getDrawable(
+                this,
+                R.drawable.ic_eye_close
+
+            ) else AppCompatResources.getDrawable(this, R.drawable.ic_eye_open)
+        })
     }
 
     private var eyeItem: MenuItem? = null
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.bottom_app_bar, menu)
-        eyeItem = menu?.findItem(R.id.show_hide)
+        eyeItem = menu?.findItem(R.id.action_eye)
+
+        val isEnabled = viewModel.isEyeEnabled.value
+
+        if (isEnabled != null) {
+            eyeItem?.icon = if (isEnabled) AppCompatResources.getDrawable(
+                this,
+                R.drawable.ic_eye_close
+
+            ) else AppCompatResources.getDrawable(this, R.drawable.ic_eye_open)
+        }
+
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.settings -> {
+            R.id.action_settings -> {
                 val intent = Intent(this, SettingsActivity::class.java)
                 startActivity(intent)
                 true
             }
 
-            R.id.show_hide -> {
+            R.id.action_eye -> {
                 val isEnabled = viewModel.isEyeEnabled.value
                 if (isEnabled != null) {
                     viewModel.isEyeEnabled.value = !isEnabled
 
-                    val snackTitle =
-                        if (isEnabled) getString(R.string.eye_disabled) else getString(R.string.eye_enabled)
+                    val snackTitle = if (isEnabled) {
+                        getString(R.string.eye_disabled)
+
+                    } else getString(R.string.eye_enabled)
 
                     val snack = Snackbar.make(
                         findViewById(R.id.root_layout),

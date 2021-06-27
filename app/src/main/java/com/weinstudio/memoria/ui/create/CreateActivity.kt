@@ -22,8 +22,8 @@ class CreateActivity : AppCompatActivity() {
             ResourcesCompat.getDrawable(resources, R.drawable.ic_close, theme)
         setSupportActionBar(toolbar)
 
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        supportActionBar!!.setDisplayShowHomeEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
@@ -44,9 +44,9 @@ class CreateActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_create) {
-            val fragmentController =
-                supportFragmentManager.findFragmentById(R.id.container) as FragmentController
-            fragmentController.onCreateButtonPressed()
+            val listener = supportFragmentManager.findFragmentById(R.id.container)
+                    as CreateButtonListener
+            listener.onButtonPressed()
             return true
         }
         return false

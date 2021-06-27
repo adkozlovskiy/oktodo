@@ -57,6 +57,7 @@
     <string name="notifications_on_deadline">Если есть близкие по сроку</string>
     <string name="marked_as_done">помечено как сделанное</string>
     <string name="default_priority">Обычный</string>
-    <string name="eye_disabled">Выполненные задачи скрыты.</string>
-    <string name="eye_enabled">Выполненные задачи показаны.</string>
+    <string name="eye_disabled">Выполненные задачи будут скрыты.</string>
+    <string name="eye_enabled">Выполненные задачи будут показаны.</string>
+    <string name="cd_priority">Приоритет вашей задачи.</string>
 </resources>

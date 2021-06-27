@@ -1,6 +1,6 @@
 package com.weinstudio.memoria.ui.main
 
-interface EyeButtonCallback {
+interface EyeButtonListener {
 
     fun onEyeButtonPressed(isEnabled: Boolean)
 

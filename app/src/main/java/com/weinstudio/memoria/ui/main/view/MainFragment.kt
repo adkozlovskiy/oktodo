@@ -15,35 +15,35 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.weinstudio.memoria.R
-import com.weinstudio.memoria.ui.main.EyeButtonCallback
+import com.weinstudio.memoria.ui.main.EyeButtonListener
 import com.weinstudio.memoria.ui.main.MainActivity
 import com.weinstudio.memoria.ui.main.adapter.ProblemsAdapter
-import com.weinstudio.memoria.ui.main.viewmodel.ProblemsViewModel
+import com.weinstudio.memoria.ui.main.viewmodel.MainViewModel
 
-class ProblemsFragment : Fragment(), EyeButtonCallback {
+class MainFragment : Fragment(), EyeButtonListener {
 
     private val adapter by lazy {
         ProblemsAdapter(requireContext())
     }
 
-    companion object {
-        fun newInstance() = ProblemsFragment()
+    private val viewModel: MainViewModel by lazy {
+        ViewModelProvider(this).get(MainViewModel::class.java)
     }
 
-    private val viewModel: ProblemsViewModel by lazy {
-        ViewModelProvider(this).get(ProblemsViewModel::class.java)
+    companion object {
+        fun newInstance() = MainFragment()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_problems, container, false)
+        return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.getDataFromModel()
+        viewModel.updateData()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -67,34 +67,39 @@ class ProblemsFragment : Fragment(), EyeButtonCallback {
                     recyclerView: RecyclerView,
                     viewHolder: RecyclerView.ViewHolder,
                     target: RecyclerView.ViewHolder
+
                 ): Boolean {
                     return false
                 }
 
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                     val position = viewHolder.bindingAdapterPosition
-
                     when (direction) {
                         ItemTouchHelper.LEFT -> {
                             val problem = adapter.actualProblems[position]
                             viewModel.removeProblem(problem)
-                            val title: String = problem.title
 
                             if (!problem.isDone) {
-
+                                val title: String = problem.title + " — "
                                 val snack = Snackbar.make(
                                     requireActivity().findViewById(R.id.root_layout),
-                                    title + " — " + getString(R.string.deleted_from_yr_tasks),
+                                    title + getString(R.string.deleted_from_yr_tasks),
                                     Snackbar.LENGTH_LONG
                                 )
+
                                 snack.setAction(getString(R.string.undo)) {
                                     viewModel.insertProblem(position, problem)
+
+                                    // Instead of notifyItemChanged because of smooth anim.
                                     adapter.notifyItemRemoved(position)
                                     adapter.notifyItemInserted(position)
+
+                                    // Scrolling when we insert item on top of recycler.
                                     if (position == 0) {
                                         recycler.scrollToPosition(0)
                                     }
                                 }
+
                                 snack.setActionTextColor(requireContext().getColor(R.color.secondary))
                                 snack.anchorView = requireActivity().findViewById(R.id.fab_create)
                                 snack.show()
@@ -105,6 +110,8 @@ class ProblemsFragment : Fragment(), EyeButtonCallback {
                             val problem = adapter.actualProblems[position]
 
                             viewModel.setProblemDoneFlag(problem, !problem.isDone)
+
+                            // Instead of notifyItemChanged because of smooth anim.
                             adapter.notifyItemRemoved(position)
                             adapter.notifyItemInserted(position)
                         }
@@ -136,6 +143,7 @@ class ProblemsFragment : Fragment(), EyeButtonCallback {
                             itemView.left + dX.toInt(),
                             itemView.bottom
                         )
+
                         background.color = Color.parseColor("#559858")
                         background.draw(c)
 
@@ -164,22 +172,29 @@ class ProblemsFragment : Fragment(), EyeButtonCallback {
         itemTouchHelper.attachToRecyclerView(recycler)
 
         viewModel.problemsLiveData
-            .observe(viewLifecycleOwner, {
-                it?.let {
-                    val isEyeEnabled =
-                        (activity as MainActivity).viewModel.isEyeEnabled.value ?: false
+            .observe(viewLifecycleOwner, { value ->
+                value?.let { list ->
+                    var items = list
 
-                    var items = it
-
-                    if (!isEyeEnabled) {
-                        items = items.filter {
-                            !it.isDone
-                        }.toMutableList()
+                    if (!isEyeEnabled()) {
+                        items = list.filter { !it.isDone }.toMutableList()
                     }
 
                     adapter.setItems(items)
                 }
             })
+    }
+
+    private fun isEyeEnabled(): Boolean =
+        (activity as MainActivity).viewModel.isEyeEnabled.value ?: false
+
+    override fun onEyeButtonPressed(isEnabled: Boolean) {
+        if (isEnabled) {
+            viewModel.updateData()
+
+        } else {
+            viewModel.filterProblems()
+        }
     }
 
     private fun getIconPosHorizontal(iv: View, im: Int, dX: Float, iw: Int): Pair<Int, Int> {
@@ -189,20 +204,12 @@ class ProblemsFragment : Fragment(), EyeButtonCallback {
         if (dX > 0) {
             iconLeft = iv.left + im
             iconRight = iv.left + im + iw
+
         } else {
             iconLeft = iv.right - im - iw
             iconRight = iv.right - im
         }
 
         return Pair(iconLeft, iconRight)
-    }
-
-    override fun onEyeButtonPressed(isEnabled: Boolean) {
-        if (isEnabled) {
-            viewModel.getDataFromModel()
-
-        } else {
-            viewModel.filterProblems()
-        }
     }
 }

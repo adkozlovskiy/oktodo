@@ -31,25 +31,25 @@ object ProblemsRepository {
                 1,
                 "Покормить кота",
                 1624552533145,
-                Priority.HIGH_PRIORITY, null, false
+                Priority.HIGH, null, false
             ),
             Problem(
                 2,
                 "Помыть посуду",
                 1624552533146,
-                Priority.HIGH_PRIORITY, null, false
+                Priority.HIGH, null, false
             ),
             Problem(
                 3,
                 "Подготовиться к экзамену по английскому",
                 null,
-                Priority.HIGH_PRIORITY, null, false
+                Priority.HIGH, null, false
             ),
             Problem(
                 4,
                 "Купить подарок котику",
                 null,
-                Priority.LOW_PRIORITY, null, false
+                Priority.LOW, null, false
             )
         )
     }

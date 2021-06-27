@@ -13,6 +13,7 @@
         android:id="@+id/iv_priority"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/cd_priority"
         android:src="@drawable/ic_low_priority"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

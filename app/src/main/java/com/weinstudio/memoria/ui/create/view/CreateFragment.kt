@@ -19,15 +19,13 @@ import com.google.android.material.textfield.TextInputLayout
 import com.weinstudio.memoria.R
 import com.weinstudio.memoria.data.entity.Problem
 import com.weinstudio.memoria.data.repository.ProblemsRepository
-import com.weinstudio.memoria.ui.create.FragmentController
+import com.weinstudio.memoria.ui.create.CreateButtonListener
 import com.weinstudio.memoria.ui.create.viewmodel.CreateViewModel
 import com.weinstudio.memoria.util.enums.Priority
 import java.util.*
 
-class CreateFragment : Fragment(), FragmentController {
+class CreateFragment : Fragment(), CreateButtonListener {
 
-    private lateinit var cvDeadline: CardView
-    private lateinit var tvDeadline: TextView
     private lateinit var switchDeadline: SwitchCompat
 
     private lateinit var cvPriority: CardView
@@ -53,11 +51,12 @@ class CreateFragment : Fragment(), FragmentController {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        cvDeadline = view.findViewById(R.id.cv_deadline)
-        tvDeadline = view.findViewById(R.id.tv_deadline_prop)
+
+        val cvDeadline = view.findViewById<CardView>(R.id.cv_deadline)
+        val tvDeadline = view.findViewById<TextView>(R.id.tv_deadline_prop)
 
         cvDeadline.setOnClickListener { chooseDateTime() }
-        viewModel.datetimeData.observe(viewLifecycleOwner, {
+        viewModel.deadlineText.observe(viewLifecycleOwner, {
             tvDeadline.text = it
         })
 
@@ -65,11 +64,11 @@ class CreateFragment : Fragment(), FragmentController {
         tvPriority = view.findViewById(R.id.tv_priority_prop)
 
         cvPriority.setOnClickListener { choosePriority() }
-        viewModel.priority.observe(viewLifecycleOwner, {
+        viewModel.priorityProp.observe(viewLifecycleOwner, {
             tvPriority.text = when (it) {
-                Priority.HIGH_PRIORITY -> getString(R.string.high_priority)
-                Priority.DEFAULT_PRIORITY -> getString(R.string.default_priority)
-                Priority.LOW_PRIORITY -> getString(R.string.low_priority)
+                Priority.HIGH -> getString(R.string.high_priority)
+                Priority.DEFAULT -> getString(R.string.default_priority)
+                Priority.LOW -> getString(R.string.low_priority)
                 else -> throw java.lang.IllegalStateException()
             }
         })
@@ -100,7 +99,7 @@ class CreateFragment : Fragment(), FragmentController {
     private fun chooseDateTime() {
         showDatePickerDialog { // onSelected
             showTimePickerDialog { // onSelected
-                viewModel.datetimeData.value = DateUtils.formatDateTime(
+                viewModel.deadlineText.value = DateUtils.formatDateTime(
                     context,
                     viewModel.calendar.timeInMillis,
                     DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_YEAR
@@ -156,10 +155,10 @@ class CreateFragment : Fragment(), FragmentController {
             getString(R.string.high_priority)
         )
 
-        var checked = when (viewModel.priority.value) {
-            Priority.LOW_PRIORITY -> 0
-            Priority.DEFAULT_PRIORITY -> 1
-            Priority.HIGH_PRIORITY -> 2
+        var checked = when (viewModel.priorityProp.value) {
+            Priority.LOW -> 0
+            Priority.DEFAULT -> 1
+            Priority.HIGH -> 2
             else -> throw IllegalStateException()
         }
 
@@ -169,10 +168,10 @@ class CreateFragment : Fragment(), FragmentController {
                 checked = id
             }
             .setPositiveButton(getString(R.string.ok)) { _, _ ->
-                viewModel.priority.value = when (checked) {
-                    0 -> Priority.LOW_PRIORITY
-                    1 -> Priority.DEFAULT_PRIORITY
-                    else -> Priority.HIGH_PRIORITY
+                viewModel.priorityProp.value = when (checked) {
+                    0 -> Priority.LOW
+                    1 -> Priority.DEFAULT
+                    else -> Priority.HIGH
                 }
             }
             .show()
@@ -180,7 +179,7 @@ class CreateFragment : Fragment(), FragmentController {
 
     private var i = 6
 
-    override fun onCreateButtonPressed() {
+    override fun onButtonPressed() {
         if (etTitle.text.toString().isBlank()) {
             tiTitle.error = getString(R.string.invalid_title)
             return
@@ -189,10 +188,10 @@ class CreateFragment : Fragment(), FragmentController {
         val problem = Problem(
             id = i,
             title = etTitle.text.toString(),
-            priority = viewModel.priority.value ?: Priority.DEFAULT_PRIORITY,
+            priority = viewModel.priorityProp.value ?: Priority.DEFAULT,
             isDone = false,
             notifyDate = null,
-            deadline = if (switchDeadline.isChecked && viewModel.datetimeData.value != null) {
+            deadline = if (switchDeadline.isChecked && viewModel.deadlineText.value != null) {
                 viewModel.calendar.timeInMillis
             } else null
         )

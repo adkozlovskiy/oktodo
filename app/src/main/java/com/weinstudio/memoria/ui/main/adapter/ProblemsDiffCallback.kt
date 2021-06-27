@@ -4,22 +4,20 @@ import androidx.recyclerview.widget.DiffUtil
 import com.weinstudio.memoria.data.entity.Problem
 
 class ProblemsDiffCallback(
-    private val oldProblems: List<Problem>,
-    private val newProblems: List<Problem>
+    private val oldItems: List<Problem>,
+    private val newItems: List<Problem>
 ) : DiffUtil.Callback() {
 
-    override fun getOldListSize() = oldProblems.size
+    override fun getOldListSize() = oldItems.size
 
-    override fun getNewListSize() = newProblems.size
+    override fun getNewListSize() = newItems.size
 
+    // Maybe I can compare by id, but while it works, I won't touch it :)
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        val oldProblem = oldProblems[oldItemPosition]
-        val newProblem = newProblems[newItemPosition]
-
-        return oldProblem == newProblem
+        return oldItems[oldItemPosition] == newItems[newItemPosition]
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldProblems[oldItemPosition] == newProblems[newItemPosition]
+        return oldItems[oldItemPosition] == newItems[newItemPosition]
     }
 }

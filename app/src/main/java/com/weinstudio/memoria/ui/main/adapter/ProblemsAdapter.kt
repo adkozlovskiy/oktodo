@@ -16,21 +16,25 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class ProblemsAdapter(
-    private val context: Context
-
+    private val ctx: Context
 ) : RecyclerView.Adapter<ProblemsAdapter.TaskViewHolder>() {
 
+    private val sdf = SimpleDateFormat(" dd MMMM yyyy HH:mm", Locale.getDefault())
+
+    // Saved problems list.
     private var oldProblems: List<Problem> = listOf()
+
+    // Actual problems list.
     var actualProblems: List<Problem> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         return TaskViewHolder(
-            LayoutInflater.from(context).inflate(R.layout.layout_problem, parent, false)
+            LayoutInflater.from(ctx).inflate(R.layout.layout_problem, parent, false)
         )
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-        holder.bind(context, actualProblems[position])
+        holder.bind(actualProblems[position])
     }
 
     override fun getItemCount(): Int = actualProblems.size
@@ -39,58 +43,66 @@ class ProblemsAdapter(
         oldProblems = actualProblems.toList()
         actualProblems = newProblems.toList()
 
-        val diffResult: DiffUtil.DiffResult = calculateDiff(oldProblems, actualProblems)
-        diffResult.dispatchUpdatesTo(this)
+        val diff: DiffUtil.DiffResult = calculateDiff(oldProblems, actualProblems)
+        diff.dispatchUpdatesTo(this)
     }
 
-    class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val tvTitle = itemView.findViewById<TextView>(R.id.tv_title)
-        private val tvDeadline = itemView.findViewById<TextView>(R.id.tv_deadline)
-        private val ivPriority = itemView.findViewById<ImageView>(R.id.iv_priority)
+    inner class TaskViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        private val tvTitle = view.findViewById<TextView>(R.id.tv_title)
+        private val tvDeadline = view.findViewById<TextView>(R.id.tv_deadline)
+        private val ivPriority = view.findViewById<ImageView>(R.id.iv_priority)
 
-        fun bind(context: Context, problem: Problem) {
+        fun bind(problem: Problem) {
             tvTitle.text = problem.title
-
-            val dateFormat = SimpleDateFormat(" dd MMMM yyyy HH:mm", Locale.getDefault())
 
             if (!tvDeadline.isVisible) {
                 tvDeadline.visibility = View.VISIBLE
-            }
-
-            if (problem.deadline != null) {
-                val date = Date(problem.deadline)
-                val dateString = context.getString(R.string.until) + dateFormat.format(date)
-                tvDeadline.text = dateString
-
-            } else {
-                tvDeadline.visibility = View.GONE
             }
 
             if (!ivPriority.isVisible) {
                 ivPriority.visibility = View.VISIBLE
             }
 
-            if (!problem.isDone) {
-                if (problem.deadline != null) {
-                    if (Date().time > problem.deadline) {
-                        tvDeadline.setTextColor(context.getColor(R.color.red_primary))
-                    } else {
-                        tvDeadline.setTextColor(context.getColor(R.color.text_secondary))
-                    }
+            val deadlineMillis = problem.deadline
 
-                } else {
-                    tvDeadline.visibility = View.GONE
+            if (deadlineMillis != null) { // If task has deadline.
+                val deadlineDate = Date(deadlineMillis)
+                val deadlineStr = ctx.getString(R.string.until) + sdf.format(deadlineDate)
+                tvDeadline.text = deadlineStr
+
+            } else {
+                tvDeadline.visibility = View.GONE
+            }
+
+            if (!problem.isDone) {
+                if (deadlineMillis != null) {
+                    val currentMillis = Date().time
+
+                    tvDeadline.setTextColor(
+                        if (currentMillis > deadlineMillis) {
+                            ctx.getColor(R.color.red_primary)
+
+                        } else ctx.getColor(R.color.text_secondary)
+                    )
                 }
 
                 when (problem.priority) {
-                    Priority.HIGH_PRIORITY -> ivPriority.setImageResource(R.drawable.ic_high_priority)
-                    Priority.DEFAULT_PRIORITY -> ivPriority.visibility = View.INVISIBLE
-                    Priority.LOW_PRIORITY -> ivPriority.setImageResource(R.drawable.ic_low_priority)
+                    Priority.HIGH -> {
+                        ivPriority.setImageResource(R.drawable.ic_high_priority)
+                    }
+
+                    Priority.LOW -> {
+                        ivPriority.setImageResource(R.drawable.ic_low_priority)
+                    }
+
+                    Priority.DEFAULT -> {
+                        ivPriority.visibility = View.INVISIBLE
+                    }
                 }
 
             } else {
-                if (problem.deadline != null) {
-                    tvDeadline.setTextColor(context.getColor(R.color.text_secondary))
+                if (deadlineMillis != null) {
+                    tvDeadline.setTextColor(ctx.getColor(R.color.text_secondary))
 
                 } else {
                     tvDeadline.visibility = View.GONE
@@ -101,14 +113,8 @@ class ProblemsAdapter(
         }
     }
 
-    private fun calculateDiff(
-        oldProblems: List<Problem>,
-        newProblems: List<Problem>
-    ): DiffUtil.DiffResult {
-        val callback = ProblemsDiffCallback(
-            oldProblems = oldProblems,
-            newProblems = newProblems
-        )
+    private fun calculateDiff(old: List<Problem>, new: List<Problem>): DiffUtil.DiffResult {
+        val callback = ProblemsDiffCallback(oldItems = old, newItems = new)
         return DiffUtil.calculateDiff(callback)
     }
 }

@@ -7,31 +7,23 @@ import java.util.*
 
 class CreateViewModel : ViewModel() {
 
+    // Calendar instance.
     val calendar: Calendar by lazy { Calendar.getInstance() }
 
-    val datetimeData by lazy {
-        MutableLiveData<String>()
+    // Deadline card inner text.
+    val deadlineText by lazy { MutableLiveData<String>() }
+
+    val priorityProp by lazy {
+        MutableLiveData<Priority>()
+            .apply {
+                value = Priority.DEFAULT
+            }
     }
 
-    val tags: MutableLiveData<List<String>> by lazy {
-        MutableLiveData<List<String>>()
-    }
+    // TODO: notifications
+    val notificationsProp by lazy { MutableLiveData<Date>() }
 
-    val deadline: MutableLiveData<Date> by lazy {
-        MutableLiveData<Date>()
-    }
+    // TODO: tags
+    val tagsData by lazy { MutableLiveData<List<String>>() }
 
-    val priority: MutableLiveData<Priority> by lazy {
-        MutableLiveData<Priority>().apply {
-            value = Priority.DEFAULT_PRIORITY
-        }
-    }
-
-    val oneTimeNotifications: MutableLiveData<Date> by lazy {
-        MutableLiveData<Date>()
-    }
-
-    val regularNotifications: MutableLiveData<Date> by lazy {
-        MutableLiveData<Date>()
-    }
 }
