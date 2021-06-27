@@ -57,9 +57,14 @@ class NotificationWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, p
         val title = context.getString(R.string.notification_title)
         val text = context.getString(R.string.notification_content)
 
+
+        val local = getDefaultSharedPreferences(context)
+        val count = local.getInt("last_saved_done_count", 0)
+
+        // I can't do it any other way without normal local storage :)
         val builder = NotificationCompat.Builder(context, WorkerUtil.CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_notifications)
-            .setContentTitle("$title — 5")
+            .setContentTitle("$title — $count")
             .setContentText(text)
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setContentIntent(pendingIntent)

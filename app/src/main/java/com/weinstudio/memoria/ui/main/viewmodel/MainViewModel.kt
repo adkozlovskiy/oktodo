@@ -9,12 +9,17 @@ class MainViewModel : ViewModel() {
 
     val problemsLiveData = MutableLiveData<MutableList<Problem>>()
 
+    val countLiveDate = MutableLiveData<Int>().apply { value = 0 }
+
     fun updateData() {
         problemsList.clear()
-        problemsList.addAll(
-            ProblemsRepository.problemsList
-                .sortedByDescending { it.priority }
-        )
+
+        val newProblems = ProblemsRepository.problemsList
+            .sortedByDescending { it.priority }
+
+        countLiveDate.value = newProblems.count { it.isDone }
+
+        problemsList.addAll(newProblems)
         problemsLiveData.value = problemsList
     }
 

@@ -7,9 +7,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +21,9 @@ import com.weinstudio.memoria.ui.main.EyeButtonListener
 import com.weinstudio.memoria.ui.main.MainActivity
 import com.weinstudio.memoria.ui.main.adapter.ProblemsAdapter
 import com.weinstudio.memoria.ui.main.viewmodel.MainViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainFragment : Fragment(), EyeButtonListener {
 
@@ -48,6 +53,21 @@ class MainFragment : Fragment(), EyeButtonListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val tvSubtitle: TextView = view.findViewById(R.id.toolbar_subtitle)
+        viewModel.countLiveDate.observe(viewLifecycleOwner, {
+            val subtitle = getString(R.string.done) + " — $it"
+            tvSubtitle.text = subtitle
+
+            CoroutineScope(Dispatchers.IO).launch {
+                val local = getDefaultSharedPreferences(context)
+                val editor = local.edit()
+
+                editor.putInt("last_saved_done_count", it)
+                editor.apply()
+
+            }
+        })
 
         val recycler: RecyclerView = view.findViewById(R.id.recycler)
 

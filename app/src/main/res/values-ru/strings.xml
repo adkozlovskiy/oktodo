@@ -38,7 +38,7 @@
     <string name="undo">Вернуть</string>
     <string name="task">Задача</string>
     <string name="custom">Пользовательские</string>
-    <string name="done">СДЕЛАНО</string>
+    <string name="done">Сделано</string>
     <string name="my_problems">Мои задачи</string>
     <string name="no_deadline">Бессрочно</string>
     <string name="choose_priority">Выберите приоритет</string>
