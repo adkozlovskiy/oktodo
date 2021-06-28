@@ -1,7 +1,6 @@
 package com.weinstudio.memoria
 
 import android.app.Application
-import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
