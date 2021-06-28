@@ -10,6 +10,7 @@ object WorkerUtil {
 
     const val NOTIFICATION_ID = 10002
     const val CHANNEL_ID = "daily_notifications"
+    const val PREFERENCES_KEY = "notify_upcoming"
 
     fun getWorkerInitialDelay(): Long {
         val currentDate = Calendar.getInstance()

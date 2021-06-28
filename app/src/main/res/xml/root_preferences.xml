@@ -22,7 +22,7 @@
         <SwitchPreferenceCompat
             app:defaultValue="true"
             app:iconSpaceReserved="false"
-            app:key="notify_not_done"
+            app:key="notify_upcoming"
             app:title="@string/notifications_upcoming" />
 
         <SwitchPreferenceCompat

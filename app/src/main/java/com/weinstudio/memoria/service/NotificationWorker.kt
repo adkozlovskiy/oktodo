@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
@@ -21,7 +22,7 @@ class NotificationWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, p
 
     override fun doWork(): Result {
         val settings = getDefaultSharedPreferences(context)
-        val isEnabled = settings.getBoolean("notify_not_done", false)
+        val isEnabled = settings.getBoolean(WorkerUtil.PREFERENCES_KEY, false)
         if (isEnabled) {
             val timeDiff = WorkerUtil.getWorkerInitialDelay()
             val dailyWorkRequest = OneTimeWorkRequestBuilder<NotificationWorker>()
@@ -37,10 +38,9 @@ class NotificationWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, p
                 )
 
             showNotification()
-            return Result.success()
         }
 
-        return Result.failure()
+        return Result.success()
     }
 
     private fun showNotification() {
@@ -60,6 +60,10 @@ class NotificationWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, p
 
         val local = getDefaultSharedPreferences(context)
         val count = local.getInt("last_saved_done_count", 0)
+
+        if (count < 1) {
+            return
+        }
 
         // I can't do it any other way without normal local storage or network :)
         val builder = NotificationCompat.Builder(context, WorkerUtil.CHANNEL_ID)

@@ -1,6 +1,7 @@
 package com.weinstudio.memoria
 
 import android.app.Application
+import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
@@ -26,8 +27,8 @@ class App : Application() {
             setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         }
 
-        // Periodically notifications
-        val isEnabled = settings.getBoolean("notify_not_done", false)
+        // Periodically notifications.
+        val isEnabled = settings.getBoolean(WorkerUtil.PREFERENCES_KEY, false)
         if (isEnabled) {
             configureNotificationWorker()
         }
