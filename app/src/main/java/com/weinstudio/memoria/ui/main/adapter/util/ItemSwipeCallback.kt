@@ -17,6 +17,9 @@ class ItemSwipeCallback(val onItemDelete: (Int) -> Unit, val onItemDone: (Int) -
 
     val background = ColorDrawable()
 
+    private val doneBackground = Color.parseColor("#559858")
+    private val deleteBackground = Color.parseColor("#C54540")
+
     override fun onMove(
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder,
@@ -27,7 +30,7 @@ class ItemSwipeCallback(val onItemDelete: (Int) -> Unit, val onItemDone: (Int) -
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        val position = viewHolder.bindingAdapterPosition
+        val position = viewHolder.absoluteAdapterPosition
         when (direction) {
             ItemTouchHelper.LEFT -> {
                 onItemDelete(position)
@@ -70,7 +73,7 @@ class ItemSwipeCallback(val onItemDelete: (Int) -> Unit, val onItemDone: (Int) -
                 itemView.bottom
             )
 
-            background.color = Color.parseColor("#559858")
+            background.color = doneBackground
             background.draw(c)
 
             doneIcon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
@@ -83,7 +86,7 @@ class ItemSwipeCallback(val onItemDelete: (Int) -> Unit, val onItemDone: (Int) -
                 itemView.right,
                 itemView.bottom
             )
-            background.color = Color.parseColor("#C54540")
+            background.color = deleteBackground
             background.draw(c)
 
             deleteIcon.setBounds(iconLeft, iconTop, iconRight, iconBottom)

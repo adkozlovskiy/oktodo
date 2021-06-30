@@ -4,16 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.weinstudio.memoria.R
 import com.weinstudio.memoria.data.entity.Problem
+import com.weinstudio.memoria.data.repository.ProblemsRepository
+import com.weinstudio.memoria.databinding.FragmentMainBinding
 import com.weinstudio.memoria.ui.main.EyeButtonListener
 import com.weinstudio.memoria.ui.main.MainActivity
 import com.weinstudio.memoria.ui.main.adapter.FingerprintAdapter
@@ -26,7 +26,11 @@ import kotlinx.coroutines.launch
 
 class MainFragment : Fragment(), EyeButtonListener {
 
-    private val adapter by lazy {
+    private var _binding: FragmentMainBinding? = null
+
+    private val binding get() = _binding!!
+
+    private val fingerprintAdapter by lazy {
         FingerprintAdapter(getFingerprints())
     }
 
@@ -41,8 +45,9 @@ class MainFragment : Fragment(), EyeButtonListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_main, container, false)
+    ): View {
+        _binding = FragmentMainBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onResume() {
@@ -53,28 +58,27 @@ class MainFragment : Fragment(), EyeButtonListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val tvSubtitle: TextView = view.findViewById(R.id.toolbar_subtitle)
         viewModel.countLiveDate.observe(viewLifecycleOwner, {
             val subtitle = getString(R.string.done) + " — $it"
-            tvSubtitle.text = subtitle
+            binding.toolbarSubtitle.text = subtitle
 
             CoroutineScope(Dispatchers.IO).launch {
                 val local = getDefaultSharedPreferences(context)
                 val editor = local.edit()
 
-                editor.putInt("last_saved_done_count", it)
+                editor.putInt("last_saved_done_count", ProblemsRepository.problemsList.size - it)
                 editor.apply()
 
             }
         })
 
-        val recycler: RecyclerView = view.findViewById(R.id.recycler)
-
-        recycler.adapter = adapter
-        recycler.layoutManager = LinearLayoutManager(context)
+        with(binding.recycler) {
+            adapter = fingerprintAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
 
         val itemTouchHelperCallback = ItemSwipeCallback(onItemDelete = { pos ->
-            val problem = adapter.currentList[pos] as Problem
+            val problem = fingerprintAdapter.currentList[pos] as Problem
             viewModel.removeProblem(problem)
 
             if (!problem.isDone) {
@@ -90,7 +94,7 @@ class MainFragment : Fragment(), EyeButtonListener {
 
                     // Scrolling when we insert item on top of recycler.
                     if (pos == 0) {
-                        recycler.scrollToPosition(0)
+                        binding.recycler.scrollToPosition(0)
                     }
                 }
 
@@ -99,17 +103,17 @@ class MainFragment : Fragment(), EyeButtonListener {
                 snack.show()
             }
         }, onItemDone = { pos ->
-            val problem = adapter.currentList[pos] as Problem
+            val problem = fingerprintAdapter.currentList[pos] as Problem
 
             viewModel.setProblemDoneFlag(problem, !problem.isDone)
 
             // Instead of notifyItemChanged because of smooth anim.
-            adapter.notifyItemRemoved(pos)
-            adapter.notifyItemInserted(pos)
+            fingerprintAdapter.notifyItemRemoved(pos)
+            fingerprintAdapter.notifyItemInserted(pos)
         })
 
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
-        itemTouchHelper.attachToRecyclerView(recycler)
+        itemTouchHelper.attachToRecyclerView(binding.recycler)
 
         viewModel.problemsLiveData
             .observe(viewLifecycleOwner, { value ->
@@ -120,7 +124,7 @@ class MainFragment : Fragment(), EyeButtonListener {
                         items = list.filter { !it.isDone }.toMutableList()
                     }
 
-                    adapter.submitList(items.toList())
+                    fingerprintAdapter.submitList(items.toList())
                 }
             })
     }
@@ -138,4 +142,9 @@ class MainFragment : Fragment(), EyeButtonListener {
     }
 
     private fun getFingerprints() = listOf(ProblemFingerprint(requireContext()))
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

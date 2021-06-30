@@ -1,6 +1,5 @@
 package com.weinstudio.memoria.ui.main.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
@@ -29,7 +28,6 @@ class FingerprintAdapter(
 
     override fun onBindViewHolder(holder: BaseViewHolder<ViewBinding, ListItem>, position: Int) {
         holder.onBind(getItem(position))
-        Log.d("TAG", "onBindViewHolder: $currentList")
     }
 
     override fun getItemViewType(position: Int): Int {

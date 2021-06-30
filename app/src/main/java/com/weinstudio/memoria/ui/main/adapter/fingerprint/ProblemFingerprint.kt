@@ -1,7 +1,6 @@
 package com.weinstudio.memoria.ui.main.adapter.fingerprint
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,16 +48,14 @@ class ProblemFingerprint(ctx: Context) : BaseFingerprint<LayoutProblemBinding, P
 
     override fun getDiffUtil() = diffUtil
 
-    inner class ProblemViewHolder(binding: LayoutProblemBinding) :
+    inner class ProblemViewHolder(private val binding: LayoutProblemBinding) :
         BaseViewHolder<LayoutProblemBinding, Problem>(binding) {
 
-        private val tvTitle = binding.tvTitle
         private val tvDeadline = binding.tvDeadline
         private val ivPriority = binding.ivPriority
 
         override fun onBind(item: Problem) {
-            Log.d("TAG", "onBind: ${item.id}")
-            tvTitle.text = item.title
+            binding.tvTitle.text = item.title
 
             if (!tvDeadline.isVisible) {
                 tvDeadline.visibility = View.VISIBLE
