@@ -177,8 +177,6 @@ class CreateFragment : Fragment(), CreateButtonListener {
             .show()
     }
 
-    private var i = 6
-
     override fun onButtonPressed() {
         if (etTitle.text.toString().isBlank()) {
             tiTitle.error = getString(R.string.invalid_title)
@@ -186,7 +184,7 @@ class CreateFragment : Fragment(), CreateButtonListener {
         }
 
         val problem = Problem(
-            id = i,
+            id = ProblemsRepository.problemsList.size + 1,
             title = etTitle.text.toString(),
             priority = viewModel.priorityProp.value ?: Priority.DEFAULT,
             isDone = false,
@@ -196,8 +194,7 @@ class CreateFragment : Fragment(), CreateButtonListener {
             } else null
         )
 
-        ProblemsRepository.insertProblem(0, problem)
-        i++
+        ProblemsRepository.addProblem(problem)
         activity?.finish()
     }
 }

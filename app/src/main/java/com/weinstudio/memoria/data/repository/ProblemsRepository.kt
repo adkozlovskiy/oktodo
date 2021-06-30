@@ -10,6 +10,10 @@ object ProblemsRepository {
         loadData()
     }
 
+    fun addProblem(p: Problem) {
+        problemsList.add(p)
+    }
+
     fun removeProblem(p: Problem) {
         problemsList.remove(p)
     }

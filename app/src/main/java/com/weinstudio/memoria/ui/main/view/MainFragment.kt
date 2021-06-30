@@ -1,7 +1,6 @@
 package com.weinstudio.memoria.ui.main.view
 
-import android.graphics.Canvas
-import android.graphics.Color
+import android.graphics.*
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,9 +16,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.weinstudio.memoria.R
+import com.weinstudio.memoria.data.entity.Problem
 import com.weinstudio.memoria.ui.main.EyeButtonListener
 import com.weinstudio.memoria.ui.main.MainActivity
-import com.weinstudio.memoria.ui.main.adapter.ProblemsAdapter
+import com.weinstudio.memoria.ui.main.adapter.FingerprintAdapter
+import com.weinstudio.memoria.ui.main.adapter.fingerprint.ProblemFingerprint
 import com.weinstudio.memoria.ui.main.viewmodel.MainViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -28,7 +29,7 @@ import kotlinx.coroutines.launch
 class MainFragment : Fragment(), EyeButtonListener {
 
     private val adapter by lazy {
-        ProblemsAdapter(requireContext())
+        FingerprintAdapter(getFingerprints())
     }
 
     private val viewModel: MainViewModel by lazy {
@@ -96,7 +97,7 @@ class MainFragment : Fragment(), EyeButtonListener {
                     val position = viewHolder.bindingAdapterPosition
                     when (direction) {
                         ItemTouchHelper.LEFT -> {
-                            val problem = adapter.actualProblems[position]
+                            val problem = adapter.currentList[position] as Problem
                             viewModel.removeProblem(problem)
 
                             if (!problem.isDone) {
@@ -109,10 +110,6 @@ class MainFragment : Fragment(), EyeButtonListener {
 
                                 snack.setAction(getString(R.string.undo)) {
                                     viewModel.insertProblem(position, problem)
-
-                                    // Instead of notifyItemChanged because of smooth anim.
-                                    adapter.notifyItemRemoved(position)
-                                    adapter.notifyItemInserted(position)
 
                                     // Scrolling when we insert item on top of recycler.
                                     if (position == 0) {
@@ -127,7 +124,7 @@ class MainFragment : Fragment(), EyeButtonListener {
                         }
 
                         ItemTouchHelper.RIGHT -> {
-                            val problem = adapter.actualProblems[position]
+                            val problem = adapter.currentList[position] as Problem
 
                             viewModel.setProblemDoneFlag(problem, !problem.isDone)
 
@@ -200,7 +197,7 @@ class MainFragment : Fragment(), EyeButtonListener {
                         items = list.filter { !it.isDone }.toMutableList()
                     }
 
-                    adapter.setItems(items)
+                    adapter.submitList(items.toList())
                 }
             })
     }
@@ -216,6 +213,8 @@ class MainFragment : Fragment(), EyeButtonListener {
             viewModel.filterProblems()
         }
     }
+
+    private fun getFingerprints() = listOf(ProblemFingerprint(requireContext()))
 
     private fun getIconPosHorizontal(iv: View, im: Int, dX: Float, iw: Int): Pair<Int, Int> {
         val iconLeft: Int

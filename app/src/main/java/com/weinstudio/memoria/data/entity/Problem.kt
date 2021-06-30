@@ -9,4 +9,4 @@ data class Problem(
     val priority: Priority,
     val notifyDate: Long?,
     var isDone: Boolean
-)
+) : ListItem
