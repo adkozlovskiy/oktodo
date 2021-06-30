@@ -1,13 +1,10 @@
 package com.weinstudio.memoria.ui.main.view
 
-import android.graphics.*
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
@@ -21,6 +18,7 @@ import com.weinstudio.memoria.ui.main.EyeButtonListener
 import com.weinstudio.memoria.ui.main.MainActivity
 import com.weinstudio.memoria.ui.main.adapter.FingerprintAdapter
 import com.weinstudio.memoria.ui.main.adapter.fingerprint.ProblemFingerprint
+import com.weinstudio.memoria.ui.main.adapter.util.ItemSwipeCallback
 import com.weinstudio.memoria.ui.main.viewmodel.MainViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -72,118 +70,43 @@ class MainFragment : Fragment(), EyeButtonListener {
 
         val recycler: RecyclerView = view.findViewById(R.id.recycler)
 
-        val deleteIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_swipe_delete)!!
-        val doneIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_done_28dp)!!
-        val intrinsicWidth = deleteIcon.intrinsicWidth
-        val intrinsicHeight = deleteIcon.intrinsicHeight
-        val background = ColorDrawable()
-
         recycler.adapter = adapter
         recycler.layoutManager = LinearLayoutManager(context)
 
-        val itemTouchHelperCallback: ItemTouchHelper.SimpleCallback =
-            object :
-                ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
-                override fun onMove(
-                    recyclerView: RecyclerView,
-                    viewHolder: RecyclerView.ViewHolder,
-                    target: RecyclerView.ViewHolder
+        val itemTouchHelperCallback = ItemSwipeCallback(onItemDelete = { pos ->
+            val problem = adapter.currentList[pos] as Problem
+            viewModel.removeProblem(problem)
 
-                ): Boolean {
-                    return false
-                }
+            if (!problem.isDone) {
+                val title: String = problem.title + " — "
+                val snack = Snackbar.make(
+                    requireActivity().findViewById(R.id.root_layout),
+                    title + getString(R.string.deleted_from_yr_tasks),
+                    Snackbar.LENGTH_LONG
+                )
 
-                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                    val position = viewHolder.bindingAdapterPosition
-                    when (direction) {
-                        ItemTouchHelper.LEFT -> {
-                            val problem = adapter.currentList[position] as Problem
-                            viewModel.removeProblem(problem)
+                snack.setAction(getString(R.string.undo)) {
+                    viewModel.insertProblem(pos, problem)
 
-                            if (!problem.isDone) {
-                                val title: String = problem.title + " — "
-                                val snack = Snackbar.make(
-                                    requireActivity().findViewById(R.id.root_layout),
-                                    title + getString(R.string.deleted_from_yr_tasks),
-                                    Snackbar.LENGTH_LONG
-                                )
-
-                                snack.setAction(getString(R.string.undo)) {
-                                    viewModel.insertProblem(position, problem)
-
-                                    // Scrolling when we insert item on top of recycler.
-                                    if (position == 0) {
-                                        recycler.scrollToPosition(0)
-                                    }
-                                }
-
-                                snack.setActionTextColor(requireContext().getColor(R.color.secondary))
-                                snack.anchorView = requireActivity().findViewById(R.id.fab_create)
-                                snack.show()
-                            }
-                        }
-
-                        ItemTouchHelper.RIGHT -> {
-                            val problem = adapter.currentList[position] as Problem
-
-                            viewModel.setProblemDoneFlag(problem, !problem.isDone)
-
-                            // Instead of notifyItemChanged because of smooth anim.
-                            adapter.notifyItemRemoved(position)
-                            adapter.notifyItemInserted(position)
-                        }
+                    // Scrolling when we insert item on top of recycler.
+                    if (pos == 0) {
+                        recycler.scrollToPosition(0)
                     }
                 }
 
-                override fun onChildDraw(
-                    c: Canvas, rv: RecyclerView, holder: RecyclerView.ViewHolder,
-                    dX: Float, dY: Float, aState: Int, isActive: Boolean
-                ) {
-
-                    val itemView = holder.itemView
-                    val itemHeight = itemView.bottom - itemView.top
-
-                    val iconMargin = (itemHeight - intrinsicHeight) / 2
-                    val iconTop = itemView.top + (itemHeight - intrinsicHeight) / 2
-                    val iconBottom = iconTop + intrinsicHeight
-                    val (iconLeft, iconRight) = getIconPosHorizontal(
-                        itemView,
-                        iconMargin,
-                        dX,
-                        intrinsicWidth
-                    )
-
-                    if (dX > 0) {
-                        background.setBounds(
-                            itemView.left,
-                            itemView.top,
-                            itemView.left + dX.toInt(),
-                            itemView.bottom
-                        )
-
-                        background.color = Color.parseColor("#559858")
-                        background.draw(c)
-
-                        doneIcon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
-                        doneIcon.draw(c)
-
-                    } else if (dX < 0) {
-                        background.setBounds(
-                            itemView.right + dX.toInt(),
-                            itemView.top,
-                            itemView.right,
-                            itemView.bottom
-                        )
-                        background.color = Color.parseColor("#C54540")
-                        background.draw(c)
-
-                        deleteIcon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
-                        deleteIcon.draw(c)
-                    }
-
-                    super.onChildDraw(c, rv, holder, dX, dY, aState, isActive)
-                }
+                snack.setActionTextColor(requireContext().getColor(R.color.secondary))
+                snack.anchorView = requireActivity().findViewById(R.id.fab_create)
+                snack.show()
             }
+        }, onItemDone = { pos ->
+            val problem = adapter.currentList[pos] as Problem
+
+            viewModel.setProblemDoneFlag(problem, !problem.isDone)
+
+            // Instead of notifyItemChanged because of smooth anim.
+            adapter.notifyItemRemoved(pos)
+            adapter.notifyItemInserted(pos)
+        })
 
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
         itemTouchHelper.attachToRecyclerView(recycler)
@@ -215,20 +138,4 @@ class MainFragment : Fragment(), EyeButtonListener {
     }
 
     private fun getFingerprints() = listOf(ProblemFingerprint(requireContext()))
-
-    private fun getIconPosHorizontal(iv: View, im: Int, dX: Float, iw: Int): Pair<Int, Int> {
-        val iconLeft: Int
-        val iconRight: Int
-
-        if (dX > 0) {
-            iconLeft = iv.left + im
-            iconRight = iv.left + im + iw
-
-        } else {
-            iconLeft = iv.right - im - iw
-            iconRight = iv.right - im
-        }
-
-        return Pair(iconLeft, iconRight)
-    }
 }

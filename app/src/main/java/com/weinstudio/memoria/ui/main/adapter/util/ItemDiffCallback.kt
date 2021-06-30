@@ -1,10 +1,10 @@
-package com.weinstudio.memoria.ui.main.adapter
+package com.weinstudio.memoria.ui.main.adapter.util
 
 import androidx.recyclerview.widget.DiffUtil
 import com.weinstudio.memoria.data.entity.ListItem
 import com.weinstudio.memoria.ui.main.adapter.base.BaseFingerprint
 
-class FingerprintDiffCallback(
+class ItemDiffCallback(
     private val fingerprints: List<BaseFingerprint<*, *>>
 ) : DiffUtil.ItemCallback<ListItem>() {
 

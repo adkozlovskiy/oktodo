@@ -5,7 +5,7 @@ import androidx.viewbinding.ViewBinding
 import com.weinstudio.memoria.data.entity.ListItem
 
 abstract class BaseViewHolder<out V : ViewBinding, in I : ListItem>(
-    private val binding: V
+    binding: V
 
 ) : RecyclerView.ViewHolder(binding.root) {
 

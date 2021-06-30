@@ -8,11 +8,12 @@ import androidx.viewbinding.ViewBinding
 import com.weinstudio.memoria.data.entity.ListItem
 import com.weinstudio.memoria.ui.main.adapter.base.BaseFingerprint
 import com.weinstudio.memoria.ui.main.adapter.base.BaseViewHolder
+import com.weinstudio.memoria.ui.main.adapter.util.ItemDiffCallback
 
 class FingerprintAdapter(
     private val fingerprints: List<BaseFingerprint<*, *>>
 ) : ListAdapter<ListItem, BaseViewHolder<ViewBinding, ListItem>>(
-    FingerprintDiffCallback(fingerprints)
+    ItemDiffCallback(fingerprints)
 ) {
 
     override fun onCreateViewHolder(
