@@ -21,7 +21,7 @@ import com.weinstudio.memoria.data.entity.Problem
 import com.weinstudio.memoria.data.repository.ProblemsRepository
 import com.weinstudio.memoria.ui.create.CreateButtonListener
 import com.weinstudio.memoria.ui.create.viewmodel.CreateViewModel
-import com.weinstudio.memoria.util.enums.Priority
+import com.weinstudio.memoria.data.entity.enums.Priority
 import java.util.*
 
 class CreateFragment : Fragment(), CreateButtonListener {
@@ -187,7 +187,7 @@ class CreateFragment : Fragment(), CreateButtonListener {
             id = ProblemsRepository.problemsList.size + 1,
             text = etTitle.text.toString(),
             priority = viewModel.priorityProp.value ?: Priority.DEFAULT,
-            isDone = false,
+            done = false,
             created = Date().time,
             updated = Date().time,
             deadline = if (switchDeadline.isChecked && viewModel.deadlineText.value != null) {

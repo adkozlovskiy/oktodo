@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import com.weinstudio.memoria.R
-import com.weinstudio.memoria.data.entity.ListItem
+import com.weinstudio.memoria.data.ListItem
 import com.weinstudio.memoria.data.entity.Problem
 import com.weinstudio.memoria.databinding.LayoutProblemBinding
 import com.weinstudio.memoria.ui.main.adapter.base.BaseFingerprint
 import com.weinstudio.memoria.ui.main.adapter.base.BaseViewHolder
-import com.weinstudio.memoria.util.enums.Priority
+import com.weinstudio.memoria.data.entity.enums.Priority
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -76,7 +76,7 @@ class ProblemFingerprint(ctx: Context) : BaseFingerprint<LayoutProblemBinding, P
                 tvDeadline.visibility = View.GONE
             }
 
-            if (!item.isDone) {
+            if (!item.done) {
                 if (deadlineMillis != null) {
                     val currentMillis = Date().time
                     tvDeadline.setTextColor(

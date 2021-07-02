@@ -81,7 +81,7 @@ class MainFragment : Fragment(), EyeButtonListener {
             val problem = fingerprintAdapter.currentList[pos] as Problem
             viewModel.removeProblem(problem)
 
-            if (!problem.isDone) {
+            if (!problem.done) {
                 val title: String = problem.text + " — "
                 val snack = Snackbar.make(
                     requireActivity().findViewById(R.id.root_layout),
@@ -105,11 +105,13 @@ class MainFragment : Fragment(), EyeButtonListener {
         }, onItemDone = { pos ->
             val problem = fingerprintAdapter.currentList[pos] as Problem
 
-            viewModel.setProblemDoneFlag(problem, !problem.isDone)
+            viewModel.setProblemDoneFlag(problem, !problem.done)
 
             // Instead of notifyItemChanged because of smooth anim.
-            fingerprintAdapter.notifyItemRemoved(pos)
-            fingerprintAdapter.notifyItemInserted(pos)
+            if (isEyeEnabled()) {
+                fingerprintAdapter.notifyItemRemoved(pos)
+                fingerprintAdapter.notifyItemInserted(pos)
+            }
         })
 
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
@@ -121,7 +123,7 @@ class MainFragment : Fragment(), EyeButtonListener {
                     var items = list
 
                     if (!isEyeEnabled()) {
-                        items = list.filter { !it.isDone }.toMutableList()
+                        items = list.filter { !it.done }.toMutableList()
                     }
 
                     fingerprintAdapter.submitList(items.toList())

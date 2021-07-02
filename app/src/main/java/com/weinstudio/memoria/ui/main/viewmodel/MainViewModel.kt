@@ -17,7 +17,7 @@ class MainViewModel : ViewModel() {
         val newProblems = ProblemsRepository.problemsList
             .sortedByDescending { it.priority }
 
-        countLiveDate.value = newProblems.count { it.isDone }
+        countLiveDate.value = newProblems.count { it.done }
 
         problemsList.addAll(newProblems)
         problemsLiveData.value = problemsList
@@ -41,7 +41,7 @@ class MainViewModel : ViewModel() {
     }
 
     fun filterProblems() {
-        problemsList = problemsList.filter { !it.isDone }.toMutableList()
+        problemsList = problemsList.filter { !it.done }.toMutableList()
         problemsLiveData.value = problemsList
     }
 

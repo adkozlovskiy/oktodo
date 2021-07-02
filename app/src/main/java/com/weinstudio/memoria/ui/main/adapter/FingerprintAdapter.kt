@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.viewbinding.ViewBinding
-import com.weinstudio.memoria.data.entity.ListItem
+import com.weinstudio.memoria.data.ListItem
 import com.weinstudio.memoria.ui.main.adapter.base.BaseFingerprint
 import com.weinstudio.memoria.ui.main.adapter.base.BaseViewHolder
 import com.weinstudio.memoria.ui.main.adapter.util.ItemDiffCallback

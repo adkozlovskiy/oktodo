@@ -1,36 +1,40 @@
 package com.weinstudio.memoria.data.entity
 
-import com.google.gson.annotations.Expose
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
-import com.weinstudio.memoria.util.enums.Priority
+import com.weinstudio.memoria.data.ListItem
+import com.weinstudio.memoria.data.entity.enums.Priority
 
+@Entity(tableName = "problems")
 data class Problem(
 
-    @Expose
-    @SerializedName("id")
+    @PrimaryKey
+    @SerializedName(value = "id")
     val id: Int,
 
-    @Expose
-    @SerializedName("text")
+    @ColumnInfo(name = "text")
+    @SerializedName(value = "text")
     val text: String,
 
-    @Expose
-    @SerializedName("deadline")
+    @ColumnInfo(name = "deadline")
+    @SerializedName(value = "text")
     val deadline: Long?,
 
-    @Expose
-    @SerializedName("priority")
+    @ColumnInfo(name = "priority")
+    @SerializedName(value = "priority")
     val priority: Priority,
 
-    @Expose
-    @SerializedName("done")
-    var isDone: Boolean,
+    @ColumnInfo(name = "done")
+    @SerializedName(value = "done")
+    val done: Boolean,
 
-    @Expose
+    @ColumnInfo(name = "created")
     @SerializedName("created_at")
     val created: Long?,
 
-    @Expose
+    @ColumnInfo(name = "updated")
     @SerializedName("updated_at")
     val updated: Long?
 

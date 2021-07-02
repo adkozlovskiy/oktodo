@@ -2,7 +2,7 @@ package com.weinstudio.memoria.ui.create.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.weinstudio.memoria.util.enums.Priority
+import com.weinstudio.memoria.data.entity.enums.Priority
 import java.util.*
 
 class CreateViewModel : ViewModel() {

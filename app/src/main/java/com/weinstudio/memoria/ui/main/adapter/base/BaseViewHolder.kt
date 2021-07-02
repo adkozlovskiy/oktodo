@@ -2,7 +2,7 @@ package com.weinstudio.memoria.ui.main.adapter.base
 
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
-import com.weinstudio.memoria.data.entity.ListItem
+import com.weinstudio.memoria.data.ListItem
 
 abstract class BaseViewHolder<out V : ViewBinding, in I : ListItem>(
     binding: V

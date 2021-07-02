@@ -56,9 +56,9 @@ class MainActivity : AppCompatActivity() {
 
             eyeItem?.icon = if (it) AppCompatResources.getDrawable(
                 this,
-                R.drawable.ic_eye_close
+                R.drawable.ic_eye_open
 
-            ) else AppCompatResources.getDrawable(this, R.drawable.ic_eye_open)
+            ) else AppCompatResources.getDrawable(this, R.drawable.ic_eye_close)
         })
     }
 
@@ -73,9 +73,9 @@ class MainActivity : AppCompatActivity() {
         if (isEnabled != null) {
             eyeItem?.icon = if (isEnabled) AppCompatResources.getDrawable(
                 this,
-                R.drawable.ic_eye_close
+                R.drawable.ic_eye_open
 
-            ) else AppCompatResources.getDrawable(this, R.drawable.ic_eye_open)
+            ) else AppCompatResources.getDrawable(this, R.drawable.ic_eye_close)
         }
 
         return true
