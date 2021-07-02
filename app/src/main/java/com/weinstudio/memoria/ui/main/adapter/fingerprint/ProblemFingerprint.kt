@@ -55,7 +55,7 @@ class ProblemFingerprint(ctx: Context) : BaseFingerprint<LayoutProblemBinding, P
         private val ivPriority = binding.ivPriority
 
         override fun onBind(item: Problem) {
-            binding.tvTitle.text = item.title
+            binding.tvTitle.text = item.text
 
             if (!tvDeadline.isVisible) {
                 tvDeadline.visibility = View.VISIBLE
