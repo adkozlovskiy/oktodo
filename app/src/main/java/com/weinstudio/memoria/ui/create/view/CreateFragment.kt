@@ -185,10 +185,11 @@ class CreateFragment : Fragment(), CreateButtonListener {
 
         val problem = Problem(
             id = ProblemsRepository.problemsList.size + 1,
-            title = etTitle.text.toString(),
+            text = etTitle.text.toString(),
             priority = viewModel.priorityProp.value ?: Priority.DEFAULT,
             isDone = false,
-            notifyDate = null,
+            created = Date().time,
+            updated = Date().time,
             deadline = if (switchDeadline.isChecked && viewModel.deadlineText.value != null) {
                 viewModel.calendar.timeInMillis
             } else null

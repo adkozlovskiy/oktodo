@@ -82,7 +82,7 @@ class MainFragment : Fragment(), EyeButtonListener {
             viewModel.removeProblem(problem)
 
             if (!problem.isDone) {
-                val title: String = problem.title + " — "
+                val title: String = problem.text + " — "
                 val snack = Snackbar.make(
                     requireActivity().findViewById(R.id.root_layout),
                     title + getString(R.string.deleted_from_yr_tasks),

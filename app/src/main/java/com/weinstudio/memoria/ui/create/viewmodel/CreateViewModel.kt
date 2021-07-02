@@ -23,7 +23,4 @@ class CreateViewModel : ViewModel() {
     // TODO: notifications
     val notificationsProp by lazy { MutableLiveData<Date>() }
 
-    // TODO: tags
-    val tagsData by lazy { MutableLiveData<List<String>>() }
-
 }

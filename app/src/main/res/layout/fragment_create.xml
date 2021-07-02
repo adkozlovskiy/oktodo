@@ -36,36 +36,6 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <HorizontalScrollView
-            android:id="@+id/horizontal_scroll_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:clipToPadding="false"
-            android:paddingHorizontal="20dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ti_title">
-
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chip_group"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:singleLine="true">
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/add_tag"
-                    android:textAlignment="center"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="12sp"
-                    app:chipBackgroundColor="@color/card_background"
-                    app:chipStrokeColor="@color/card_stroke"
-                    app:chipStrokeWidth="0.8dp" />
-
-            </com.google.android.material.chip.ChipGroup>
-        </HorizontalScrollView>
-
         <TextView
             android:id="@+id/tv_deadline"
             android:layout_width="wrap_content"
@@ -124,12 +94,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="54dp"
             android:text="@string/priority"
             android:textColor="@color/text_primary"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/horizontal_scroll_view" />
+            app:layout_constraintTop_toBottomOf="@id/ti_title" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cv_priority"
@@ -165,12 +135,11 @@
             android:id="@+id/tv_notifications"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
             android:text="@string/notifications"
             android:textColor="@color/text_primary"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@id/cv_notifications"
-            app:layout_constraintTop_toBottomOf="@id/horizontal_scroll_view" />
+            app:layout_constraintTop_toTopOf="@id/tv_priority" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cv_notifications"
