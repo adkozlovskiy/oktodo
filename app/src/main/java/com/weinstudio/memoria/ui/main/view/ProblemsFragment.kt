@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.weinstudio.memoria.App
+import com.weinstudio.memoria.MemoriaApplication
 import com.weinstudio.memoria.R
 import com.weinstudio.memoria.data.entity.Problem
 import com.weinstudio.memoria.databinding.FragmentMainBinding
@@ -32,7 +32,7 @@ class ProblemsFragment : Fragment(), EyeButtonListener {
     }
 
     private val viewModel: ProblemsViewModel by viewModels {
-        ProblemsViewModelFactory((context?.applicationContext as App).repository)
+        ProblemsViewModelFactory((context?.applicationContext as MemoriaApplication).repository)
     }
 
     private val subtitleTemplate by lazy {

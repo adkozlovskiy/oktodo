@@ -17,7 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
-import com.weinstudio.memoria.App
+import com.weinstudio.memoria.MemoriaApplication
 import com.weinstudio.memoria.R
 import com.weinstudio.memoria.data.entity.Problem
 import com.weinstudio.memoria.data.entity.enums.Priority
@@ -198,7 +198,7 @@ class CreateFragment : Fragment(), CreateButtonListener {
         )
 
         lifecycleScope.launch {
-            (context?.applicationContext as App).repository.insertProblem(problem)
+            (context?.applicationContext as MemoriaApplication).repository.insertProblem(problem)
         }
 
         activity?.finish()

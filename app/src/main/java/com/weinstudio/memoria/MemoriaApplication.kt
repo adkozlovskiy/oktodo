@@ -13,7 +13,7 @@ import com.weinstudio.memoria.service.NotificationWorker
 import com.weinstudio.memoria.util.WorkerUtil
 import java.util.concurrent.TimeUnit
 
-class App : Application() {
+class MemoriaApplication : Application() {
 
     val database by lazy { ProblemDatabase.getDatabase(this) }
     val repository by lazy { ProblemRepository(database.problemsDao()) }
