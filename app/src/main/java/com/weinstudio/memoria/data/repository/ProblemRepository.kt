@@ -1,6 +1,7 @@
 package com.weinstudio.memoria.data.repository
 
 import androidx.annotation.WorkerThread
+import androidx.lifecycle.asLiveData
 import com.weinstudio.memoria.data.db.dao.ProblemDao
 import com.weinstudio.memoria.data.entity.Problem
 import com.weinstudio.memoria.data.entity.enums.Priority
@@ -25,8 +26,13 @@ class ProblemRepository(
         else localSource.getAll()
     }
 
-    fun getCountWithStatus(status: Boolean): Flow<Int> {
+    fun getCountFlowWithStatus(status: Boolean): Flow<Int> {
         return localSource.getCountWithStatus(status)
+    }
+
+    fun getCountWithStatus(status: Boolean): Int {
+        val count = localSource.getCountWithStatus(status).asLiveData().value
+        return count ?: 0
     }
 
     @WorkerThread

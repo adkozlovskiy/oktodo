@@ -1,7 +1,6 @@
 package com.weinstudio.memoria.ui.main.viewmodel
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.weinstudio.memoria.data.entity.Problem
@@ -24,7 +23,7 @@ class ProblemsViewModel(
 
     }.asLiveData()
 
-    val doneCount = repository.getCountWithStatus(true).asLiveData()
+    val doneCount = repository.getCountFlowWithStatus(true).asLiveData()
 
     fun changeStatus(problem: Problem, status: Boolean) {
         val id = problem.id

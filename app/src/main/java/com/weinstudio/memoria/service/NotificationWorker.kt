@@ -10,6 +10,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import androidx.work.*
+import com.weinstudio.memoria.App
 import com.weinstudio.memoria.R
 import com.weinstudio.memoria.ui.splash.SplashActivity
 import com.weinstudio.memoria.util.WorkerUtil
@@ -56,18 +57,16 @@ class NotificationWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, p
         val title = context.getString(R.string.notification_title)
         val text = context.getString(R.string.notification_content)
 
+        val countUnfulfilled = (applicationContext as App).repository.getCountWithStatus(false)
 
-        val local = getDefaultSharedPreferences(context)
-        val count = local.getInt("last_saved_done_count", 0)
-
-        if (count < 1) {
+        if (countUnfulfilled < 1) {
             return
         }
 
         // I can't do it any other way without normal local storage or network :)
         val builder = NotificationCompat.Builder(context, WorkerUtil.CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_notifications)
-            .setContentTitle("$title — $count")
+            .setContentTitle("$title — $countUnfulfilled")
             .setContentText(text)
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setContentIntent(pendingIntent)
