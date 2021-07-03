@@ -9,10 +9,10 @@ import androidx.recyclerview.widget.DiffUtil
 import com.weinstudio.memoria.R
 import com.weinstudio.memoria.data.ListItem
 import com.weinstudio.memoria.data.entity.Problem
+import com.weinstudio.memoria.data.entity.enums.Priority
 import com.weinstudio.memoria.databinding.LayoutProblemBinding
 import com.weinstudio.memoria.ui.main.adapter.base.BaseFingerprint
 import com.weinstudio.memoria.ui.main.adapter.base.BaseViewHolder
-import com.weinstudio.memoria.data.entity.enums.Priority
 import java.text.SimpleDateFormat
 import java.util.*
 

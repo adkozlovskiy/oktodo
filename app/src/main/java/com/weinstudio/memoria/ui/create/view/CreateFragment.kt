@@ -14,14 +14,16 @@ import androidx.cardview.widget.CardView
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
+import com.weinstudio.memoria.App
 import com.weinstudio.memoria.R
 import com.weinstudio.memoria.data.entity.Problem
-import com.weinstudio.memoria.data.repository.ProblemsRepository
+import com.weinstudio.memoria.data.entity.enums.Priority
 import com.weinstudio.memoria.ui.create.CreateButtonListener
 import com.weinstudio.memoria.ui.create.viewmodel.CreateViewModel
-import com.weinstudio.memoria.data.entity.enums.Priority
+import kotlinx.coroutines.launch
 import java.util.*
 
 class CreateFragment : Fragment(), CreateButtonListener {
@@ -184,7 +186,7 @@ class CreateFragment : Fragment(), CreateButtonListener {
         }
 
         val problem = Problem(
-            id = ProblemsRepository.problemsList.size + 1,
+            id = null,
             text = etTitle.text.toString(),
             priority = viewModel.priorityProp.value ?: Priority.DEFAULT,
             done = false,
@@ -195,7 +197,10 @@ class CreateFragment : Fragment(), CreateButtonListener {
             } else null
         )
 
-        ProblemsRepository.addProblem(problem)
+        lifecycleScope.launch {
+            (context?.applicationContext as App).repository.insertProblem(problem)
+        }
+
         activity?.finish()
     }
 }

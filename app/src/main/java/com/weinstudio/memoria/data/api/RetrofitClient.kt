@@ -18,6 +18,6 @@ object RetrofitClient {
         return retrofit!!
     }
 
-    val retrofitService: RetrofitServices
-        get() = getClient().create(RetrofitServices::class.java)
+    val problemService: ProblemServices
+        get() = getClient().create(ProblemServices::class.java)
 }

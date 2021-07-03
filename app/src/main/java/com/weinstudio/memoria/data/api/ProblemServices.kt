@@ -7,7 +7,7 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
 
-interface RetrofitServices {
+interface ProblemServices {
 
     @GET("tasks")
     fun getAllProblems(): Flow<List<Problem>>

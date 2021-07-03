@@ -1,4 +1,4 @@
-package com.weinstudio.memoria.data.db.converter
+package com.weinstudio.memoria.data.db
 
 import androidx.room.TypeConverter
 import com.weinstudio.memoria.data.entity.enums.Priority

@@ -10,9 +10,9 @@ import com.weinstudio.memoria.data.entity.enums.Priority
 @Entity(tableName = "problems")
 data class Problem(
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @SerializedName(value = "id")
-    val id: Int,
+    val id: Int?,
 
     @ColumnInfo(name = "text")
     @SerializedName(value = "text")

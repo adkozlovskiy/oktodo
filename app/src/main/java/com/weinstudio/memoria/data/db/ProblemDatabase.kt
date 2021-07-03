@@ -5,27 +5,27 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.weinstudio.memoria.data.db.converter.Converters
-import com.weinstudio.memoria.data.db.dao.ProblemsDao
+import com.weinstudio.memoria.data.db.dao.ProblemDao
 import com.weinstudio.memoria.data.entity.Problem
 
 @Database(entities = [Problem::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
-abstract class ProblemsDatabase : RoomDatabase() {
+abstract class ProblemDatabase : RoomDatabase() {
 
-    abstract fun problemsDao(): ProblemsDao
+    abstract fun problemsDao(): ProblemDao
 
     companion object {
 
         @Volatile
-        private var instance: ProblemsDatabase? = null
+        private var instance: ProblemDatabase? = null
 
-        fun getDatabase(context: Context): ProblemsDatabase {
+        fun getDatabase(context: Context): ProblemDatabase {
             return instance ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    ProblemsDatabase::class.java, "database"
-                ).build()
+                    ProblemDatabase::class.java, "database"
+
+                ).allowMainThreadQueries().build()
 
                 this.instance = instance
 
