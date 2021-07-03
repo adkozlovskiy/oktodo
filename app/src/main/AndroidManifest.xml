@@ -26,9 +26,5 @@
         <activity android:name="com.weinstudio.memoria.ui.create.CreateActivity" />
         <activity android:name="com.weinstudio.memoria.ui.settings.SettingsActivity" />
         <activity android:name="com.weinstudio.memoria.ui.main.MainActivity" />
-
-        <!--        <meta-data-->
-        <!--            android:name="com.google.mlkit.vision.DEPENDENCIES"-->
-        <!--            android:value="barcode" />-->
     </application>
 </manifest>
