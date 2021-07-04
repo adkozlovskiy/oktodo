@@ -17,7 +17,10 @@ interface ProblemDao {
     fun changeStatus(id: Int, status: Boolean)
 
     @Query("SELECT COUNT(*) FROM problems WHERE done = :done")
-    fun getCountWithStatus(done: Boolean): Flow<Int>
+    fun getCountFlow(done: Boolean): Flow<Int>
+
+    @Query("SELECT COUNT(*) FROM problems WHERE done = :done")
+    fun getCount(done: Boolean): Int
 
     @Insert
     suspend fun insert(problem: Problem)

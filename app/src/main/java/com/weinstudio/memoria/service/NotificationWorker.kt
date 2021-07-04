@@ -9,12 +9,12 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
-import androidx.work.*
+import androidx.work.Worker
+import androidx.work.WorkerParameters
 import com.weinstudio.memoria.MemoriaApplication
 import com.weinstudio.memoria.R
 import com.weinstudio.memoria.ui.splash.SplashActivity
 import com.weinstudio.memoria.util.WorkerUtil
-import java.util.concurrent.TimeUnit
 
 class NotificationWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, params) {
 
@@ -22,22 +22,12 @@ class NotificationWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, p
 
     override fun doWork(): Result {
         val settings = getDefaultSharedPreferences(context)
-        val isEnabled = settings.getBoolean(WorkerUtil.PREFERENCES_KEY, false)
+        val isEnabled = settings.getBoolean(WorkerUtil.PREFERENCES_KEY, true)
+
         if (isEnabled) {
-            val timeDiff = WorkerUtil.getWorkerInitialDelay()
-            val dailyWorkRequest = OneTimeWorkRequestBuilder<NotificationWorker>()
-                .setInitialDelay(timeDiff, TimeUnit.MILLISECONDS)
-                .addTag(WorkerUtil.WORK_TAG)
-                .build()
-
-            WorkManager.getInstance(applicationContext)
-                .enqueueUniqueWork(
-                    WorkerUtil.WORK_TAG,
-                    ExistingWorkPolicy.REPLACE,
-                    dailyWorkRequest
-                )
-
             showNotification()
+
+            WorkerUtil.enqueueNotificationWork(context)
         }
 
         return Result.success()
@@ -57,13 +47,13 @@ class NotificationWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, p
         val title = context.getString(R.string.notification_title)
         val text = context.getString(R.string.notification_content)
 
-        val countUnfulfilled = (applicationContext as MemoriaApplication).repository.getCountWithStatus(false)
+        val countUnfulfilled =
+            (applicationContext as MemoriaApplication).repository.getCount(false)
 
         if (countUnfulfilled < 1) {
             return
         }
 
-        // I can't do it any other way without normal local storage or network :)
         val builder = NotificationCompat.Builder(context, WorkerUtil.CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_notifications)
             .setContentTitle("$title — $countUnfulfilled")

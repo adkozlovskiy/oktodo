@@ -54,8 +54,8 @@
     <string name="no_notifications">Disabled</string>
     <string name="daily_notifications">Daily notifications</string>
     <string name="daily_notifications_desc">Daily notifications at 10am about upcoming tasks.</string>
-    <string name="notification_title">You have tasks for today</string>
-    <string name="notification_content">See what you have planned for today.</string>
+    <string name="notification_title">You have outstanding tasks</string>
+    <string name="notification_content">See what you have planned</string>
     <string name="theme">Theme</string>>
     <string name="notifications_upcoming">If there is an upcoming</string>
     <string name="notifications_on_deadline">If there are on deadline</string>

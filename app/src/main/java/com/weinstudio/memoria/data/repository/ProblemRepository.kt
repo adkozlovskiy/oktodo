@@ -1,38 +1,31 @@
 package com.weinstudio.memoria.data.repository
 
 import androidx.annotation.WorkerThread
-import androidx.lifecycle.asLiveData
+import com.weinstudio.memoria.data.api.RetrofitServices
 import com.weinstudio.memoria.data.db.dao.ProblemDao
 import com.weinstudio.memoria.data.entity.Problem
 import com.weinstudio.memoria.data.entity.enums.Priority
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 import java.util.*
 
 class ProblemRepository(
-//    private val remoteSource: ProblemServices,
+    private val remoteSource: RetrofitServices,
     private val localSource: ProblemDao
 
 ) {
 
-    init {
-        CoroutineScope(Dispatchers.Main).launch { localSource.insertAll(loadData()) }
-    }
-
+    // Local source.
     fun getProblems(filter: Boolean): Flow<List<Problem>> {
         return if (filter) localSource.getUnfulfilled()
         else localSource.getAll()
     }
 
-    fun getCountFlowWithStatus(status: Boolean): Flow<Int> {
-        return localSource.getCountWithStatus(status)
+    fun getCountFlow(done: Boolean): Flow<Int> {
+        return localSource.getCountFlow(done)
     }
 
-    fun getCountWithStatus(status: Boolean): Int {
-        val count = localSource.getCountWithStatus(status).asLiveData().value
-        return count ?: 0
+    fun getCount(done: Boolean): Int {
+        return localSource.getCount(done)
     }
 
     @WorkerThread
@@ -53,6 +46,11 @@ class ProblemRepository(
     fun changeStatus(id: Int, status: Boolean) {
         localSource.changeStatus(id, status)
     }
+
+//    // Remote source.
+//    suspend fun loadProblems(): List<Problem> {
+//
+//    }
 
     private fun loadData(): List<Problem> {
         return listOf(

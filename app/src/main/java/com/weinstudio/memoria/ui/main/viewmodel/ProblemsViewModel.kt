@@ -23,7 +23,7 @@ class ProblemsViewModel(
 
     }.asLiveData()
 
-    val doneCount = repository.getCountFlowWithStatus(true).asLiveData()
+    val doneCount = repository.getCountFlow(true).asLiveData()
 
     fun changeStatus(problem: Problem, status: Boolean) {
         val id = problem.id
