@@ -40,7 +40,7 @@ class NotificationWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, p
             }
 
         val pendingIntent: PendingIntent =
-            PendingIntent.getActivity(context, 0, intent, 0)
+            PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 
         createNotificationChannel()
 
