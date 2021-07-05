@@ -72,6 +72,7 @@
             android:id="@+id/toolbar_subtitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:alpha="0"
             app:layout_constraintBottom_toBottomOf="@id/toolbar_background"
             app:layout_constraintStart_toStartOf="@id/toolbar_title"
@@ -87,6 +88,7 @@
                 app:attributeName="imageAlpha"
                 app:customIntegerValue="0" />
         </Constraint>
+
         <Constraint
             android:id="@+id/recycler"
             android:layout_width="0dp"
@@ -103,6 +105,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar_background" />
+
     </ConstraintSet>
 
     <Transition
