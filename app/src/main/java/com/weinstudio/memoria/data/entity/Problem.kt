@@ -10,20 +10,20 @@ import com.weinstudio.memoria.data.entity.enums.Priority
 @Entity(tableName = "problems")
 data class Problem(
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @SerializedName(value = "id")
-    val id: Int?,
+    val id: String,
 
     @ColumnInfo(name = "text")
     @SerializedName(value = "text")
     val text: String,
 
     @ColumnInfo(name = "deadline")
-    @SerializedName(value = "text")
+    @SerializedName(value = "deadline")
     val deadline: Long?,
 
-    @ColumnInfo(name = "priority")
-    @SerializedName(value = "priority")
+    @ColumnInfo(name = "importance")
+    @SerializedName(value = "importance")
     val priority: Priority,
 
     @ColumnInfo(name = "done")

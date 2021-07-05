@@ -2,26 +2,24 @@ package com.weinstudio.memoria.data.api
 
 import com.weinstudio.memoria.data.entity.Problem
 import com.weinstudio.memoria.data.entity.SyncRequest
-import kotlinx.coroutines.flow.Flow
-import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
 
 interface RetrofitServices {
 
     @GET("tasks")
-    suspend fun getAllProblems(): Flow<List<Problem>>
+    fun getAll(): Call<List<Problem>>
 
     @POST("tasks")
-    suspend fun postProblem(@Body p: RequestBody): Call<Problem>
+    suspend fun insert(@Body p: Problem): Problem
 
     @DELETE("tasks/{id}")
-    suspend fun deleteProblem(@Path("id") id: Int): Call<Problem>
+    suspend fun delete(@Path("id") id: String): Problem
 
     @PUT("tasks/{id}")
-    suspend fun putProblem(@Path("id") id: Int, @Body p: Problem): Call<Problem>
+    suspend fun update(@Path("id") id: String, @Body p: Problem): Problem
 
     @PUT("tasks")
-    suspend fun syncProblems(@Body syncRequest: SyncRequest): Call<Problem>
+    suspend fun sync(@Body syncRequest: SyncRequest): Call<Problem>
 
 }

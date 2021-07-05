@@ -5,6 +5,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.weinstudio.memoria.data.entity.Problem
 import com.weinstudio.memoria.data.repository.ProblemRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
@@ -25,18 +26,11 @@ class ProblemsViewModel(
 
     val doneCount = repository.getCountFlow(true).asLiveData()
 
-    fun changeStatus(problem: Problem, status: Boolean) {
-        val id = problem.id
-
-        if (id != null) {
-            repository.changeStatus(id, status)
-
-        } else {
-            throw java.lang.IllegalArgumentException("Problem id must not be null.")
-        }
+    fun changeStatus(problem: Problem, status: Boolean) = viewModelScope.launch(Dispatchers.IO) {
+        repository.changeStatus(problem, status)
     }
 
-    fun deleteProblem(problem: Problem) = viewModelScope.launch {
+    fun deleteProblem(problem: Problem) = viewModelScope.launch(Dispatchers.IO) {
         repository.deleteProblem(problem)
     }
 

@@ -68,7 +68,7 @@ class ProblemFingerprint(ctx: Context) : BaseFingerprint<LayoutProblemBinding, P
             val deadlineMillis = item.deadline
 
             if (deadlineMillis != null) { // If task has deadline.
-                val deadlineDate = Date(deadlineMillis)
+                val deadlineDate = Date(deadlineMillis * 1000)
                 val deadlineStr = until + sdf.format(deadlineDate)
                 tvDeadline.text = deadlineStr
 
@@ -80,7 +80,7 @@ class ProblemFingerprint(ctx: Context) : BaseFingerprint<LayoutProblemBinding, P
                 if (deadlineMillis != null) {
                     val currentMillis = Date().time
                     tvDeadline.setTextColor(
-                        if (currentMillis > deadlineMillis) {
+                        if (currentMillis > deadlineMillis * 1000) {
                             colorRed
 
                         } else colorSecondary

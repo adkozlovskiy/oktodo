@@ -19,10 +19,12 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import com.weinstudio.memoria.MemoriaApplication
 import com.weinstudio.memoria.R
+import com.weinstudio.memoria.data.api.RetrofitBuilder
 import com.weinstudio.memoria.data.entity.Problem
 import com.weinstudio.memoria.data.entity.enums.Priority
 import com.weinstudio.memoria.ui.create.CreateButtonListener
 import com.weinstudio.memoria.ui.create.viewmodel.CreateViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -186,19 +188,20 @@ class CreateFragment : Fragment(), CreateButtonListener {
         }
 
         val problem = Problem(
-            id = null,
+            id = "${Calendar.getInstance().timeInMillis}",
             text = etTitle.text.toString(),
             priority = viewModel.priorityProp.value ?: Priority.DEFAULT,
             done = false,
-            created = Date().time,
-            updated = Date().time,
+            created = Calendar.getInstance().timeInMillis / 1000,
+            updated = Calendar.getInstance().timeInMillis / 1000,
             deadline = if (switchDeadline.isChecked && viewModel.deadlineText.value != null) {
-                viewModel.calendar.timeInMillis
+                viewModel.calendar.timeInMillis / 1000
             } else null
         )
 
-        lifecycleScope.launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             (context?.applicationContext as MemoriaApplication).repository.insertProblem(problem)
+            RetrofitBuilder.retrofitServices.insert(problem)
         }
 
         activity?.finish()

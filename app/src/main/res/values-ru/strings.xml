@@ -53,7 +53,7 @@
     <string name="notification_content">Посмотрите, что вы планировали</string>
     <string name="no_notifications">Отключены</string>
     <string name="theme">Тема</string>
-    <string name="notifications_upcoming">Если есть предстоящие</string>
+    <string name="notifications_upcoming">Если есть невыполненные</string>
     <string name="notifications_on_deadline">Если есть близкие по сроку</string>
     <string name="marked_as_done">помечено как сделанное</string>
     <string name="default_priority">Обычный</string>
