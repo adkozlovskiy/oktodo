@@ -2,7 +2,7 @@ package com.weinstudio.memoria.ui.create.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.weinstudio.memoria.data.entity.enums.Priority
+import com.weinstudio.memoria.data.entity.enums.Importance
 import java.util.*
 
 class CreateViewModel : ViewModel() {
@@ -14,9 +14,9 @@ class CreateViewModel : ViewModel() {
     val deadlineText by lazy { MutableLiveData<String>() }
 
     val priorityProp by lazy {
-        MutableLiveData<Priority>()
+        MutableLiveData<Importance>()
             .apply {
-                value = Priority.DEFAULT
+                value = Importance.BASIC
             }
     }
 

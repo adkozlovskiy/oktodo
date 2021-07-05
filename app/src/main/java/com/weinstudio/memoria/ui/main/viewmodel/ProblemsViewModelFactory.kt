@@ -2,9 +2,9 @@ package com.weinstudio.memoria.ui.main.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.weinstudio.memoria.data.repository.ProblemRepository
+import com.weinstudio.memoria.data.repository.ProblemsRepository
 
-class ProblemsViewModelFactory(private val repository: ProblemRepository) :
+class ProblemsViewModelFactory(private val repository: ProblemsRepository) :
     ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

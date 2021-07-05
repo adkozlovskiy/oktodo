@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import com.weinstudio.memoria.data.ListItem
-import com.weinstudio.memoria.data.entity.enums.Priority
+import com.weinstudio.memoria.data.entity.enums.Importance
 
 @Entity(tableName = "problems")
 data class Problem(
@@ -24,7 +24,7 @@ data class Problem(
 
     @ColumnInfo(name = "importance")
     @SerializedName(value = "importance")
-    val priority: Priority,
+    val importance: Importance,
 
     @ColumnInfo(name = "done")
     @SerializedName(value = "done")

@@ -6,31 +6,32 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-object RetrofitBuilder {
+object RetrofitClient {
 
     private const val BASE_URL = "https://d5dps3h13rv6902lp5c8.apigw.yandexcloud.net/"
 
-    private var retrofit: Retrofit? = null
-    private val client: OkHttpClient.Builder by lazy {
-        OkHttpClient().newBuilder().apply {
-            networkInterceptors().add(HeaderInterceptor())
-
-            // Timeouts
-            connectTimeout(1, TimeUnit.MINUTES)
-            readTimeout(1, TimeUnit.MINUTES)
-            writeTimeout(1, TimeUnit.MINUTES)
-        }
-    }
+    private var retrofitInstance: Retrofit? = null
 
     private fun getClient(): Retrofit {
-        if (retrofit == null) {
-            retrofit = Retrofit.Builder()
+        val clientBuilder = OkHttpClient().newBuilder()
+
+        // Interceptors
+        clientBuilder.networkInterceptors().add(HeaderInterceptor())
+
+        // Timeouts
+        clientBuilder.readTimeout(1, TimeUnit.MINUTES)
+        clientBuilder.writeTimeout(1, TimeUnit.MINUTES)
+        clientBuilder.connectTimeout(1, TimeUnit.MINUTES)
+
+        if (retrofitInstance == null) {
+            retrofitInstance = Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(client.build())
+                .client(clientBuilder.build())
                 .build()
         }
-        return retrofit!!
+
+        return retrofitInstance ?: throw IllegalStateException()
     }
 
     val retrofitServices: RetrofitServices

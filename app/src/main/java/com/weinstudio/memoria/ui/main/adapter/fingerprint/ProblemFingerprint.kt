@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.weinstudio.memoria.R
 import com.weinstudio.memoria.data.ListItem
 import com.weinstudio.memoria.data.entity.Problem
-import com.weinstudio.memoria.data.entity.enums.Priority
+import com.weinstudio.memoria.data.entity.enums.Importance
 import com.weinstudio.memoria.databinding.LayoutProblemBinding
 import com.weinstudio.memoria.ui.main.adapter.base.BaseFingerprint
 import com.weinstudio.memoria.ui.main.adapter.base.BaseViewHolder
@@ -87,16 +87,16 @@ class ProblemFingerprint(ctx: Context) : BaseFingerprint<LayoutProblemBinding, P
                     )
                 }
 
-                when (item.priority) {
-                    Priority.HIGH -> {
+                when (item.importance) {
+                    Importance.IMPORTANT -> {
                         ivPriority.setImageResource(R.drawable.ic_high_priority)
                     }
 
-                    Priority.LOW -> {
+                    Importance.LOW -> {
                         ivPriority.setImageResource(R.drawable.ic_low_priority)
                     }
 
-                    Priority.DEFAULT -> {
+                    Importance.BASIC -> {
                         ivPriority.visibility = View.INVISIBLE
                     }
                 }

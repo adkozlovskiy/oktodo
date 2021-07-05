@@ -69,7 +69,7 @@ class ProblemsFragment : Fragment(), EyeButtonListener {
 
             onItemDone = { pos ->
                 val problem = fingerprintAdapter.currentList[pos] as Problem
-                viewModel.changeStatus(problem, problem.done.not())
+                viewModel.changeDone(problem, problem.done.not())
 
                 // Because of more smooth anim.
                 if (isEyeEnabled()) {

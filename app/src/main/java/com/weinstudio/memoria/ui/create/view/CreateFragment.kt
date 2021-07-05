@@ -19,9 +19,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import com.weinstudio.memoria.MemoriaApplication
 import com.weinstudio.memoria.R
-import com.weinstudio.memoria.data.api.RetrofitBuilder
 import com.weinstudio.memoria.data.entity.Problem
-import com.weinstudio.memoria.data.entity.enums.Priority
+import com.weinstudio.memoria.data.entity.enums.Importance
 import com.weinstudio.memoria.ui.create.CreateButtonListener
 import com.weinstudio.memoria.ui.create.viewmodel.CreateViewModel
 import kotlinx.coroutines.Dispatchers
@@ -70,9 +69,9 @@ class CreateFragment : Fragment(), CreateButtonListener {
         cvPriority.setOnClickListener { choosePriority() }
         viewModel.priorityProp.observe(viewLifecycleOwner, {
             tvPriority.text = when (it) {
-                Priority.HIGH -> getString(R.string.high_priority)
-                Priority.DEFAULT -> getString(R.string.default_priority)
-                Priority.LOW -> getString(R.string.low_priority)
+                Importance.IMPORTANT -> getString(R.string.high_priority)
+                Importance.BASIC -> getString(R.string.default_priority)
+                Importance.LOW -> getString(R.string.low_priority)
                 else -> throw java.lang.IllegalStateException()
             }
         })
@@ -160,9 +159,9 @@ class CreateFragment : Fragment(), CreateButtonListener {
         )
 
         var checked = when (viewModel.priorityProp.value) {
-            Priority.LOW -> 0
-            Priority.DEFAULT -> 1
-            Priority.HIGH -> 2
+            Importance.LOW -> 0
+            Importance.BASIC -> 1
+            Importance.IMPORTANT -> 2
             else -> throw IllegalStateException()
         }
 
@@ -173,9 +172,9 @@ class CreateFragment : Fragment(), CreateButtonListener {
             }
             .setPositiveButton(getString(R.string.ok)) { _, _ ->
                 viewModel.priorityProp.value = when (checked) {
-                    0 -> Priority.LOW
-                    1 -> Priority.DEFAULT
-                    else -> Priority.HIGH
+                    0 -> Importance.LOW
+                    1 -> Importance.BASIC
+                    else -> Importance.IMPORTANT
                 }
             }
             .show()
@@ -190,7 +189,7 @@ class CreateFragment : Fragment(), CreateButtonListener {
         val problem = Problem(
             id = "${Calendar.getInstance().timeInMillis}",
             text = etTitle.text.toString(),
-            priority = viewModel.priorityProp.value ?: Priority.DEFAULT,
+            importance = viewModel.priorityProp.value ?: Importance.BASIC,
             done = false,
             created = Calendar.getInstance().timeInMillis / 1000,
             updated = Calendar.getInstance().timeInMillis / 1000,
@@ -201,7 +200,6 @@ class CreateFragment : Fragment(), CreateButtonListener {
 
         lifecycleScope.launch(Dispatchers.IO) {
             (context?.applicationContext as MemoriaApplication).repository.insertProblem(problem)
-            RetrofitBuilder.retrofitServices.insert(problem)
         }
 
         activity?.finish()

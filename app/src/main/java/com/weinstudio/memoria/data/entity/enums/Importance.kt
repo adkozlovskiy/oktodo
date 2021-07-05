@@ -2,15 +2,15 @@ package com.weinstudio.memoria.data.entity.enums
 
 import com.google.gson.annotations.SerializedName
 
-enum class Priority(val value: Int) {
+enum class Importance() {
 
     @SerializedName("low")
-    LOW(1),
+    LOW,
 
     @SerializedName("basic")
-    DEFAULT(2),
+    BASIC,
 
     @SerializedName("important")
-    HIGH(3)
+    IMPORTANT
 
 }
