@@ -1,4 +1,4 @@
-package com.weinstudio.memoria.ui.create
+package com.weinstudio.memoria.ui.edit
 
 import android.os.Bundle
 import android.view.Menu
@@ -7,13 +7,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.res.ResourcesCompat
 import com.weinstudio.memoria.R
-import com.weinstudio.memoria.ui.create.view.CreateFragment
+import com.weinstudio.memoria.data.entity.Problem
+import com.weinstudio.memoria.ui.edit.view.EditFragment
 
-class CreateActivity : AppCompatActivity() {
+class EditActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_create)
+        setContentView(R.layout.activity_edit)
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
 
@@ -25,9 +26,11 @@ class CreateActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
+        val problemStr: String? = intent.getStringExtra(Problem.PROBLEM_EXTRA_TAG)
+
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, CreateFragment.newInstance())
+                .replace(R.id.container, EditFragment.newInstance(problemStr))
                 .commitNow()
         }
     }
@@ -45,7 +48,7 @@ class CreateActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_create) {
             val listener = supportFragmentManager.findFragmentById(R.id.container)
-                    as CreateButtonListener
+                    as OkButtonListener
             listener.onButtonPressed()
             return true
         }

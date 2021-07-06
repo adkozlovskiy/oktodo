@@ -1,5 +1,6 @@
 package com.weinstudio.memoria.ui.main.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,10 +9,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.weinstudio.memoria.MemoriaApplication
+import com.google.gson.Gson
+import com.weinstudio.memoria.MemoriaApp
 import com.weinstudio.memoria.R
 import com.weinstudio.memoria.data.entity.Problem
 import com.weinstudio.memoria.databinding.FragmentMainBinding
+import com.weinstudio.memoria.ui.edit.EditActivity
 import com.weinstudio.memoria.ui.main.EyeButtonListener
 import com.weinstudio.memoria.ui.main.MainActivity
 import com.weinstudio.memoria.ui.main.adapter.FingerprintAdapter
@@ -32,7 +35,7 @@ class ProblemsFragment : Fragment(), EyeButtonListener {
     }
 
     private val viewModel: ProblemsViewModel by viewModels {
-        ProblemsViewModelFactory((context?.applicationContext as MemoriaApplication).repository)
+        ProblemsViewModelFactory((context?.applicationContext as MemoriaApp).repository)
     }
 
     private val subtitleTemplate by lazy {
@@ -96,6 +99,12 @@ class ProblemsFragment : Fragment(), EyeButtonListener {
             })
     }
 
+    private fun onProblemClick(problem: Problem) {
+        val intent = Intent(context, EditActivity::class.java)
+        intent.putExtra(Problem.PROBLEM_EXTRA_TAG, Gson().toJson(problem))
+        context?.startActivity(intent)
+    }
+
     private fun isEyeEnabled(): Boolean =
         (activity as MainActivity).viewModel.isEyeEnabled.value ?: false
 
@@ -109,7 +118,7 @@ class ProblemsFragment : Fragment(), EyeButtonListener {
         viewModel.setFilterFlag(enabled.not())
     }
 
-    private fun getFingerprints() = listOf(ProblemFingerprint(requireContext()))
+    private fun getFingerprints() = listOf(ProblemFingerprint(requireContext(), ::onProblemClick))
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -11,7 +11,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import com.weinstudio.memoria.MemoriaApplication
+import com.weinstudio.memoria.MemoriaApp
 import com.weinstudio.memoria.R
 import com.weinstudio.memoria.ui.splash.SplashActivity
 import com.weinstudio.memoria.util.WorkerUtil
@@ -48,7 +48,7 @@ class NotificationWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, p
         val text = context.getString(R.string.notification_content)
 
         val countUnfulfilled =
-            (applicationContext as MemoriaApplication).repository.getCount(false)
+            (applicationContext as MemoriaApp).repository.getCount(false)
 
         if (countUnfulfilled < 1) {
             return

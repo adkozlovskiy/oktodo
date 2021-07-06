@@ -16,7 +16,8 @@ import com.weinstudio.memoria.ui.main.adapter.base.BaseViewHolder
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ProblemFingerprint(ctx: Context) : BaseFingerprint<LayoutProblemBinding, Problem> {
+class ProblemFingerprint(ctx: Context, val onProblemClick: (p: Problem) -> Unit) :
+    BaseFingerprint<LayoutProblemBinding, Problem> {
 
     val sdf = SimpleDateFormat(" dd MMMM yyyy HH:mm", Locale.getDefault())
 
@@ -55,6 +56,12 @@ class ProblemFingerprint(ctx: Context) : BaseFingerprint<LayoutProblemBinding, P
         private val ivPriority = binding.ivPriority
 
         override fun onBind(item: Problem) {
+            binding.root.setOnClickListener {
+                if (!item.done) {
+                    onProblemClick.invoke(item)
+                }
+            }
+
             binding.tvTitle.text = item.text
 
             if (!tvDeadline.isVisible) {

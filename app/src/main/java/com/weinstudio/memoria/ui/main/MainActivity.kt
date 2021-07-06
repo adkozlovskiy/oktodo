@@ -11,7 +11,7 @@ import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.weinstudio.memoria.R
-import com.weinstudio.memoria.ui.create.CreateActivity
+import com.weinstudio.memoria.ui.edit.EditActivity
 import com.weinstudio.memoria.ui.main.view.BottomSheetFragment
 import com.weinstudio.memoria.ui.main.view.ProblemsFragment
 import com.weinstudio.memoria.ui.settings.SettingsActivity
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
         val fabCreate: FloatingActionButton = findViewById(R.id.fab_create)
         fabCreate.setOnClickListener {
-            val intent = Intent(this, CreateActivity::class.java)
+            val intent = Intent(this, EditActivity::class.java)
             startActivity(intent)
         }
 

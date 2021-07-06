@@ -12,30 +12,35 @@ data class Problem(
 
     @PrimaryKey
     @SerializedName(value = "id")
-    val id: String,
+    var id: String,
 
     @ColumnInfo(name = "text")
     @SerializedName(value = "text")
-    val text: String,
+    var text: String?,
 
     @ColumnInfo(name = "deadline")
     @SerializedName(value = "deadline")
-    val deadline: Long?,
+    var deadline: Long?,
 
     @ColumnInfo(name = "importance")
     @SerializedName(value = "importance")
-    val importance: Importance,
+    var importance: Importance,
 
     @ColumnInfo(name = "done")
     @SerializedName(value = "done")
-    val done: Boolean,
+    var done: Boolean,
 
     @ColumnInfo(name = "created")
     @SerializedName("created_at")
-    val created: Long?,
+    var created: Long?,
 
     @ColumnInfo(name = "updated")
     @SerializedName("updated_at")
-    val updated: Long?
+    var updated: Long?
 
-) : ListItem
+) : ListItem {
+
+    companion object {
+        const val PROBLEM_EXTRA_TAG = "problem_extra"
+    }
+}

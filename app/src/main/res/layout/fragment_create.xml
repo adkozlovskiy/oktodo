@@ -7,7 +7,7 @@
     android:background="@color/background"
     android:clipToPadding="false"
     android:paddingBottom="40dp"
-    tools:context=".ui.create.CreateActivity">
+    tools:context=".ui.edit.EditActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

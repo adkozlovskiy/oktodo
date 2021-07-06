@@ -5,7 +5,7 @@ import com.weinstudio.memoria.data.api.RetrofitClient
 import com.weinstudio.memoria.data.db.ProblemsDatabase
 import com.weinstudio.memoria.data.repository.ProblemsRepository
 
-class MemoriaApplication : Application() {
+class MemoriaApp : Application() {
 
     private val remoteSource = RetrofitClient.retrofitServices
     private val localSource by lazy { ProblemsDatabase.getDatabase(this) }
