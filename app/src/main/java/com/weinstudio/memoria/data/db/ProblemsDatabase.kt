@@ -17,6 +17,8 @@ abstract class ProblemsDatabase : RoomDatabase() {
 
     companion object {
 
+        private const val DATABASE_NAME = "memoria_db"
+
         @Volatile
         private var instance: ProblemsDatabase? = null
 
@@ -24,7 +26,7 @@ abstract class ProblemsDatabase : RoomDatabase() {
             return instance ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    ProblemsDatabase::class.java, "database"
+                    ProblemsDatabase::class.java, DATABASE_NAME
 
                 ).allowMainThreadQueries().build()
 

@@ -1,6 +1,5 @@
 package com.weinstudio.memoria.data.api.interceptor
 
-import android.util.Log
 import okhttp3.Interceptor
 import okhttp3.Response
 
@@ -13,8 +12,6 @@ class HeaderInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
 
-
-        Log.d("TAG", "intercept: ${originalRequest.body()}")
         val newRequest = originalRequest.newBuilder()
             .header("Authorization", token)
             .build()
