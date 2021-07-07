@@ -5,10 +5,12 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
+import com.weinstudio.memoria.service.NotificationWorker
 import com.weinstudio.memoria.ui.main.MainActivity
 import com.weinstudio.memoria.util.WorkerUtil
 
 class SplashActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -24,7 +26,7 @@ class SplashActivity : AppCompatActivity() {
         }
 
         // Periodically notifications.
-        val isEnabled = settings.getBoolean(WorkerUtil.PREFERENCES_KEY, false)
+        val isEnabled = settings.getBoolean(NotificationWorker.PREFERENCES_KEY, false)
         if (isEnabled) {
             WorkerUtil.enqueueNotificationWork(this)
         }

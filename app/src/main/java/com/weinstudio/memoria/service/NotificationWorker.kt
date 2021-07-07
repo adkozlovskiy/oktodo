@@ -18,11 +18,23 @@ import com.weinstudio.memoria.util.WorkerUtil
 
 class NotificationWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, params) {
 
+    companion object {
+
+        const val WORK_TAG = "daily_work"
+
+        const val NOTIFICATION_ID = 10002
+        const val CHANNEL_ID = "daily_notifications"
+        const val PREFERENCES_KEY = "notify_upcoming"
+
+        const val NOTIFY_HOUR = 10
+        const val NOTIFY_MINUTE = 0
+    }
+
     private val context = ctx
 
     override fun doWork(): Result {
         val settings = getDefaultSharedPreferences(context)
-        val isEnabled = settings.getBoolean(WorkerUtil.PREFERENCES_KEY, true)
+        val isEnabled = settings.getBoolean(PREFERENCES_KEY, true)
 
         if (isEnabled) {
             showNotification()
@@ -54,7 +66,7 @@ class NotificationWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, p
             return
         }
 
-        val builder = NotificationCompat.Builder(context, WorkerUtil.CHANNEL_ID)
+        val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_notifications)
             .setContentTitle("$title — $countUnfulfilled")
             .setContentText(text)
@@ -63,7 +75,7 @@ class NotificationWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, p
             .setAutoCancel(true)
 
         with(NotificationManagerCompat.from(context)) {
-            notify(WorkerUtil.NOTIFICATION_ID, builder.build())
+            notify(NOTIFICATION_ID, builder.build())
         }
     }
 
@@ -73,7 +85,7 @@ class NotificationWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, p
             val desc = context.getString(R.string.daily_notifications_desc)
 
             val importance = NotificationManager.IMPORTANCE_HIGH
-            val channel = NotificationChannel(WorkerUtil.CHANNEL_ID, name, importance)
+            val channel = NotificationChannel(CHANNEL_ID, name, importance)
                 .apply {
                     description = desc
                 }

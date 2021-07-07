@@ -1,8 +1,12 @@
 package com.weinstudio.memoria.data.repository
 
+import android.content.Context
+import com.google.gson.Gson
 import com.weinstudio.memoria.data.api.RetrofitServices
 import com.weinstudio.memoria.data.db.dao.ProblemsDao
 import com.weinstudio.memoria.data.entity.Problem
+import com.weinstudio.memoria.service.QueryWorker
+import com.weinstudio.memoria.util.WorkerUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -10,15 +14,12 @@ import kotlinx.coroutines.launch
 
 class ProblemsRepository(
     private val remoteSource: RetrofitServices,
-    private val localSource: ProblemsDao
+    private val localSource: ProblemsDao,
+    private val context: Context
 
 ) {
 
     fun getProblems(needFilter: Boolean): Flow<List<Problem>> {
-        // Getting fresh data from remote
-        refreshProblems()
-
-        // Return saved data
         return localSource.getAllFlow(needFilter)
     }
 
@@ -33,22 +34,40 @@ class ProblemsRepository(
     fun insertProblem(problem: Problem) = CoroutineScope(Dispatchers.IO)
         .launch {
             localSource.insert(problem)
-            remoteSource.insert(problem)
+
+            val problemSerialized = Gson().toJson(problem)
+            WorkerUtil.enqueueQueryWork(
+                context = context,
+                type = QueryWorker.QUERY_TYPE_INSERT,
+                body = problemSerialized
+            )
         }
 
     fun deleteProblem(problem: Problem) = CoroutineScope(Dispatchers.IO)
         .launch {
             localSource.delete(problem)
-            remoteSource.delete(problem.id)
+
+            val problemSerialized = Gson().toJson(problem)
+            WorkerUtil.enqueueQueryWork(
+                context = context,
+                type = QueryWorker.QUERY_TYPE_DELETE,
+                body = problemSerialized
+            )
         }
 
     fun updateProblem(problem: Problem) = CoroutineScope(Dispatchers.IO)
         .launch {
             localSource.update(problem)
-            remoteSource.update(problem.id, problem)
+
+            val problemSerialized = Gson().toJson(problem)
+            WorkerUtil.enqueueQueryWork(
+                context = context,
+                type = QueryWorker.QUERY_TYPE_UPDATE,
+                body = problemSerialized
+            )
         }
 
-    private fun refreshProblems() = CoroutineScope(Dispatchers.IO)
+    fun refreshProblems() = CoroutineScope(Dispatchers.IO)
         .launch {
             val remoteProblems = remoteSource.getAll()
             val localProblems = localSource.getAll()

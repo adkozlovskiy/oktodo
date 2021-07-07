@@ -11,6 +11,6 @@ class MemoriaApp : Application() {
     private val localSource by lazy { ProblemsDatabase.getDatabase(this) }
 
     val repository by lazy {
-        ProblemsRepository(remoteSource, localSource.problemsDao())
+        ProblemsRepository(remoteSource, localSource.problemsDao(), this)
     }
 }

@@ -32,6 +32,10 @@ class ProblemsViewModel(
         repository.deleteProblem(problem)
     }
 
+    fun refreshProblems() {
+        repository.refreshProblems()
+    }
+
     @ExperimentalCoroutinesApi
     fun setFilterFlag(flag: Boolean) {
         filterFlow.value = flag
