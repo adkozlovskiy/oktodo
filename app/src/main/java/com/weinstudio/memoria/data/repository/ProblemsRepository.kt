@@ -19,7 +19,7 @@ class ProblemsRepository(
         refreshProblems()
 
         // Return saved data
-        return localSource.getAll(needFilter)
+        return localSource.getAllFlow(needFilter)
     }
 
     fun getCountFlow(done: Boolean): Flow<Int> {
@@ -50,7 +50,30 @@ class ProblemsRepository(
 
     private fun refreshProblems() = CoroutineScope(Dispatchers.IO)
         .launch {
-            val response = remoteSource.getAll()
-            localSource.insertAll(response)
+            val remoteProblems = remoteSource.getAll()
+            val localProblems = localSource.getAll()
+
+            for (remoteProblem in remoteProblems) {
+                val localProblem = localProblems.find { it.id == remoteProblem.id }
+
+                // If the server has added
+                if (localProblem == null) {
+                    localSource.insert(remoteProblem)
+
+                    // If the server has updated
+                } else if (remoteProblem.updated > localProblem.updated) {
+                    localSource.update(remoteProblem)
+
+                }
+            }
+
+            for (localProblem in localProblems) {
+                val remoteProblem = remoteProblems.find { it.id == localProblem.id }
+
+                // If the server has deleted
+                if (remoteProblem == null) {
+                    localSource.delete(localProblem)
+                }
+            }
         }
 }

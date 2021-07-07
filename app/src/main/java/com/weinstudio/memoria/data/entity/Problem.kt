@@ -32,11 +32,11 @@ data class Problem(
 
     @ColumnInfo(name = "created")
     @SerializedName("created_at")
-    var created: Long?,
+    var created: Long,
 
     @ColumnInfo(name = "updated")
     @SerializedName("updated_at")
-    var updated: Long?
+    var updated: Long
 
 ) : ListItem {
 

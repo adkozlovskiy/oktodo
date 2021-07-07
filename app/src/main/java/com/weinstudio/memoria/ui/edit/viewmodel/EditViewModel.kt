@@ -28,8 +28,8 @@ class EditViewModel : ViewModel() {
                 deadline = null,
                 importance = Importance.BASIC,
                 done = false,
-                created = null,
-                updated = null
+                created = -1,
+                updated = -1
             )
         }
     }

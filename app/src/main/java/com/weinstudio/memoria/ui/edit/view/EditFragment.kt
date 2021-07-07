@@ -208,7 +208,7 @@ class EditFragment : Fragment(), OkButtonListener {
         }
 
         val problem = viewModel.problemData.value!!.copy()
-        val problemCreate = problem.created == null
+        val problemCreate = problem.created == -1L
 
         val sysCalendar = Calendar.getInstance()
 

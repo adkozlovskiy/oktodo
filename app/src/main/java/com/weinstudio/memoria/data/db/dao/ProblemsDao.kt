@@ -16,7 +16,10 @@ interface ProblemsDao {
                 "WHERE (:needFilter = 1 AND done = 0) OR :needFilter = 0 " +
                 "ORDER BY done ASC, deadline IS NULL, deadline ASC, importance DESC"
     )
-    fun getAll(needFilter: Boolean): Flow<List<Problem>>
+    fun getAllFlow(needFilter: Boolean): Flow<List<Problem>>
+
+    @Query("SELECT * FROM problems ")
+    fun getAll(): List<Problem>
 
     @Query(
         "SELECT COUNT(*) " +
@@ -31,9 +34,6 @@ interface ProblemsDao {
                 "WHERE done = :done"
     )
     fun getCount(done: Boolean): Int
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(problems: List<Problem>)
 
     @Insert
     suspend fun insert(problem: Problem)

@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 class SyncRequest(
 
     @SerializedName("deleted")
-    val deleted: IntArray,
+    val deleted: List<String>,
 
     @SerializedName("other")
     val other: List<Problem>

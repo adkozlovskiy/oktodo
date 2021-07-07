@@ -12,6 +12,7 @@ class QueryWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(ctx,
     companion object {
 
         const val QUERY_TYPE_EXTRA_TAG = "query_type"
+        const val QUERY_BODY_EXTRA_TAG = "query_body"
 
         const val QUERY_TYPE_INSERT = 0
         const val QUERY_TYPE_UPDATE = 1
@@ -22,22 +23,27 @@ class QueryWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(ctx,
     private val remoteSource = RetrofitClient.retrofitServices
 
     override suspend fun doWork(): Result {
+
+        // Getting query type nad body (serialized problem)
         val queryType = inputData.getInt(QUERY_TYPE_EXTRA_TAG, QUERY_TYPE_INSERT)
-        val bodyString = inputData.getString(Problem.PROBLEM_EXTRA_TAG)
+        val bodyString = inputData.getString(QUERY_BODY_EXTRA_TAG)
 
         if (bodyString.isNullOrEmpty()) {
             return Result.failure()
         }
 
-        val body = Gson().fromJson(bodyString, Problem::class.java)
+        // Deserialize problem
+        val problem = Gson().fromJson(bodyString, Problem::class.java)
 
-        when (queryType) {
-            QUERY_TYPE_INSERT -> insertProblem(body)
-            QUERY_TYPE_UPDATE -> updateProblem(body)
-            QUERY_TYPE_DELETE -> deleteProblem(body)
+        return when (queryType) {
+            QUERY_TYPE_INSERT -> insertProblem(problem)
+
+            QUERY_TYPE_UPDATE -> updateProblem(problem)
+
+            QUERY_TYPE_DELETE -> deleteProblem(problem)
+
+            else -> Result.failure()
         }
-
-        return Result.success()
     }
 
     private suspend fun insertProblem(problem: Problem): Result {
