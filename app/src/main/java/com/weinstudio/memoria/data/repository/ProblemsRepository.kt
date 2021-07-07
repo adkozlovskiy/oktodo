@@ -7,10 +7,7 @@ import com.weinstudio.memoria.data.db.dao.ProblemsDao
 import com.weinstudio.memoria.data.entity.Problem
 import com.weinstudio.memoria.service.QueryWorker
 import com.weinstudio.memoria.util.WorkerUtil
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 
 class ProblemsRepository(
     private val remoteSource: RetrofitServices,
@@ -31,68 +28,53 @@ class ProblemsRepository(
         return localSource.getCount(done)
     }
 
-    fun insertProblem(problem: Problem) = CoroutineScope(Dispatchers.IO)
-        .launch {
-            localSource.insert(problem)
+    suspend fun insertProblem(problem: Problem) {
+        localSource.insert(problem)
 
-            val problemSerialized = Gson().toJson(problem)
-            WorkerUtil.enqueueQueryWork(
-                context = context,
-                type = QueryWorker.QUERY_TYPE_INSERT,
-                body = problemSerialized
-            )
-        }
+        val body = Gson().toJson(problem)
+        WorkerUtil.enqueueQueryWork(context, QueryWorker.QUERY_TYPE_INSERT, body)
+    }
 
-    fun deleteProblem(problem: Problem) = CoroutineScope(Dispatchers.IO)
-        .launch {
-            localSource.delete(problem)
+    suspend fun deleteProblem(problem: Problem) {
+        localSource.delete(problem)
 
-            val problemSerialized = Gson().toJson(problem)
-            WorkerUtil.enqueueQueryWork(
-                context = context,
-                type = QueryWorker.QUERY_TYPE_DELETE,
-                body = problemSerialized
-            )
-        }
+        val body = Gson().toJson(problem)
+        WorkerUtil.enqueueQueryWork(context, QueryWorker.QUERY_TYPE_DELETE, body)
+    }
 
-    fun updateProblem(problem: Problem) = CoroutineScope(Dispatchers.IO)
-        .launch {
-            localSource.update(problem)
+    suspend fun updateProblem(problem: Problem) {
+        localSource.update(problem)
 
-            val problemSerialized = Gson().toJson(problem)
-            WorkerUtil.enqueueQueryWork(
-                context = context,
-                type = QueryWorker.QUERY_TYPE_UPDATE,
-                body = problemSerialized
-            )
-        }
+        val body = Gson().toJson(problem)
+        WorkerUtil.enqueueQueryWork(context, QueryWorker.QUERY_TYPE_UPDATE, body)
+    }
 
-    fun refreshProblems() = CoroutineScope(Dispatchers.IO)
-        .launch {
-            val remoteProblems = remoteSource.getAll()
-            val localProblems = localSource.getAll()
+    suspend fun refreshProblems() {
 
-            for (remoteProblem in remoteProblems) {
-                val localProblem = localProblems.find { it.id == remoteProblem.id }
+        val remoteProblems = remoteSource.getAll()
+        val localProblems = localSource.getAll()
 
-                // If the server has added
-                if (localProblem == null) {
-                    localSource.insert(remoteProblem)
+        for (remoteProblem in remoteProblems) {
+            val localProblem = localProblems.find { it.id == remoteProblem.id }
 
-                    // If the server has updated
-                } else if (remoteProblem.updated > localProblem.updated) {
-                    localSource.update(remoteProblem)
+            // If the server has added
+            if (localProblem == null) {
+                localSource.insert(remoteProblem)
 
-                }
-            }
+                // If the server has updated
+            } else if (remoteProblem.updated > localProblem.updated) {
+                localSource.update(remoteProblem)
 
-            for (localProblem in localProblems) {
-                val remoteProblem = remoteProblems.find { it.id == localProblem.id }
-
-                // If the server has deleted
-                if (remoteProblem == null) {
-                    localSource.delete(localProblem)
-                }
             }
         }
+
+        for (localProblem in localProblems) {
+            val remoteProblem = remoteProblems.find { it.id == localProblem.id }
+
+            // If the server has deleted
+            if (remoteProblem == null) {
+                localSource.delete(localProblem)
+            }
+        }
+    }
 }

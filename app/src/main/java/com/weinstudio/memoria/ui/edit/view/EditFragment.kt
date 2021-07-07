@@ -4,14 +4,12 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
 import android.text.format.DateUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
 import com.weinstudio.memoria.MemoriaApp
@@ -21,14 +19,13 @@ import com.weinstudio.memoria.data.entity.enums.Importance
 import com.weinstudio.memoria.databinding.FragmentCreateBinding
 import com.weinstudio.memoria.ui.edit.OkButtonListener
 import com.weinstudio.memoria.ui.edit.viewmodel.EditViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.weinstudio.memoria.ui.edit.viewmodel.EditViewModelFactory
 import java.util.*
 
 class EditFragment : Fragment(), OkButtonListener {
 
-    private val viewModel: EditViewModel by lazy {
-        ViewModelProvider(this).get(EditViewModel::class.java)
+    private val viewModel: EditViewModel by viewModels {
+        EditViewModelFactory((context?.applicationContext as MemoriaApp).repository)
     }
 
     private var _binding: FragmentCreateBinding? = null
@@ -226,16 +223,11 @@ class EditFragment : Fragment(), OkButtonListener {
         problem.text = binding.etTitle.text.toString()
         problem.updated = timeInMillis
 
-        lifecycleScope.launch(Dispatchers.IO) {
-            val repository = (context?.applicationContext as MemoriaApp).repository
-            if (problemCreate) {
-                repository.insertProblem(problem)
-                Log.d("TAG", "будет создано: $problem")
+        if (problemCreate) {
+            viewModel.insertProblem(problem)
 
-            } else {
-                repository.updateProblem(problem)
-                Log.d("TAG", "будет обновлено: $problem")
-            }
+        } else {
+            viewModel.updateProblem(problem)
         }
 
         activity?.finish()

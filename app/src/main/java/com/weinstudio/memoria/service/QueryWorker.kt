@@ -1,7 +1,6 @@
 package com.weinstudio.memoria.service
 
 import android.content.Context
-import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.google.gson.Gson
@@ -51,7 +50,6 @@ class QueryWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(ctx,
 
     private suspend fun insertProblem(problem: Problem): Result {
         remoteSource.insert(problem)
-        // TODO: 07.07.2021 Errors handling
         return Result.success()
     }
 

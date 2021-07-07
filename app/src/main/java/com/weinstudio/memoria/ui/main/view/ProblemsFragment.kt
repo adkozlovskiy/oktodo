@@ -2,6 +2,7 @@ package com.weinstudio.memoria.ui.main.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +14,7 @@ import com.google.gson.Gson
 import com.weinstudio.memoria.MemoriaApp
 import com.weinstudio.memoria.R
 import com.weinstudio.memoria.data.entity.Problem
-import com.weinstudio.memoria.databinding.FragmentMainBinding
+import com.weinstudio.memoria.databinding.FragmentProblemsBinding
 import com.weinstudio.memoria.ui.edit.EditActivity
 import com.weinstudio.memoria.ui.main.EyeButtonListener
 import com.weinstudio.memoria.ui.main.MainActivity
@@ -26,7 +27,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 class ProblemsFragment : Fragment(), EyeButtonListener {
 
-    private var _binding: FragmentMainBinding? = null
+    private var _binding: FragmentProblemsBinding? = null
 
     private val binding get() = _binding!!
 
@@ -50,7 +51,7 @@ class ProblemsFragment : Fragment(), EyeButtonListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMainBinding.inflate(inflater, container, false)
+        _binding = FragmentProblemsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -74,7 +75,7 @@ class ProblemsFragment : Fragment(), EyeButtonListener {
 
             onItemDone = { pos ->
                 val problem = fingerprintAdapter.currentList[pos] as Problem
-                viewModel.changeDone(problem, problem.done.not())
+                viewModel.changeDoneFlag(problem, problem.done.not())
 
                 // Because of more smooth anim.
                 if (isEyeEnabled()) {

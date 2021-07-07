@@ -2,11 +2,17 @@ package com.weinstudio.memoria.ui.edit.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.weinstudio.memoria.data.entity.Problem
 import com.weinstudio.memoria.data.entity.enums.Importance
+import com.weinstudio.memoria.data.repository.ProblemsRepository
+import kotlinx.coroutines.launch
 import java.util.*
 
-class EditViewModel : ViewModel() {
+class EditViewModel(
+    private val repository: ProblemsRepository
+
+) : ViewModel() {
 
     // Calendar instance
     val deadlineCalendar: Calendar by lazy {
@@ -68,4 +74,14 @@ class EditViewModel : ViewModel() {
 
         problemData.value = newProblem
     }
+
+    fun insertProblem(problem: Problem) = viewModelScope
+        .launch {
+            repository.insertProblem(problem)
+        }
+
+    fun updateProblem(problem: Problem) = viewModelScope
+        .launch {
+            repository.updateProblem(problem)
+        }
 }
