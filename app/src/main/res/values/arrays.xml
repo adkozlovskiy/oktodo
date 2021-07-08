@@ -9,4 +9,17 @@
         <item>light</item>
         <item>dark</item>
     </string-array>
+
+    <!-- Sync -->
+    <string-array name="sync_entries">
+        <item>@string/sync_six</item>
+        <item>@string/sync_eight</item>
+        <item>@string/sync_twelve</item>
+    </string-array>
+
+    <string-array name="sync_values">
+        <item>six</item>
+        <item>eight</item>
+        <item>twelve</item>
+    </string-array>
 </resources>

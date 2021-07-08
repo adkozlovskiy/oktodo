@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.work.*
 import com.weinstudio.memoria.service.NotificationWorker
 import com.weinstudio.memoria.service.QueryWorker
+import com.weinstudio.memoria.service.SyncWorker
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -26,6 +27,9 @@ object WorkerUtil {
         return dueDate.timeInMillis - currentDate.timeInMillis
     }
 
+    /**
+     * @see NotificationWorker
+     */
     fun enqueueNotificationWork(context: Context) {
         val timeDiff = getNotificationInitialDelay()
 
@@ -39,6 +43,25 @@ object WorkerUtil {
                 NotificationWorker.WORK_TAG,
                 ExistingWorkPolicy.REPLACE,
                 dailyWorkRequest
+            )
+    }
+
+    fun enqueueSyncWork(context: Context) {
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+
+        val syncWorkRequest = OneTimeWorkRequestBuilder<SyncWorker>()
+            .setInitialDelay(SyncWorker.WORK_DELAY_HOURS, TimeUnit.HOURS)
+            .setConstraints(constraints)
+            .addTag(SyncWorker.WORK_TAG)
+            .build()
+
+        WorkManager.getInstance(context)
+            .enqueueUniqueWork(
+                SyncWorker.WORK_TAG,
+                ExistingWorkPolicy.KEEP,
+                syncWorkRequest
             )
     }
 

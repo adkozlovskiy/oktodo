@@ -40,9 +40,10 @@ class NotificationWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, p
             showNotification()
 
             WorkerUtil.enqueueNotificationWork(context)
+            return Result.success()
         }
 
-        return Result.success()
+        return Result.failure()
     }
 
     private fun showNotification() {

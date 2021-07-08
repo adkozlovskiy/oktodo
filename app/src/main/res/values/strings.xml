@@ -64,4 +64,13 @@
     <string name="eye_disabled">Completed tasks will be hidden.</string>
     <string name="eye_enabled">Completed tasks will be shown.</string>
     <string name="cd_priority">Priority of your problem.</string>
+    <string name="sync_title">We are now syncing your problems</string>
+    <string name="sync_text">It does not take much time</string>
+    <string name="sync_channel_name">Sync notification</string>
+    <string name="synchronization">Synchronization</string>
+    <string name="sync_in_foreground">Periodic synchronization</string>
+    <string name="sync_period">Sync period</string>
+    <string name="sync_six">Every 6 hours</string>
+    <string name="sync_eight">Every 8 hours</string>
+    <string name="sync_twelve">Every 12 hours</string>
 </resources>

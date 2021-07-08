@@ -1,4 +1,5 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory
         app:iconSpaceReserved="false"
@@ -29,6 +30,28 @@
             app:iconSpaceReserved="false"
             app:key="notify_close_deadline"
             app:title="@string/notifications_on_deadline" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:title="@string/synchronization">
+
+        <SwitchPreferenceCompat
+            app:defaultValue="true"
+            app:iconSpaceReserved="false"
+            app:key="periodically_sync"
+            app:title="@string/sync_in_foreground" />
+
+        <ListPreference
+            android:dependency="periodically_sync"
+            app:defaultValue="eight"
+            app:entries="@array/sync_entries"
+            app:entryValues="@array/sync_values"
+            app:iconSpaceReserved="false"
+            app:key="sync_period"
+            app:title="@string/sync_period"
+            app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
 </PreferenceScreen>

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import com.weinstudio.memoria.service.NotificationWorker
+import com.weinstudio.memoria.service.SyncWorker
 import com.weinstudio.memoria.ui.main.MainActivity
 import com.weinstudio.memoria.util.WorkerUtil
 
@@ -16,7 +17,7 @@ class SplashActivity : AppCompatActivity() {
 
         val settings = PreferenceManager.getDefaultSharedPreferences(this)
 
-        // Settings application theme.
+        // Settings application theme
         val theme = settings.getString("theme", "light")
         if (theme == "light") {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
@@ -25,10 +26,19 @@ class SplashActivity : AppCompatActivity() {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         }
 
-        // Periodically notifications.
-        val isEnabled = settings.getBoolean(NotificationWorker.PREFERENCES_KEY, false)
-        if (isEnabled) {
+        // Daily notifications
+        val dailyNotificationsEnabled =
+            settings.getBoolean(NotificationWorker.PREFERENCES_KEY, true)
+
+        if (dailyNotificationsEnabled) {
             WorkerUtil.enqueueNotificationWork(this)
+        }
+
+        // Periodically sync
+        val periodicallySyncEnabled = settings.getBoolean(SyncWorker.PREFERENCES_KEY, true)
+
+        if (periodicallySyncEnabled) {
+            WorkerUtil.enqueueSyncWork(this)
         }
 
         val intent = Intent(this, MainActivity::class.java)

@@ -60,4 +60,13 @@
     <string name="eye_disabled">Выполненные задачи будут скрыты.</string>
     <string name="eye_enabled">Выполненные задачи будут показаны.</string>
     <string name="cd_priority">Приоритет вашей задачи.</string>
+    <string name="sync_title">Сейчас мы синхронизируем ваши проблемы</string>
+    <string name="sync_text">Это не займет много времени</string>
+    <string name="synchronization">Синхронизация</string>
+    <string name="sync_in_foreground">Периодическая синхронизация</string>
+    <string name="sync_channel_name">Уведомление о синхронизации</string>
+    <string name="sync_period">Период синхронизации</string>
+    <string name="sync_six">Каждые 6 часов</string>
+    <string name="sync_eight">Каждые 8 часов</string>
+    <string name="sync_twelve">Каждые 12 часов</string>
 </resources>
