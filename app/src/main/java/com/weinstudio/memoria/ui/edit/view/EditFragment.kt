@@ -205,25 +205,14 @@ class EditFragment : Fragment(), OkButtonListener {
         }
 
         val problem = viewModel.problemData.value!!.copy()
-        val problemCreate = problem.created == -1L
-
-        val sysCalendar = Calendar.getInstance()
-
-        val timeInMillis = sysCalendar.timeInMillis / 1000
-
-        if (problemCreate) {
-            problem.id = "${sysCalendar.timeInMillis}"
-            problem.created = timeInMillis
-        }
 
         if (!binding.switchDeadline.isChecked) {
             problem.deadline = null
         }
 
         problem.text = binding.etTitle.text.toString()
-        problem.updated = timeInMillis
 
-        if (problemCreate) {
+        if (problem.created == -1L) {
             viewModel.insertProblem(problem)
 
         } else {

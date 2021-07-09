@@ -8,6 +8,7 @@ import com.weinstudio.memoria.data.entity.Problem
 import com.weinstudio.memoria.service.QueryWorker
 import com.weinstudio.memoria.util.WorkerUtil
 import kotlinx.coroutines.flow.Flow
+import java.util.*
 
 class ProblemsRepository(
     private val remoteSource: RetrofitServices,
@@ -31,6 +32,12 @@ class ProblemsRepository(
     }
 
     suspend fun insertProblem(problem: Problem) {
+        with(problem) {
+            id = "${Calendar.getInstance().timeInMillis}"
+            created = Calendar.getInstance().timeInMillis / 1000
+            updated = Calendar.getInstance().timeInMillis / 1000
+        }
+
         localSource.insert(problem)
 
         val body = gson.toJson(problem)
@@ -45,6 +52,10 @@ class ProblemsRepository(
     }
 
     suspend fun updateProblem(problem: Problem) {
+        with(problem) {
+            updated = Calendar.getInstance().timeInMillis / 1000
+        }
+
         localSource.update(problem)
 
         val body = gson.toJson(problem)
