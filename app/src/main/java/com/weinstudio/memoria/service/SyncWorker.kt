@@ -3,16 +3,18 @@ package com.weinstudio.memoria.service
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.preference.PreferenceManager
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
-import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import com.weinstudio.memoria.MemoriaApp
 import com.weinstudio.memoria.R
+import com.weinstudio.memoria.ui.splash.SplashActivity
 import com.weinstudio.memoria.util.WorkerUtil
 
 class SyncWorker(private val context: Context, params: WorkerParameters) :
@@ -36,6 +38,7 @@ class SyncWorker(private val context: Context, params: WorkerParameters) :
         val isEnabled = settings.getBoolean(PREFERENCES_KEY, true)
 
         if (isEnabled) {
+            createNotificationChannel()
             setForeground(ForegroundInfo(NOTIFICATION_ID, getNotification()))
 
             repository.refreshProblems()
@@ -47,17 +50,20 @@ class SyncWorker(private val context: Context, params: WorkerParameters) :
     }
 
     private fun getNotification(): Notification {
-        createNotificationChannel()
-
-        val cancelIntent = WorkManager.getInstance(context)
-            .createCancelPendingIntent(id)
+        val pendingIntent: PendingIntent =
+            Intent(context, SplashActivity::class.java).let {
+                PendingIntent.getActivity(
+                    context, 0, it, PendingIntent.FLAG_IMMUTABLE
+                )
+            }
 
         return NotificationCompat.Builder(context, CHANNEL_ID)
+            .setOngoing(true)
             .setContentTitle(context.getString(R.string.sync_title))
             .setContentText(context.getString(R.string.sync_text))
-            .setSmallIcon(android.R.drawable.ic_popup_sync)
-            .setContentIntent(cancelIntent)
-            .setOngoing(true)
+            .setSmallIcon(R.drawable.ic_sync)
+            .setContentIntent(pendingIntent)
+            .setShowWhen(false)
             .build()
     }
 
@@ -66,7 +72,7 @@ class SyncWorker(private val context: Context, params: WorkerParameters) :
             val name = context.getString(R.string.sync_channel_name)
 
             val importance = NotificationManager.IMPORTANCE_HIGH
-            val channel = NotificationChannel(NotificationWorker.CHANNEL_ID, name, importance)
+            val channel = NotificationChannel(CHANNEL_ID, name, importance)
 
             val manager = context.getSystemService(Context.NOTIFICATION_SERVICE)
                     as NotificationManager

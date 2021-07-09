@@ -1,13 +1,16 @@
 package com.weinstudio.memoria.service
 
 import android.content.Context
+import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.google.gson.Gson
 import com.weinstudio.memoria.data.api.RetrofitClient
 import com.weinstudio.memoria.data.entity.Problem
+import retrofit2.Response
 
-class QueryWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(ctx, params) {
+class QueryWorker(context: Context, params: WorkerParameters) :
+    CoroutineWorker(context, params) {
 
     companion object {
 
@@ -37,6 +40,8 @@ class QueryWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(ctx,
         // Deserialize problem
         val problem = Gson().fromJson(bodyString, Problem::class.java)
 
+        Log.d("TAG", "doWork: $queryType - $problem")
+
         return when (queryType) {
             QUERY_TYPE_INSERT -> insertProblem(problem)
 
@@ -49,19 +54,26 @@ class QueryWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(ctx,
     }
 
     private suspend fun insertProblem(problem: Problem): Result {
-        remoteSource.insert(problem)
-        return Result.success()
+        return handleResponse(remoteSource.insert(problem))
     }
 
     private suspend fun updateProblem(problem: Problem): Result {
-        remoteSource.update(problem.id, problem)
-        // TODO: 07.07.2021 Errors handling
-        return Result.success()
+        return handleResponse(remoteSource.update(problem.id, problem))
     }
 
     private suspend fun deleteProblem(problem: Problem): Result {
-        remoteSource.delete(problem.id)
-        // TODO: 07.07.2021 Errors handling
-        return Result.success()
+        return handleResponse(remoteSource.delete(problem.id))
+    }
+
+    private fun <T> handleResponse(response: Response<T>): Result {
+        return if (response.isSuccessful) {
+            Result.success()
+
+        } else {
+            when (response.code()) {
+                404 -> Result.failure()
+                else -> Result.retry()
+            }
+        }
     }
 }

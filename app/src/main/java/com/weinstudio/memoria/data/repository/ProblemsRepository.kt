@@ -16,6 +16,8 @@ class ProblemsRepository(
 
 ) {
 
+    private val gson by lazy { Gson() }
+
     fun getProblems(needFilter: Boolean): Flow<List<Problem>> {
         return localSource.getAllFlow(needFilter)
     }
@@ -31,21 +33,21 @@ class ProblemsRepository(
     suspend fun insertProblem(problem: Problem) {
         localSource.insert(problem)
 
-        val body = Gson().toJson(problem)
+        val body = gson.toJson(problem)
         WorkerUtil.enqueueQueryWork(context, QueryWorker.QUERY_TYPE_INSERT, body)
     }
 
     suspend fun deleteProblem(problem: Problem) {
         localSource.delete(problem)
 
-        val body = Gson().toJson(problem)
+        val body = gson.toJson(problem)
         WorkerUtil.enqueueQueryWork(context, QueryWorker.QUERY_TYPE_DELETE, body)
     }
 
     suspend fun updateProblem(problem: Problem) {
         localSource.update(problem)
 
-        val body = Gson().toJson(problem)
+        val body = gson.toJson(problem)
         WorkerUtil.enqueueQueryWork(context, QueryWorker.QUERY_TYPE_UPDATE, body)
     }
 

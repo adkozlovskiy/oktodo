@@ -16,7 +16,8 @@ import com.weinstudio.memoria.R
 import com.weinstudio.memoria.ui.splash.SplashActivity
 import com.weinstudio.memoria.util.WorkerUtil
 
-class NotificationWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, params) {
+class NotificationWorker(private val context: Context, params: WorkerParameters) :
+    Worker(context, params) {
 
     companion object {
 
@@ -29,8 +30,6 @@ class NotificationWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, p
         const val NOTIFY_HOUR = 10
         const val NOTIFY_MINUTE = 0
     }
-
-    private val context = ctx
 
     override fun doWork(): Result {
         val settings = getDefaultSharedPreferences(context)
