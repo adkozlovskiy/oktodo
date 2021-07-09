@@ -64,7 +64,7 @@ class ProblemsRepository(
                 localSource.insert(remoteProblem)
 
                 // If the server has updated
-            } else if (remoteProblem.updated > localProblem.updated) {
+            } else if (remoteProblem.updated >= localProblem.updated) {
                 localSource.update(remoteProblem)
 
             }
