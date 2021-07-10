@@ -12,7 +12,6 @@ import androidx.preference.PreferenceManager
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
-import com.weinstudio.memoria.MemoriaApp
 import com.weinstudio.memoria.R
 import com.weinstudio.memoria.ui.splash.SplashActivity
 import com.weinstudio.memoria.util.WorkerUtil
@@ -31,8 +30,6 @@ class SyncWorker(private val context: Context, params: WorkerParameters) :
         const val WORK_DELAY_HOURS = 8L
     }
 
-    private val repository = (context.applicationContext as MemoriaApp).repository
-
     override suspend fun doWork(): Result {
         val settings = PreferenceManager.getDefaultSharedPreferences(context)
         val isEnabled = settings.getBoolean(PREFERENCES_KEY, true)
@@ -41,7 +38,10 @@ class SyncWorker(private val context: Context, params: WorkerParameters) :
             createNotificationChannel()
             setForeground(ForegroundInfo(NOTIFICATION_ID, getNotification()))
 
-            repository.refreshProblems()
+            // Sync problems with remote
+            WorkerUtil.enqueueQueryWork(context, QueryWorker.QUERY_TYPE_REFRESH, null)
+
+            // Next iteration
             WorkerUtil.enqueueSyncWork(context)
             return Result.success()
         }

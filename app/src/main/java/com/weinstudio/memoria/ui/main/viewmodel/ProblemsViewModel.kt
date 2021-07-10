@@ -37,16 +37,8 @@ class ProblemsViewModel(
             repository.deleteProblem(problem)
         }
 
-    fun refreshProblems() = viewModelScope
-        .launch {
-            repository.refreshProblems()
-        }
-
     @ExperimentalCoroutinesApi
     fun setFilterFlag(flag: Boolean) {
         filterFlow.value = flag
     }
 }
-
-
-

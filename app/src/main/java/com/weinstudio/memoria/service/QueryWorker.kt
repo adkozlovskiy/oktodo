@@ -6,6 +6,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.google.gson.Gson
 import com.weinstudio.memoria.data.api.RetrofitClient
+import com.weinstudio.memoria.data.db.ProblemsDatabase
 import com.weinstudio.memoria.data.entity.Problem
 import retrofit2.Response
 
@@ -19,9 +20,10 @@ class QueryWorker(context: Context, params: WorkerParameters) :
         const val QUERY_TYPE_EXTRA_TAG = "query_type"
         const val QUERY_BODY_EXTRA_TAG = "query_body"
 
-        const val QUERY_TYPE_INSERT = "0"
-        const val QUERY_TYPE_UPDATE = "1"
-        const val QUERY_TYPE_DELETE = "2"
+        const val QUERY_TYPE_REFRESH = "refresh"
+        const val QUERY_TYPE_INSERT = "insert"
+        const val QUERY_TYPE_UPDATE = "update"
+        const val QUERY_TYPE_DELETE = "delete"
 
     }
 
@@ -33,16 +35,18 @@ class QueryWorker(context: Context, params: WorkerParameters) :
         val queryType = inputData.getString(QUERY_TYPE_EXTRA_TAG)
         val bodyString = inputData.getString(QUERY_BODY_EXTRA_TAG)
 
-        if (bodyString.isNullOrEmpty()) {
+        if (queryType != QUERY_TYPE_REFRESH && bodyString.isNullOrEmpty()) {
             return Result.failure()
         }
 
         // Deserialize problem
         val problem = Gson().fromJson(bodyString, Problem::class.java)
 
-        Log.d("TAG", "doWork: $queryType - $problem")
+        Log.d(WORK_TAG, "$queryType - $problem")
 
         return when (queryType) {
+            QUERY_TYPE_REFRESH -> refreshProblems()
+
             QUERY_TYPE_INSERT -> insertProblem(problem)
 
             QUERY_TYPE_UPDATE -> updateProblem(problem)
@@ -51,6 +55,47 @@ class QueryWorker(context: Context, params: WorkerParameters) :
 
             else -> Result.failure()
         }
+    }
+
+    private val localSource by lazy {
+        ProblemsDatabase.getDatabase(context).problemsDao()
+    }
+
+    private suspend fun refreshProblems(): Result {
+        val response = remoteSource.getAll()
+        val remoteProblems = response.body()
+
+        if (response.isSuccessful && remoteProblems != null) {
+            val localProblems = localSource.getAll()
+
+            for (remoteProblem in remoteProblems) {
+                val localProblem = localProblems.find { it.id == remoteProblem.id }
+
+                // If the server has added
+                if (localProblem == null) {
+                    localSource.insert(remoteProblem)
+
+                    // If the server has updated
+                } else if (remoteProblem.updated >= localProblem.updated) {
+                    localSource.update(remoteProblem)
+
+                }
+            }
+
+            for (localProblem in localProblems) {
+                val remoteProblem = remoteProblems.find { it.id == localProblem.id }
+
+                // If the server has deleted
+                if (remoteProblem == null) {
+                    localSource.delete(localProblem)
+                }
+            }
+
+            return Result.success()
+
+        }
+
+        return Result.failure()
     }
 
     private suspend fun insertProblem(problem: Problem): Result {

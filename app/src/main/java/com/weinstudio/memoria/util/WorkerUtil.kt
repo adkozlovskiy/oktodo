@@ -2,9 +2,9 @@ package com.weinstudio.memoria.util
 
 import android.content.Context
 import androidx.work.*
-import com.weinstudio.memoria.service.NotificationWorker
 import com.weinstudio.memoria.service.QueryWorker
 import com.weinstudio.memoria.service.SyncWorker
+import com.weinstudio.memoria.service.UnfulfilledWorker
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -14,8 +14,8 @@ object WorkerUtil {
         val currentDate = Calendar.getInstance()
         val dueDate = Calendar.getInstance()
 
-        dueDate.set(Calendar.HOUR_OF_DAY, NotificationWorker.NOTIFY_HOUR)
-        dueDate.set(Calendar.MINUTE, NotificationWorker.NOTIFY_MINUTE)
+        dueDate.set(Calendar.HOUR_OF_DAY, UnfulfilledWorker.NOTIFY_HOUR)
+        dueDate.set(Calendar.MINUTE, UnfulfilledWorker.NOTIFY_MINUTE)
 
         dueDate.set(Calendar.SECOND, 0)
         dueDate.set(Calendar.MILLISECOND, 0)
@@ -28,24 +28,27 @@ object WorkerUtil {
     }
 
     /**
-     * @see NotificationWorker
+     * @see UnfulfilledWorker
      */
     fun enqueueNotificationWork(context: Context) {
         val timeDiff = getNotificationInitialDelay()
 
-        val dailyWorkRequest = OneTimeWorkRequestBuilder<NotificationWorker>()
+        val dailyWorkRequest = OneTimeWorkRequestBuilder<UnfulfilledWorker>()
             .setInitialDelay(timeDiff, TimeUnit.MILLISECONDS)
-            .addTag(NotificationWorker.WORK_TAG)
+            .addTag(UnfulfilledWorker.WORK_TAG)
             .build()
 
         WorkManager.getInstance(context)
             .enqueueUniqueWork(
-                NotificationWorker.WORK_TAG,
+                UnfulfilledWorker.WORK_TAG,
                 ExistingWorkPolicy.REPLACE,
                 dailyWorkRequest
             )
     }
 
+    /**
+     * @see SyncWorker
+     */
     fun enqueueSyncWork(context: Context) {
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -65,7 +68,10 @@ object WorkerUtil {
             )
     }
 
-    fun enqueueQueryWork(context: Context, type: String, body: String) {
+    /**
+     * @see QueryWorker
+     */
+    fun enqueueQueryWork(context: Context, type: String, body: String?) {
         val inputData = Data.Builder()
 
         with(inputData) {

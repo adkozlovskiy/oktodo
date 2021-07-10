@@ -65,7 +65,7 @@
     <string name="eye_enabled">Completed tasks will be shown.</string>
     <string name="cd_priority">Priority of your problem.</string>
     <string name="sync_title">We are syncing your problems</string>
-    <string name="sync_text">It does not take much time</string>
+    <string name="sync_text">It does not take much time.</string>
     <string name="sync_channel_name">Sync notification</string>
     <string name="synchronization">Synchronization</string>
     <string name="sync_in_foreground">Periodic synchronization</string>

@@ -61,7 +61,7 @@
     <string name="eye_enabled">Выполненные задачи будут показаны.</string>
     <string name="cd_priority">Приоритет вашей задачи.</string>
     <string name="sync_title">Мы синхронизируем ваши задачи</string>
-    <string name="sync_text">Это не займет много времени</string>
+    <string name="sync_text">Это не займет много времени.</string>
     <string name="synchronization">Синхронизация</string>
     <string name="sync_in_foreground">Периодическая синхронизация</string>
     <string name="sync_channel_name">Уведомление о синхронизации</string>

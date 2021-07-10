@@ -2,7 +2,6 @@ package com.weinstudio.memoria.ui.main.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,8 +57,6 @@ class ProblemsFragment : Fragment(), EyeButtonListener {
     @ExperimentalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel.refreshProblems()
 
         with(binding.recycler) {
             adapter = fingerprintAdapter

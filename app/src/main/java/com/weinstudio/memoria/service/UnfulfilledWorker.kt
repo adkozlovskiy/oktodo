@@ -16,7 +16,7 @@ import com.weinstudio.memoria.R
 import com.weinstudio.memoria.ui.splash.SplashActivity
 import com.weinstudio.memoria.util.WorkerUtil
 
-class NotificationWorker(private val context: Context, params: WorkerParameters) :
+class UnfulfilledWorker(private val context: Context, params: WorkerParameters) :
     Worker(context, params) {
 
     companion object {

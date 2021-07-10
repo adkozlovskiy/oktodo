@@ -2,7 +2,6 @@ package com.weinstudio.memoria.data.repository
 
 import android.content.Context
 import com.google.gson.Gson
-import com.weinstudio.memoria.data.api.RetrofitServices
 import com.weinstudio.memoria.data.db.dao.ProblemsDao
 import com.weinstudio.memoria.data.entity.Problem
 import com.weinstudio.memoria.service.QueryWorker
@@ -11,7 +10,6 @@ import kotlinx.coroutines.flow.Flow
 import java.util.*
 
 class ProblemsRepository(
-    private val remoteSource: RetrofitServices,
     private val localSource: ProblemsDao,
     private val context: Context
 
@@ -60,34 +58,5 @@ class ProblemsRepository(
 
         val body = gson.toJson(problem)
         WorkerUtil.enqueueQueryWork(context, QueryWorker.QUERY_TYPE_UPDATE, body)
-    }
-
-    suspend fun refreshProblems() {
-
-        val remoteProblems = remoteSource.getAll()
-        val localProblems = localSource.getAll()
-
-        for (remoteProblem in remoteProblems) {
-            val localProblem = localProblems.find { it.id == remoteProblem.id }
-
-            // If the server has added
-            if (localProblem == null) {
-                localSource.insert(remoteProblem)
-
-                // If the server has updated
-            } else if (remoteProblem.updated >= localProblem.updated) {
-                localSource.update(remoteProblem)
-
-            }
-        }
-
-        for (localProblem in localProblems) {
-            val remoteProblem = remoteProblems.find { it.id == localProblem.id }
-
-            // If the server has deleted
-            if (remoteProblem == null) {
-                localSource.delete(localProblem)
-            }
-        }
     }
 }
