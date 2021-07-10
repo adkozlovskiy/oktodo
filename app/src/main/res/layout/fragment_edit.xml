@@ -29,7 +29,7 @@
                 android:background="@android:color/transparent"
                 android:hint="@string/title"
                 android:importantForAutofill="no"
-                android:inputType="textMultiLine|textCapSentences"
+                android:inputType="textCapSentences"
                 android:textColor="@color/text_primary"
                 android:textSize="22sp"
                 android:textStyle="bold" />
