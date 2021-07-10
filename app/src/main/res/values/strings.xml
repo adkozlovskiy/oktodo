@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Memoria</string>
+    <string name="app_name">OK Todo</string>
     <string name="search">Search</string>
     <string name="settings">Settings</string>
     <string name="cd_create_new_task">Create new task</string>

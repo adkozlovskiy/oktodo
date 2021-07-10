@@ -10,7 +10,7 @@ android {
     compileSdkVersion 30
 
     defaultConfig {
-        applicationId "com.weinstudio.memoria"
+        applicationId "com.weinstudio.oktodo"
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
