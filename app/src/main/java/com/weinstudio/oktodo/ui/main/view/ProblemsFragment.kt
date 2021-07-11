@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.RotateAnimation
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -23,6 +24,7 @@ import com.weinstudio.oktodo.ui.main.adapter.util.ItemSwipeCallback
 import com.weinstudio.oktodo.ui.main.viewmodel.ProblemsViewModel
 import com.weinstudio.oktodo.ui.main.viewmodel.ProblemsViewModelFactory
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+
 
 class ProblemsFragment : Fragment(), EyeButtonListener {
 
@@ -54,12 +56,23 @@ class ProblemsFragment : Fragment(), EyeButtonListener {
         return binding.root
     }
 
+
     @ExperimentalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val pivotX = binding.refreshButton.width / 2
+        val pivotY = binding.refreshButton.height / 2
+
+        val animation =
+            RotateAnimation(0f, 720f, pivotX.toFloat(), pivotY.toFloat())
+
+        animation.duration = 600L
+        animation.fillAfter = true
+
         binding.refreshButton.setOnClickListener {
             viewModel.refreshProblems()
+            binding.refreshButton.startAnimation(animation)
         }
 
         with(binding.recycler) {
