@@ -58,6 +58,10 @@ class ProblemsFragment : Fragment(), EyeButtonListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.refreshButton.setOnClickListener {
+            viewModel.refreshProblems()
+        }
+
         with(binding.recycler) {
             adapter = fingerprintAdapter
             layoutManager = LinearLayoutManager(context)

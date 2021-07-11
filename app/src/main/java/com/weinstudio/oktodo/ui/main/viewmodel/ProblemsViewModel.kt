@@ -41,4 +41,8 @@ class ProblemsViewModel(
     fun setFilterFlag(flag: Boolean) {
         filterFlow.value = flag
     }
+
+    fun refreshProblems() {
+        repository.enqueueRefreshProblems()
+    }
 }

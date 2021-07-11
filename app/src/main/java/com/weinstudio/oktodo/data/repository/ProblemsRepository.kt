@@ -64,4 +64,10 @@ class ProblemsRepository(
             context, QueryWorker.QUERY_TYPE_UPDATE, gson.toJson(entry)
         )
     }
+
+    fun enqueueRefreshProblems() {
+        WorkerUtil.enqueueQueryWork(
+            context, QueryWorker.QUERY_TYPE_REFRESH, null
+        )
+    }
 }
