@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
-import com.weinstudio.oktodo.MemoriaApp
+import com.weinstudio.oktodo.App
 import com.weinstudio.oktodo.R
 import com.weinstudio.oktodo.data.entity.Problem
 import com.weinstudio.oktodo.data.entity.enums.Importance
@@ -25,7 +25,7 @@ import java.util.*
 class EditFragment : Fragment(), OkButtonListener {
 
     private val viewModel: EditViewModel by viewModels {
-        EditViewModelFactory((context?.applicationContext as MemoriaApp).repository)
+        EditViewModelFactory((context?.applicationContext as App).repository)
     }
 
     private var _binding: FragmentEditBinding? = null

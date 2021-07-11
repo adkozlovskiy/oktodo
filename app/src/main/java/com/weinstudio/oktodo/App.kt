@@ -6,7 +6,7 @@ import androidx.preference.PreferenceManager
 import com.weinstudio.oktodo.data.db.ProblemsDatabase
 import com.weinstudio.oktodo.data.repository.ProblemsRepository
 
-class MemoriaApp : Application() {
+class App : Application() {
 
     private val localSource by lazy { ProblemsDatabase.getDatabase(this) }
 

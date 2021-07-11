@@ -11,7 +11,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import com.weinstudio.oktodo.MemoriaApp
+import com.weinstudio.oktodo.App
 import com.weinstudio.oktodo.R
 import com.weinstudio.oktodo.ui.splash.SplashActivity
 import com.weinstudio.oktodo.util.WorkerUtil
@@ -60,7 +60,7 @@ class UnfulfilledWorker(private val context: Context, params: WorkerParameters) 
         val text = context.getString(R.string.notification_content)
 
         val countUnfulfilled =
-            (applicationContext as MemoriaApp).repository.getCount(false)
+            (applicationContext as App).repository.getCount(false)
 
         if (countUnfulfilled < 1) {
             return

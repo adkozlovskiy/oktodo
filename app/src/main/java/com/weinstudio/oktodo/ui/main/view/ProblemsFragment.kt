@@ -11,7 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
-import com.weinstudio.oktodo.MemoriaApp
+import com.weinstudio.oktodo.App
 import com.weinstudio.oktodo.R
 import com.weinstudio.oktodo.data.entity.Problem
 import com.weinstudio.oktodo.databinding.FragmentProblemsBinding
@@ -37,7 +37,7 @@ class ProblemsFragment : Fragment(), EyeButtonListener {
     }
 
     private val viewModel: ProblemsViewModel by viewModels {
-        ProblemsViewModelFactory((context?.applicationContext as MemoriaApp).repository)
+        ProblemsViewModelFactory((context?.applicationContext as App).repository)
     }
 
     private val subtitleTemplate by lazy {
