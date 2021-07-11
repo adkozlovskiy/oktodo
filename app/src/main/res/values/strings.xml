@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Memoria</string>
+    <string name="app_name">OK Todo</string>
     <string name="search">Search</string>
     <string name="settings">Settings</string>
     <string name="cd_create_new_task">Create new task</string>
@@ -54,14 +54,25 @@
     <string name="no_notifications">Disabled</string>
     <string name="daily_notifications">Daily notifications</string>
     <string name="daily_notifications_desc">Daily notifications at 10am about upcoming tasks.</string>
-    <string name="notification_title">You have tasks for today</string>
-    <string name="notification_content">See what you have planned for today.</string>
+    <string name="notification_title">You have outstanding tasks</string>
+    <string name="notification_content">See what you have planned</string>
     <string name="theme">Theme</string>>
-    <string name="notifications_upcoming">If there is an upcoming</string>
-    <string name="notifications_on_deadline">If there are on deadline</string>
+    <string name="notifications_upcoming">If there are upcoming</string>
+    <string name="notifications_on_deadline">If there are close to deadline</string>
     <string name="marked_as_done">marked as done</string>
     <string name="default_priority">Default</string>
     <string name="eye_disabled">Completed tasks will be hidden.</string>
     <string name="eye_enabled">Completed tasks will be shown.</string>
     <string name="cd_priority">Priority of your problem.</string>
+    <string name="sync_title">We are syncing your problems</string>
+    <string name="sync_text">It does not take much time.</string>
+    <string name="sync_channel_name">Sync notification</string>
+    <string name="synchronization">Synchronization</string>
+    <string name="sync_in_foreground">Periodic synchronization</string>
+    <string name="sync_period">Sync period</string>
+    <string name="sync_six">Every 6 hours</string>
+    <string name="sync_eight">Every 8 hours</string>
+    <string name="sync_twelve">Every 12 hours</string>
+    <string name="problem">Problem</string>
+    <string name="cd_refresh_button">Button to refresh problems</string>
 </resources>

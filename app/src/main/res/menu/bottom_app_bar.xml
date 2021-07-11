@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_eye"
-        android:icon="@drawable/ic_eye_close"
+        android:icon="@drawable/ic_eye_open"
         android:title="@string/show_hide"
         app:showAsAction="ifRoom" />
 

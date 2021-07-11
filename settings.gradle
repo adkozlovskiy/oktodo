@@ -1,2 +1,2 @@
-rootProject.name = "memoria"
+rootProject.name = "oktodo"
 include ':app'
