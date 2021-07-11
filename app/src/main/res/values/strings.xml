@@ -73,4 +73,5 @@
     <string name="sync_six">Every 6 hours</string>
     <string name="sync_eight">Every 8 hours</string>
     <string name="sync_twelve">Every 12 hours</string>
+    <string name="problem">Problem</string>
 </resources>

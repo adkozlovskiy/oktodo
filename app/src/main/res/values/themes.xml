@@ -38,6 +38,8 @@
 
     <!-- Toolbar -->
     <style name="Toolbar">
+        <item name="android:windowContentOverlay">@null</item>
+        .
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">?attr/actionBarSize</item>
         <item name="navigationIconTint">@color/icon_primary</item>
@@ -47,5 +49,10 @@
 
     <style name="Splash" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/splash</item>
+    </style>
+
+    <style name="ToolbarTitleAppearance">
+        <item name="android:textSize">32sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 </resources>

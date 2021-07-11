@@ -69,4 +69,5 @@
     <string name="sync_six">Каждые 6 часов</string>
     <string name="sync_eight">Каждые 8 часов</string>
     <string name="sync_twelve">Каждые 12 часов</string>
+    <string name="problem">Задача</string>
 </resources>

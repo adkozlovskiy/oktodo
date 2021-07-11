@@ -18,7 +18,7 @@ class EditActivity : AppCompatActivity() {
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
 
-        toolbar.title = getString(R.string.create)
+        toolbar.title = getString(R.string.problem)
         toolbar.navigationIcon =
             ResourcesCompat.getDrawable(resources, R.drawable.ic_close, theme)
         setSupportActionBar(toolbar)

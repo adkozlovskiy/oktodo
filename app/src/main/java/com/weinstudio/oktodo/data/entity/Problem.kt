@@ -12,7 +12,7 @@ data class Problem(
 
     @PrimaryKey
     @SerializedName(value = "id")
-    var id: String,
+    val id: String,
 
     @ColumnInfo(name = "text")
     @SerializedName(value = "text")
@@ -24,19 +24,19 @@ data class Problem(
 
     @ColumnInfo(name = "importance")
     @SerializedName(value = "importance")
-    var importance: Importance,
+    val importance: Importance,
 
     @ColumnInfo(name = "done")
     @SerializedName(value = "done")
-    var done: Boolean,
+    val done: Boolean,
 
     @ColumnInfo(name = "created")
     @SerializedName("created_at")
-    var created: Long,
+    val created: Long,
 
     @ColumnInfo(name = "updated")
     @SerializedName("updated_at")
-    var updated: Long
+    val updated: Long
 
 ) : ListItem {
 

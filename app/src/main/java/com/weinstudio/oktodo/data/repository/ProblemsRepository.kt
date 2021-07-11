@@ -30,33 +30,38 @@ class ProblemsRepository(
     }
 
     suspend fun insertProblem(problem: Problem) {
-        with(problem) {
-            id = "${Calendar.getInstance().timeInMillis}"
-            created = Calendar.getInstance().timeInMillis / 1000
-            updated = Calendar.getInstance().timeInMillis / 1000
-        }
+        val millis = Calendar.getInstance().timeInMillis
 
-        localSource.insert(problem)
+        val entry = problem.copy(
+            id = "$millis",
+            created = millis / 1000,
+            updated = millis / 1000
+        )
 
-        val body = gson.toJson(problem)
-        WorkerUtil.enqueueQueryWork(context, QueryWorker.QUERY_TYPE_INSERT, body)
+        localSource.insert(entry)
+
+        WorkerUtil.enqueueQueryWork(
+            context, QueryWorker.QUERY_TYPE_INSERT, gson.toJson(entry)
+        )
     }
 
     suspend fun deleteProblem(problem: Problem) {
         localSource.delete(problem)
 
-        val body = gson.toJson(problem)
-        WorkerUtil.enqueueQueryWork(context, QueryWorker.QUERY_TYPE_DELETE, body)
+        WorkerUtil.enqueueQueryWork(
+            context, QueryWorker.QUERY_TYPE_DELETE, gson.toJson(problem)
+        )
     }
 
     suspend fun updateProblem(problem: Problem) {
-        with(problem) {
+        val entry = problem.copy(
             updated = Calendar.getInstance().timeInMillis / 1000
-        }
+        )
 
-        localSource.update(problem)
+        localSource.update(entry)
 
-        val body = gson.toJson(problem)
-        WorkerUtil.enqueueQueryWork(context, QueryWorker.QUERY_TYPE_UPDATE, body)
+        WorkerUtil.enqueueQueryWork(
+            context, QueryWorker.QUERY_TYPE_UPDATE, gson.toJson(entry)
+        )
     }
 }
