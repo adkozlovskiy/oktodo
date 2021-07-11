@@ -61,17 +61,18 @@ class ProblemsFragment : Fragment(), EyeButtonListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val pivotX = binding.refreshButton.width / 2
-        val pivotY = binding.refreshButton.height / 2
-
-        val animation =
-            RotateAnimation(0f, 720f, pivotX.toFloat(), pivotY.toFloat())
-
-        animation.duration = 600L
-        animation.fillAfter = true
-
         binding.refreshButton.setOnClickListener {
             viewModel.refreshProblems()
+
+            val pivotX = binding.refreshButton.width / 2
+            val pivotY = binding.refreshButton.height / 2
+
+            val animation =
+                RotateAnimation(0f, 720f, pivotX.toFloat(), pivotY.toFloat())
+
+            animation.duration = 600L
+            animation.fillAfter = true
+
             binding.refreshButton.startAnimation(animation)
         }
 
