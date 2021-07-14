@@ -12,7 +12,7 @@
         <item name="colorAccent">@color/secondary_variant</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/white</item>
-        <item name="android:navigationBarColor">@color/white</item>
+        <item name="android:navigationBarColor">#ffffff</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="bottomSheetDialogTheme">@style/CustomBottomSheetDialog</item>
     </style>

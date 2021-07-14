@@ -14,7 +14,7 @@
 
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/background</item>
-        <item name="android:navigationBarColor">@color/black</item>
+        <item name="android:navigationBarColor">#2e2e2e</item>
         <item name="bottomSheetDialogTheme">@style/CustomBottomSheetDialog</item>
     </style>
 
