@@ -5,7 +5,7 @@ import com.weinstudio.oktodo.data.entity.Problem
 import retrofit2.Response
 import retrofit2.http.*
 
-interface RetrofitServices {
+interface ProblemsService {
 
     @GET("tasks")
     @WorkerThread

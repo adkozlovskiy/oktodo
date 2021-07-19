@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.google.gson.Gson
-import com.weinstudio.oktodo.data.api.RetrofitClient
 import com.weinstudio.oktodo.data.db.ProblemsDatabase
 import com.weinstudio.oktodo.data.entity.Problem
 import retrofit2.Response
@@ -27,7 +26,7 @@ class QueryWorker(context: Context, params: WorkerParameters) :
 
     }
 
-    private val remoteSource = RetrofitClient.retrofitServices
+    private val remoteSource = RetrofitClient.problemsService
 
     override suspend fun doWork(): Result {
 

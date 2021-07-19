@@ -1,5 +1,6 @@
 package com.weinstudio.oktodo.data.db.dao
 
+import androidx.annotation.WorkerThread
 import androidx.room.*
 import com.weinstudio.oktodo.data.entity.Problem
 import kotlinx.coroutines.flow.Flow
@@ -19,7 +20,8 @@ interface ProblemsDao {
     fun getAllFlow(needFilter: Boolean): Flow<List<Problem>>
 
     @Query("SELECT * FROM problems ")
-    fun getAll(): List<Problem>
+    @WorkerThread
+    suspend fun getAll(): List<Problem>
 
     @Query(
         "SELECT COUNT(*) " +
@@ -36,12 +38,15 @@ interface ProblemsDao {
     fun getCount(done: Boolean): Int
 
     @Insert
+    @WorkerThread
     suspend fun insert(problem: Problem)
 
     @Update
+    @WorkerThread
     suspend fun update(problem: Problem)
 
     @Delete
+    @WorkerThread
     suspend fun delete(problem: Problem)
 
 }
