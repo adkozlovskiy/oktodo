@@ -2,6 +2,7 @@ package com.weinstudio.oktodo.ui.main.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,9 +12,8 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
-import com.weinstudio.oktodo.App
 import com.weinstudio.oktodo.R
-import com.weinstudio.oktodo.data.entity.Problem
+import com.weinstudio.oktodo.data.model.Problem
 import com.weinstudio.oktodo.databinding.FragmentProblemsBinding
 import com.weinstudio.oktodo.ui.edit.EditActivity
 import com.weinstudio.oktodo.ui.main.EyeButtonListener
@@ -22,10 +22,10 @@ import com.weinstudio.oktodo.ui.main.adapter.FingerprintAdapter
 import com.weinstudio.oktodo.ui.main.adapter.fingerprint.ProblemFingerprint
 import com.weinstudio.oktodo.ui.main.adapter.util.ItemSwipeCallback
 import com.weinstudio.oktodo.ui.main.viewmodel.ProblemsViewModel
-import com.weinstudio.oktodo.ui.main.viewmodel.ProblemsViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-
+@AndroidEntryPoint
 class ProblemsFragment : Fragment(), EyeButtonListener {
 
     private var _binding: FragmentProblemsBinding? = null
@@ -36,9 +36,7 @@ class ProblemsFragment : Fragment(), EyeButtonListener {
         FingerprintAdapter(getFingerprints())
     }
 
-    private val viewModel: ProblemsViewModel by viewModels {
-        ProblemsViewModelFactory((context?.applicationContext as App).repository)
-    }
+    private val viewModel: ProblemsViewModel by viewModels()
 
     private val subtitleTemplate by lazy {
         context?.getString(R.string.done)
@@ -112,6 +110,7 @@ class ProblemsFragment : Fragment(), EyeButtonListener {
         viewModel.allProblems
             .observe(viewLifecycleOwner, { value ->
                 value?.let { it ->
+                    Log.d("TAG", ": submit")
                     fingerprintAdapter.submitList(it)
                 }
             })

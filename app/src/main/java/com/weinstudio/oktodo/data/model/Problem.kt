@@ -1,11 +1,10 @@
-package com.weinstudio.oktodo.data.entity
+package com.weinstudio.oktodo.data.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
-import com.weinstudio.oktodo.data.ListItem
-import com.weinstudio.oktodo.data.entity.enums.Importance
+import com.weinstudio.oktodo.data.model.enums.Importance
 
 @Entity(tableName = "problems")
 data class Problem(

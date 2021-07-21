@@ -1,8 +1,8 @@
-package com.weinstudio.oktodo.data.entity.enums
+package com.weinstudio.oktodo.data.model.enums
 
 import com.google.gson.annotations.SerializedName
 
-enum class Importance() {
+enum class Importance {
 
     @SerializedName("low")
     LOW,

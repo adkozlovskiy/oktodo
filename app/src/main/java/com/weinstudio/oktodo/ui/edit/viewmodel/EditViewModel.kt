@@ -1,15 +1,19 @@
 package com.weinstudio.oktodo.ui.edit.viewmodel
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.weinstudio.oktodo.data.entity.Problem
-import com.weinstudio.oktodo.data.entity.enums.Importance
+import com.weinstudio.oktodo.data.model.Problem
+import com.weinstudio.oktodo.data.model.enums.Importance
 import com.weinstudio.oktodo.data.repository.ProblemsRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.util.*
+import javax.inject.Inject
 
-class EditViewModel(
+@HiltViewModel
+class EditViewModel @Inject constructor(
     private val repository: ProblemsRepository
 
 ) : ViewModel() {

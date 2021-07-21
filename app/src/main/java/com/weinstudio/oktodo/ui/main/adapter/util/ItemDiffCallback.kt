@@ -1,7 +1,7 @@
 package com.weinstudio.oktodo.ui.main.adapter.util
 
 import androidx.recyclerview.widget.DiffUtil
-import com.weinstudio.oktodo.data.ListItem
+import com.weinstudio.oktodo.data.model.ListItem
 import com.weinstudio.oktodo.ui.main.adapter.base.BaseFingerprint
 
 class ItemDiffCallback(

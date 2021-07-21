@@ -3,22 +3,26 @@ package com.weinstudio.oktodo.data.repository
 import android.content.Context
 import com.google.gson.Gson
 import com.weinstudio.oktodo.data.db.dao.ProblemsDao
-import com.weinstudio.oktodo.data.entity.Problem
+import com.weinstudio.oktodo.data.model.Problem
 import com.weinstudio.oktodo.service.QueryWorker
 import com.weinstudio.oktodo.util.WorkerUtil
 import kotlinx.coroutines.flow.Flow
 import java.util.*
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class ProblemsRepository(
+@Singleton
+class ProblemsRepository @Inject constructor(
     private val localSource: ProblemsDao,
-    private val context: Context
-
+    private val appContext: Context,
+    private val gson: Gson,
 ) {
 
-    private val gson by lazy { Gson() }
+    fun getProblemsFlow(filtered: Boolean): Flow<List<Problem>> {
+        return if (filtered) {
+            localSource.getAllFlowFiltered()
 
-    fun getProblems(needFilter: Boolean): Flow<List<Problem>> {
-        return localSource.getAllFlow(needFilter)
+        } else localSource.getAllFlow()
     }
 
     fun getCountFlow(done: Boolean): Flow<Int> {
@@ -41,7 +45,7 @@ class ProblemsRepository(
         localSource.insert(entry)
 
         WorkerUtil.enqueueQueryWork(
-            context, QueryWorker.QUERY_TYPE_INSERT, gson.toJson(entry)
+            appContext, QueryWorker.QUERY_TYPE_INSERT, gson.toJson(entry)
         )
     }
 
@@ -49,7 +53,7 @@ class ProblemsRepository(
         localSource.delete(problem)
 
         WorkerUtil.enqueueQueryWork(
-            context, QueryWorker.QUERY_TYPE_DELETE, gson.toJson(problem)
+            appContext, QueryWorker.QUERY_TYPE_DELETE, gson.toJson(problem)
         )
     }
 
@@ -61,13 +65,13 @@ class ProblemsRepository(
         localSource.update(entry)
 
         WorkerUtil.enqueueQueryWork(
-            context, QueryWorker.QUERY_TYPE_UPDATE, gson.toJson(entry)
+            appContext, QueryWorker.QUERY_TYPE_UPDATE, gson.toJson(entry)
         )
     }
 
     fun enqueueRefreshProblems() {
         WorkerUtil.enqueueQueryWork(
-            context, QueryWorker.QUERY_TYPE_REFRESH, null
+            appContext, QueryWorker.QUERY_TYPE_REFRESH, null
         )
     }
 }

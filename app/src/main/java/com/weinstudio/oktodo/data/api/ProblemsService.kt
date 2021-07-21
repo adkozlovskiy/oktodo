@@ -1,7 +1,7 @@
 package com.weinstudio.oktodo.data.api
 
 import androidx.annotation.WorkerThread
-import com.weinstudio.oktodo.data.entity.Problem
+import com.weinstudio.oktodo.data.model.Problem
 import retrofit2.Response
 import retrofit2.http.*
 

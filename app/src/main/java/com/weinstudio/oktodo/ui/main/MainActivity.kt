@@ -15,7 +15,9 @@ import com.weinstudio.oktodo.ui.edit.EditActivity
 import com.weinstudio.oktodo.ui.main.view.BottomSheetFragment
 import com.weinstudio.oktodo.ui.main.view.ProblemsFragment
 import com.weinstudio.oktodo.ui.settings.SettingsActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private val callback by lazy {

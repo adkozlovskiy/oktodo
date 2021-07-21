@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import com.weinstudio.oktodo.R
-import com.weinstudio.oktodo.data.ListItem
-import com.weinstudio.oktodo.data.entity.Problem
-import com.weinstudio.oktodo.data.entity.enums.Importance
+import com.weinstudio.oktodo.data.model.ListItem
+import com.weinstudio.oktodo.data.model.Problem
+import com.weinstudio.oktodo.data.model.enums.Importance
 import com.weinstudio.oktodo.databinding.LayoutProblemBinding
 import com.weinstudio.oktodo.ui.main.adapter.base.BaseFingerprint
 import com.weinstudio.oktodo.ui.main.adapter.base.BaseViewHolder

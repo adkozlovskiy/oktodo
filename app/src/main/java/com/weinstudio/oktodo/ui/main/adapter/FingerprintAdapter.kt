@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.viewbinding.ViewBinding
-import com.weinstudio.oktodo.data.ListItem
+import com.weinstudio.oktodo.data.model.ListItem
 import com.weinstudio.oktodo.ui.main.adapter.base.BaseFingerprint
 import com.weinstudio.oktodo.ui.main.adapter.base.BaseViewHolder
 import com.weinstudio.oktodo.ui.main.adapter.util.ItemDiffCallback

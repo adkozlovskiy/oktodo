@@ -2,15 +2,25 @@ package com.weinstudio.oktodo.service
 
 import android.content.Context
 import android.util.Log
+import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.google.gson.Gson
-import com.weinstudio.oktodo.data.db.ProblemsDatabase
-import com.weinstudio.oktodo.data.entity.Problem
+import com.weinstudio.oktodo.data.api.ProblemsService
+import com.weinstudio.oktodo.data.db.dao.ProblemsDao
+import com.weinstudio.oktodo.data.model.Problem
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import retrofit2.Response
 
-class QueryWorker(context: Context, params: WorkerParameters) :
-    CoroutineWorker(context, params) {
+@HiltWorker
+class QueryWorker @AssistedInject constructor(
+    @Assisted context: Context,
+    @Assisted params: WorkerParameters,
+    private val remoteSource: ProblemsService,
+    private val localSource: ProblemsDao
+
+) : CoroutineWorker(context, params) {
 
     companion object {
 
@@ -25,8 +35,6 @@ class QueryWorker(context: Context, params: WorkerParameters) :
         const val QUERY_TYPE_DELETE = "delete"
 
     }
-
-    private val remoteSource = RetrofitClient.problemsService
 
     override suspend fun doWork(): Result {
 
@@ -54,10 +62,6 @@ class QueryWorker(context: Context, params: WorkerParameters) :
 
             else -> Result.failure()
         }
-    }
-
-    private val localSource by lazy {
-        ProblemsDatabase.getDatabase(context).problemsDao()
     }
 
     private suspend fun refreshProblems(): Result {

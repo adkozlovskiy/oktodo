@@ -8,16 +8,25 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.hilt.work.HiltWorker
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.weinstudio.oktodo.App
 import com.weinstudio.oktodo.R
+import com.weinstudio.oktodo.data.repository.ProblemsRepository
 import com.weinstudio.oktodo.ui.splash.SplashActivity
 import com.weinstudio.oktodo.util.WorkerUtil
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 
-class UnfulfilledWorker(private val context: Context, params: WorkerParameters) :
-    Worker(context, params) {
+@HiltWorker
+class UnfulfilledWorker @AssistedInject constructor(
+    @Assisted private val context: Context,
+    @Assisted params: WorkerParameters,
+    private val repository: ProblemsRepository
+
+    ) : Worker(context, params) {
 
     companion object {
 
@@ -59,8 +68,7 @@ class UnfulfilledWorker(private val context: Context, params: WorkerParameters) 
         val title = context.getString(R.string.notification_title)
         val text = context.getString(R.string.notification_content)
 
-        val countUnfulfilled =
-            (applicationContext as App).repository.getCount(false)
+        val countUnfulfilled = repository.getCount(false)
 
         if (countUnfulfilled < 1) {
             return

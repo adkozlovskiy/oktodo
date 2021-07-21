@@ -12,21 +12,19 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
-import com.weinstudio.oktodo.App
 import com.weinstudio.oktodo.R
-import com.weinstudio.oktodo.data.entity.Problem
-import com.weinstudio.oktodo.data.entity.enums.Importance
+import com.weinstudio.oktodo.data.model.Problem
+import com.weinstudio.oktodo.data.model.enums.Importance
 import com.weinstudio.oktodo.databinding.FragmentEditBinding
 import com.weinstudio.oktodo.ui.edit.OkButtonListener
 import com.weinstudio.oktodo.ui.edit.viewmodel.EditViewModel
-import com.weinstudio.oktodo.ui.edit.viewmodel.EditViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
+@AndroidEntryPoint
 class EditFragment : Fragment(), OkButtonListener {
 
-    private val viewModel: EditViewModel by viewModels {
-        EditViewModelFactory((context?.applicationContext as App).repository)
-    }
+    private val viewModel: EditViewModel by viewModels()
 
     private var _binding: FragmentEditBinding? = null
     private val binding get() = _binding!!
