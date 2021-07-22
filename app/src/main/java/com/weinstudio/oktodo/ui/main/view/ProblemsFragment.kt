@@ -16,7 +16,6 @@ import com.weinstudio.oktodo.R
 import com.weinstudio.oktodo.data.model.Problem
 import com.weinstudio.oktodo.databinding.FragmentProblemsBinding
 import com.weinstudio.oktodo.ui.edit.EditActivity
-import com.weinstudio.oktodo.ui.main.EyeButtonListener
 import com.weinstudio.oktodo.ui.main.MainActivity
 import com.weinstudio.oktodo.ui.main.adapter.FingerprintAdapter
 import com.weinstudio.oktodo.ui.main.adapter.fingerprint.ProblemFingerprint
@@ -26,7 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @AndroidEntryPoint
-class ProblemsFragment : Fragment(), EyeButtonListener {
+class ProblemsFragment : Fragment() {
 
     private var _binding: FragmentProblemsBinding? = null
 
@@ -57,10 +56,13 @@ class ProblemsFragment : Fragment(), EyeButtonListener {
         return binding.root
     }
 
-
     @ExperimentalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        (activity as MainActivity).viewModel.eyeButtonEnabledData.observe(viewLifecycleOwner, {
+            viewModel.setFilterFlag(!it)
+        })
 
         binding.refreshButton.setOnClickListener {
             viewModel.refreshProblems()
@@ -93,11 +95,11 @@ class ProblemsFragment : Fragment(), EyeButtonListener {
                 val problem = fingerprintAdapter.currentList[pos] as Problem
                 viewModel.changeDoneFlag(problem, problem.done.not())
 
-                // Because of more smooth anim.
-                if (isEyeEnabled()) {
-                    fingerprintAdapter.notifyItemRemoved(pos)
-                    fingerprintAdapter.notifyItemInserted(pos)
-                }
+//                // Because of more smooth anim.
+//                if (isEyeEnabled()) {
+//                    fingerprintAdapter.notifyItemRemoved(pos)
+//                    fingerprintAdapter.notifyItemInserted(pos)
+//                }
             })
 
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
@@ -125,17 +127,9 @@ class ProblemsFragment : Fragment(), EyeButtonListener {
         context?.startActivity(intent)
     }
 
-    private fun isEyeEnabled(): Boolean =
-        (activity as MainActivity).viewModel.isEyeEnabled.value ?: false
-
     private fun setToolbarSubtitle(count: Int) {
         val subtitle = "$subtitleTemplate — $count"
         binding.toolbarSubtitle.text = subtitle
-    }
-
-    @ExperimentalCoroutinesApi
-    override fun onEyeButtonPressed(enabled: Boolean) {
-        viewModel.setFilterFlag(enabled.not())
     }
 
     private fun getFingerprints() = listOf(ProblemFingerprint(requireContext(), ::onProblemClick))

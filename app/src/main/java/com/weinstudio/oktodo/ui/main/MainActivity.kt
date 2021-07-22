@@ -6,113 +6,124 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.content.res.AppCompatResources
-import com.google.android.material.bottomappbar.BottomAppBar
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.weinstudio.oktodo.R
+import com.weinstudio.oktodo.databinding.ActivityMainBinding
 import com.weinstudio.oktodo.ui.edit.EditActivity
 import com.weinstudio.oktodo.ui.main.view.BottomSheetFragment
 import com.weinstudio.oktodo.ui.main.view.ProblemsFragment
 import com.weinstudio.oktodo.ui.settings.SettingsActivity
+import com.weinstudio.oktodo.util.getDrawableCompat
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private val callback by lazy {
-        supportFragmentManager.findFragmentByTag(ProblemsFragment.TAG)
-                as EyeButtonListener
+    private val eyeOpenedResourceDrawable by lazy {
+        getDrawableCompat(R.drawable.ic_eye_open)
+    }
+
+    private val eyeClosedResourceDrawable by lazy {
+        getDrawableCompat(R.drawable.ic_eye_close)
+    }
+
+    private val eyeOpenedResourceString by lazy {
+        getString(R.string.eye_enabled)
+    }
+
+    private val eyeClosedResourceString by lazy {
+        getString(R.string.eye_disabled)
     }
 
     val viewModel: MainViewModel by viewModels()
 
+    lateinit var binding: ActivityMainBinding
+
+    lateinit var eyeButton: MenuItem
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        binding.fabCreate.setOnClickListener { launchEditActivity() }
+
+        setSupportActionBar(binding.bottomAppBar)
+        binding.bottomAppBar.setNavigationOnClickListener {
+            showBottomSheetFragment()
+        }
 
         if (savedInstanceState == null) {
-            val tasksFragment = ProblemsFragment.newInstance()
-            val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.container, tasksFragment, ProblemsFragment.TAG)
-            transaction.commit()
+            setFragment()
         }
-
-        val fabCreate: FloatingActionButton = findViewById(R.id.fab_create)
-        fabCreate.setOnClickListener {
-            val intent = Intent(this, EditActivity::class.java)
-            startActivity(intent)
-        }
-
-        val bottomAppBar: BottomAppBar = findViewById(R.id.bottom_app_bar)
-        setSupportActionBar(bottomAppBar)
-        bottomAppBar.setNavigationOnClickListener {
-            val fragment = BottomSheetFragment.newInstance()
-            fragment.show(supportFragmentManager, BottomSheetFragment.TAG)
-        }
-
-        viewModel.isEyeEnabled.observe(this, {
-            callback.onEyeButtonPressed(it)
-
-            eyeItem?.icon = if (it) AppCompatResources.getDrawable(
-                this,
-                R.drawable.ic_eye_open
-
-            ) else AppCompatResources.getDrawable(this, R.drawable.ic_eye_close)
-        })
     }
 
-    private var eyeItem: MenuItem? = null
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.bottom_app_bar, menu)
-        eyeItem = menu?.findItem(R.id.action_eye)
+        eyeButton = menu.findItem(R.id.action_eye)
 
-        val isEnabled = viewModel.isEyeEnabled.value
-
-        if (isEnabled != null) {
-            eyeItem?.icon = if (isEnabled) AppCompatResources.getDrawable(
-                this,
-                R.drawable.ic_eye_open
-
-            ) else AppCompatResources.getDrawable(this, R.drawable.ic_eye_close)
-        }
-
+        setEyeButtonDrawable(viewModel.isEyeButtonEnabled())
         return true
     }
 
+    @ExperimentalCoroutinesApi
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
+        when (item.itemId) {
             R.id.action_settings -> {
-                val intent = Intent(this, SettingsActivity::class.java)
-                startActivity(intent)
-                true
+                launchSettingsActivity()
+                return true
             }
 
             R.id.action_eye -> {
-                val isEnabled = viewModel.isEyeEnabled.value
-                if (isEnabled != null) {
-                    viewModel.isEyeEnabled.value = !isEnabled
-
-                    val snackTitle = if (isEnabled) {
-                        getString(R.string.eye_disabled)
-
-                    } else getString(R.string.eye_enabled)
-
-                    val snack = Snackbar.make(
-                        findViewById(R.id.root_layout),
-                        snackTitle,
-                        Snackbar.LENGTH_LONG
-                    )
-
-                    snack.anchorView = findViewById(R.id.fab_create)
-                    snack.show()
-                }
-
-                true
+                viewModel.changeEyeButtonEnabled()
+                showEyeButtonSnack(viewModel.isEyeButtonEnabled())
+                setEyeButtonDrawable(viewModel.isEyeButtonEnabled())
+                return true
             }
 
-            else -> super.onOptionsItemSelected(item)
+            else -> return super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun launchEditActivity() {
+        val intent = Intent(this, EditActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun launchSettingsActivity() {
+        val intent = Intent(this, SettingsActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun showBottomSheetFragment() {
+        val fragment = BottomSheetFragment.newInstance()
+        fragment.show(supportFragmentManager, BottomSheetFragment.TAG)
+    }
+
+    private fun setFragment() {
+        val fragment = ProblemsFragment.newInstance()
+        val transaction = supportFragmentManager.beginTransaction()
+
+        transaction.replace(R.id.container, fragment, ProblemsFragment.TAG)
+        transaction.commit()
+    }
+
+    private fun setEyeButtonDrawable(enabled: Boolean) {
+        eyeButton.icon = if (enabled) {
+            eyeOpenedResourceDrawable
+
+        } else eyeClosedResourceDrawable
+    }
+
+    private fun showEyeButtonSnack(enabled: Boolean) {
+        val title = if (enabled) {
+            eyeOpenedResourceString
+
+        } else eyeClosedResourceString
+
+        val snack = Snackbar.make(binding.root, title, Snackbar.LENGTH_LONG)
+        snack.anchorView = binding.fabCreate
+        snack.show()
     }
 }
