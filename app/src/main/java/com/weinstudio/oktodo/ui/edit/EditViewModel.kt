@@ -1,4 +1,4 @@
-package com.weinstudio.oktodo.ui.edit.viewmodel
+package com.weinstudio.oktodo.ui.edit
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

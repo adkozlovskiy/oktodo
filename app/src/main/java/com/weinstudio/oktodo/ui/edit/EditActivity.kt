@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.weinstudio.oktodo.R
 import com.weinstudio.oktodo.data.model.Problem
 import com.weinstudio.oktodo.databinding.ActivityEditBinding
-import com.weinstudio.oktodo.ui.edit.view.EditFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -17,7 +16,6 @@ class EditActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityEditBinding.inflate(layoutInflater)
         setContentView(binding.root)
 

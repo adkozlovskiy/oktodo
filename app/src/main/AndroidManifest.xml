@@ -26,7 +26,7 @@
         </activity>
         <activity android:name="com.weinstudio.oktodo.ui.edit.EditActivity" />
         <activity android:name="com.weinstudio.oktodo.ui.settings.SettingsActivity" />
-        <activity android:name="com.weinstudio.oktodo.ui.main.MainActivity" />
+        <activity android:name="com.weinstudio.oktodo.ui.main.view.MainActivity" />
 
         <provider
             android:name="androidx.startup.InitializationProvider"

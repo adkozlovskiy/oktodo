@@ -1,4 +1,4 @@
-package com.weinstudio.oktodo.ui.edit.view
+package com.weinstudio.oktodo.ui.edit
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -15,8 +15,6 @@ import com.google.gson.Gson
 import com.weinstudio.oktodo.R
 import com.weinstudio.oktodo.data.model.Problem
 import com.weinstudio.oktodo.databinding.FragmentEditBinding
-import com.weinstudio.oktodo.ui.edit.OkButtonListener
-import com.weinstudio.oktodo.ui.edit.viewmodel.EditViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 import javax.inject.Inject

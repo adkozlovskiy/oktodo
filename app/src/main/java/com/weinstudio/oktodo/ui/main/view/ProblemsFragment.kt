@@ -16,7 +16,6 @@ import com.weinstudio.oktodo.R
 import com.weinstudio.oktodo.data.model.Problem
 import com.weinstudio.oktodo.databinding.FragmentProblemsBinding
 import com.weinstudio.oktodo.ui.edit.EditActivity
-import com.weinstudio.oktodo.ui.main.MainActivity
 import com.weinstudio.oktodo.ui.main.adapter.FingerprintAdapter
 import com.weinstudio.oktodo.ui.main.adapter.fingerprint.ProblemFingerprint
 import com.weinstudio.oktodo.ui.main.adapter.util.ItemSwipeCallback

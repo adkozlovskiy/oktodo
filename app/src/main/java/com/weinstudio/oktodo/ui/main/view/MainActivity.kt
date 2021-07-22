@@ -1,4 +1,4 @@
-package com.weinstudio.oktodo.ui.main
+package com.weinstudio.oktodo.ui.main.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,8 +10,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.weinstudio.oktodo.R
 import com.weinstudio.oktodo.databinding.ActivityMainBinding
 import com.weinstudio.oktodo.ui.edit.EditActivity
-import com.weinstudio.oktodo.ui.main.view.BottomSheetFragment
-import com.weinstudio.oktodo.ui.main.view.ProblemsFragment
+import com.weinstudio.oktodo.ui.main.other.BottomSheetFragment
+import com.weinstudio.oktodo.ui.main.viewmodel.MainViewModel
 import com.weinstudio.oktodo.ui.settings.SettingsActivity
 import com.weinstudio.oktodo.util.getDrawableCompat
 import dagger.hilt.android.AndroidEntryPoint

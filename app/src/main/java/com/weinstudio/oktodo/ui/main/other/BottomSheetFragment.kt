@@ -1,4 +1,4 @@
-package com.weinstudio.oktodo.ui.main.view
+package com.weinstudio.oktodo.ui.main.other
 
 import android.os.Bundle
 import android.view.LayoutInflater
