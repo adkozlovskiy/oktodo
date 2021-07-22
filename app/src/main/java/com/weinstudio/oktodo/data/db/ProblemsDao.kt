@@ -1,4 +1,4 @@
-package com.weinstudio.oktodo.data.db.dao
+package com.weinstudio.oktodo.data.db
 
 import androidx.annotation.WorkerThread
 import androidx.room.*
@@ -37,7 +37,7 @@ interface ProblemsDao {
                 "FROM problems " +
                 "WHERE done = :done"
     )
-    fun getCount(done: Boolean): Int
+    suspend fun getCount(done: Boolean): Int
 
     @Insert
     @WorkerThread

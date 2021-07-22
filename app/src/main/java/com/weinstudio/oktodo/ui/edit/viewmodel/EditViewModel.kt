@@ -1,12 +1,12 @@
 package com.weinstudio.oktodo.ui.edit.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.weinstudio.oktodo.data.ProblemsRepository
 import com.weinstudio.oktodo.data.model.Problem
 import com.weinstudio.oktodo.data.model.enums.Importance
-import com.weinstudio.oktodo.data.repository.ProblemsRepository
+import com.weinstudio.oktodo.util.WorkerEnquirer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.util.*
@@ -14,7 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EditViewModel @Inject constructor(
-    private val repository: ProblemsRepository
+    private val repository: ProblemsRepository,
+    private val workerEnquirer: WorkerEnquirer
 
 ) : ViewModel() {
 
@@ -79,13 +80,29 @@ class EditViewModel @Inject constructor(
         problemData.value = newProblem
     }
 
-    fun insertProblem(problem: Problem) = viewModelScope
-        .launch {
-            repository.insertProblem(problem)
-        }
+    fun insertProblem(problem: Problem) = viewModelScope.launch {
+        val currentMillis = Calendar.getInstance().timeInMillis
+        val currentMillisCropped = currentMillis / 1000
 
-    fun updateProblem(problem: Problem) = viewModelScope
-        .launch {
-            repository.updateProblem(problem)
-        }
+        val entryProblem = problem.copy(
+            id = "$currentMillis",
+            created = currentMillisCropped,
+            updated = currentMillisCropped
+        )
+
+        repository.insertProblem(entryProblem)
+        workerEnquirer.enqueueInsert(entryProblem)
+    }
+
+    fun updateProblem(problem: Problem) = viewModelScope.launch {
+        val currentMillis = Calendar.getInstance().timeInMillis
+        val currentMillisCropped = currentMillis / 1000
+
+        val entryProblem = problem.copy(
+            updated = currentMillisCropped
+        )
+
+        repository.updateProblem(entryProblem)
+        workerEnquirer.enqueueUpdate(entryProblem)
+    }
 }

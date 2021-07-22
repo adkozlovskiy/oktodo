@@ -14,12 +14,13 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
 import com.weinstudio.oktodo.R
 import com.weinstudio.oktodo.data.model.Problem
-import com.weinstudio.oktodo.data.model.enums.Importance
 import com.weinstudio.oktodo.databinding.FragmentEditBinding
 import com.weinstudio.oktodo.ui.edit.OkButtonListener
 import com.weinstudio.oktodo.ui.edit.viewmodel.EditViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
+import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
 class EditFragment : Fragment(), OkButtonListener {
@@ -29,13 +30,18 @@ class EditFragment : Fragment(), OkButtonListener {
     private var _binding: FragmentEditBinding? = null
     private val binding get() = _binding!!
 
-    // Resources constants
-    private val importanceImportant by lazy { getString(R.string.high_priority) }
-    private val importanceBasic by lazy { getString(R.string.default_priority) }
-    private val importanceLow by lazy { getString(R.string.low_priority) }
+    private val importanceResourceConstants by lazy {
+        ArrayList<String>().apply {
+            add(getString(R.string.low_priority))
+            add(getString(R.string.default_priority))
+            add(getString(R.string.high_priority))
+        }
+    }
+
+    @Inject
+    lateinit var gson: Gson
 
     companion object {
-
         @JvmStatic
         fun newInstance(problem: String?) = EditFragment().apply {
             arguments = Bundle().apply {
@@ -58,7 +64,7 @@ class EditFragment : Fragment(), OkButtonListener {
         val problemExtra = arguments?.getString(Problem.PROBLEM_EXTRA_TAG)
 
         if (!problemExtra.isNullOrEmpty()) {
-            val problem = Gson().fromJson(problemExtra, Problem::class.java)
+            val problem = gson.fromJson(problemExtra, Problem::class.java)
 
             // Setting text by default
             binding.etTitle.setText(problem.text)
@@ -77,11 +83,16 @@ class EditFragment : Fragment(), OkButtonListener {
             viewModel.setDeadlineSwitchChecked(isChecked)
         }
 
-        binding.etTitle.addTextChangedListener { // afterTextChanged()
+        binding.etTitle.addTextChangedListener(afterTextChanged = {
             if (binding.tiTitle.isErrorEnabled && binding.etTitle.text.isNotBlank()) {
                 binding.tiTitle.error = null
             }
-        }
+        })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun observeProblemChanges() {
@@ -100,15 +111,7 @@ class EditFragment : Fragment(), OkButtonListener {
             }
 
             // Observing importance
-            binding.tvPriorityProp.text = when (problem.importance) {
-
-                Importance.IMPORTANT -> importanceImportant
-
-                Importance.BASIC -> importanceBasic
-
-                Importance.LOW -> importanceLow
-
-            }
+            binding.tvPriorityProp.text = importanceResourceConstants[problem.importance.value]
         }
     }
 
@@ -175,23 +178,17 @@ class EditFragment : Fragment(), OkButtonListener {
     }
 
     private fun chooseImportance() {
-        val items = arrayOf(importanceLow, importanceBasic, importanceImportant)
+        val items: Array<String> = importanceResourceConstants.toTypedArray()
 
-        var selectedItem = when (viewModel.problemData.value?.importance) {
-            Importance.LOW -> 0
-            Importance.BASIC -> 1
-            Importance.IMPORTANT -> 2
-
-            else -> throw IllegalStateException()
-        }
+        var selectedItemOrdinal = viewModel.problemData.value?.importance!!.value
 
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(R.string.choose_priority))
-            .setSingleChoiceItems(items, selectedItem) { _, id ->
-                selectedItem = id
+            .setSingleChoiceItems(items, selectedItemOrdinal) { _, id ->
+                selectedItemOrdinal = id
             }
             .setPositiveButton(getString(R.string.ok)) { _, _ ->
-                viewModel.setImportanceProp(selectedItem)
+                viewModel.setImportanceProp(selectedItemOrdinal)
             }
             .show()
     }

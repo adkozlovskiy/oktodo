@@ -4,7 +4,6 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.weinstudio.oktodo.data.db.converter.ImportanceConverter
-import com.weinstudio.oktodo.data.db.dao.ProblemsDao
 import com.weinstudio.oktodo.data.model.Problem
 
 @Database(entities = [Problem::class], version = 1, exportSchema = false)

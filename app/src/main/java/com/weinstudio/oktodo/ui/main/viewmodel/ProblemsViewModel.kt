@@ -3,10 +3,10 @@ package com.weinstudio.oktodo.ui.main.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.weinstudio.oktodo.data.ProblemsRepository
 import com.weinstudio.oktodo.data.model.Problem
-import com.weinstudio.oktodo.data.repository.ProblemsRepository
+import com.weinstudio.oktodo.util.WorkerEnquirer
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
@@ -15,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProblemsViewModel @Inject constructor(
-    private val repository: ProblemsRepository
+    private val repository: ProblemsRepository,
+    private val workerEnquirer: WorkerEnquirer
 
 ) : ViewModel() {
 
@@ -28,16 +29,19 @@ class ProblemsViewModel @Inject constructor(
 
     val doneCount = repository.getCountFlow(true).asLiveData()
 
-    fun changeDoneFlag(problem: Problem, done: Boolean) = viewModelScope
-        .launch(Dispatchers.IO) {
-            val newProblem = problem.copy(done = done)
-            repository.updateProblem(newProblem)
-        }
+    fun changeDoneFlag(problem: Problem, done: Boolean) = viewModelScope.launch {
+        val entryProblem = problem.copy(
+            done = done
+        )
 
-    fun deleteProblem(problem: Problem) = viewModelScope
-        .launch(Dispatchers.IO) {
-            repository.deleteProblem(problem)
-        }
+        repository.updateProblem(entryProblem)
+        workerEnquirer.enqueueUpdate(entryProblem)
+    }
+
+    fun deleteProblem(problem: Problem) = viewModelScope.launch {
+        repository.deleteProblem(problem)
+        workerEnquirer.enqueueDelete(problem)
+    }
 
     @ExperimentalCoroutinesApi
     fun setFilterFlag(flag: Boolean) {
@@ -45,6 +49,6 @@ class ProblemsViewModel @Inject constructor(
     }
 
     fun refreshProblems() {
-        repository.enqueueRefreshProblems()
+        workerEnquirer.enqueueRefresh()
     }
 }

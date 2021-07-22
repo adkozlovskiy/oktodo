@@ -2,15 +2,15 @@ package com.weinstudio.oktodo.data.model.enums
 
 import com.google.gson.annotations.SerializedName
 
-enum class Importance {
+enum class Importance(val value: Int) {
 
     @SerializedName("low")
-    LOW,
+    LOW(0),
 
     @SerializedName("basic")
-    BASIC,
+    BASIC(1),
 
     @SerializedName("important")
-    IMPORTANT
+    IMPORTANT(2)
 
 }

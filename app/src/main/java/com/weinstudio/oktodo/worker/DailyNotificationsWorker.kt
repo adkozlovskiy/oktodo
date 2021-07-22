@@ -1,4 +1,4 @@
-package com.weinstudio.oktodo.service
+package com.weinstudio.oktodo.worker
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -10,27 +10,26 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.hilt.work.HiltWorker
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
-import androidx.work.Worker
-import androidx.work.WorkerParameters
-import com.weinstudio.oktodo.App
+import androidx.work.*
 import com.weinstudio.oktodo.R
-import com.weinstudio.oktodo.data.repository.ProblemsRepository
+import com.weinstudio.oktodo.data.ProblemsRepository
 import com.weinstudio.oktodo.ui.splash.SplashActivity
-import com.weinstudio.oktodo.util.WorkerUtil
+import com.weinstudio.oktodo.util.WorkerUtils
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
+import java.util.concurrent.TimeUnit
 
 @HiltWorker
-class UnfulfilledWorker @AssistedInject constructor(
+class DailyNotificationsWorker @AssistedInject constructor(
     @Assisted private val context: Context,
     @Assisted params: WorkerParameters,
     private val repository: ProblemsRepository
 
-    ) : Worker(context, params) {
+) : CoroutineWorker(context, params) {
 
     companion object {
 
-        const val WORK_TAG = "daily_work"
+        private const val WORK_TAG = "daily_work"
 
         const val NOTIFICATION_ID = 10002
         const val CHANNEL_ID = "daily_notifications"
@@ -38,23 +37,35 @@ class UnfulfilledWorker @AssistedInject constructor(
 
         const val NOTIFY_HOUR = 10
         const val NOTIFY_MINUTE = 0
+
+        fun enqueueNotificationWork(context: Context) {
+            val timeDiff = WorkerUtils.getNotificationInitialDelay()
+
+            val dailyWorkRequest = OneTimeWorkRequestBuilder<DailyNotificationsWorker>()
+                .setInitialDelay(timeDiff, TimeUnit.MILLISECONDS)
+                .addTag(WORK_TAG)
+                .build()
+
+            WorkManager.getInstance(context)
+                .enqueueUniqueWork(WORK_TAG, ExistingWorkPolicy.REPLACE, dailyWorkRequest)
+        }
     }
 
-    override fun doWork(): Result {
+    override suspend fun doWork(): Result {
         val settings = getDefaultSharedPreferences(context)
-        val isEnabled = settings.getBoolean(PREFERENCES_KEY, true)
+        val enabled = settings.getBoolean(PREFERENCES_KEY, true)
 
-        if (isEnabled) {
+        if (enabled) {
             showNotification()
 
-            WorkerUtil.enqueueNotificationWork(context)
+            enqueueNotificationWork(context)
             return Result.success()
         }
 
         return Result.failure()
     }
 
-    private fun showNotification() {
+    private suspend fun showNotification() {
         val intent = Intent(context, SplashActivity::class.java)
             .apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

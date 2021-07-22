@@ -1,42 +1,56 @@
 package com.weinstudio.oktodo.ui.splash
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.preference.PreferenceManager
-import com.weinstudio.oktodo.service.QueryWorker
-import com.weinstudio.oktodo.service.SyncWorker
-import com.weinstudio.oktodo.service.UnfulfilledWorker
+import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.weinstudio.oktodo.ui.main.MainActivity
-import com.weinstudio.oktodo.util.WorkerUtil
+import com.weinstudio.oktodo.util.WorkerEnquirer
+import com.weinstudio.oktodo.worker.DailyNotificationsWorker
+import com.weinstudio.oktodo.worker.PeriodicallySyncWorker
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class SplashActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var workerEnquirer: WorkerEnquirer
+
+    lateinit var settings: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Sync problems with remote
-        WorkerUtil.enqueueQueryWork(this, QueryWorker.QUERY_TYPE_REFRESH, null)
+        settings = getDefaultSharedPreferences(this)
 
-        val settings = PreferenceManager.getDefaultSharedPreferences(this)
-
-        // Daily notifications
-        val dailyNotificationsEnabled =
-            settings.getBoolean(UnfulfilledWorker.PREFERENCES_KEY, true)
-
-        if (dailyNotificationsEnabled) {
-            WorkerUtil.enqueueNotificationWork(this)
-        }
-
-        // Periodically sync
-        val periodicallySyncEnabled = settings.getBoolean(SyncWorker.PREFERENCES_KEY, true)
-
-        if (periodicallySyncEnabled) {
-            WorkerUtil.enqueueSyncWork(this)
-        }
+        enqueueRefreshProblems()
+        enqueuePeriodicallySync()
+        enqueueDailyNotifications()
 
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
+    }
+
+    private fun enqueueRefreshProblems() {
+        workerEnquirer.enqueueRefresh()
+    }
+
+    private fun enqueueDailyNotifications() {
+        val enabled = settings.getBoolean(DailyNotificationsWorker.PREFERENCES_KEY, true)
+
+        if (enabled) {
+            workerEnquirer.enqueueDailyNotifications()
+        }
+    }
+
+    private fun enqueuePeriodicallySync() {
+        val enabled = settings.getBoolean(PeriodicallySyncWorker.PREFERENCES_KEY, true)
+
+        if (enabled) {
+            workerEnquirer.enqueuePeriodicallySync()
+        }
     }
 }

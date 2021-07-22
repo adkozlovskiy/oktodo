@@ -1,9 +1,9 @@
 package com.weinstudio.oktodo.di
 
-import android.content.Context
+import android.app.Application
 import androidx.room.Room
+import com.weinstudio.oktodo.data.db.ProblemsDao
 import com.weinstudio.oktodo.data.db.ProblemsDatabase
-import com.weinstudio.oktodo.data.db.dao.ProblemsDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,7 +16,7 @@ class StorageModule {
 
     @Provides
     @Singleton
-    fun provideProblemsDatabase(appContext: Context): ProblemsDatabase {
+    fun provideProblemsDatabase(appContext: Application): ProblemsDatabase {
         val builder = Room.databaseBuilder(
             appContext,
             ProblemsDatabase::class.java, "oktodo"

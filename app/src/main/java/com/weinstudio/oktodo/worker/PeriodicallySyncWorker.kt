@@ -1,4 +1,4 @@
-package com.weinstudio.oktodo.service
+package com.weinstudio.oktodo.worker
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -8,15 +8,22 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
+import androidx.hilt.work.HiltWorker
 import androidx.preference.PreferenceManager
-import androidx.work.CoroutineWorker
-import androidx.work.ForegroundInfo
-import androidx.work.WorkerParameters
+import androidx.work.*
 import com.weinstudio.oktodo.R
+import com.weinstudio.oktodo.data.ProblemsRepository
 import com.weinstudio.oktodo.ui.splash.SplashActivity
-import com.weinstudio.oktodo.util.WorkerUtil
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
+import java.util.concurrent.TimeUnit
 
-class SyncWorker(private val context: Context, params: WorkerParameters) :
+@HiltWorker
+class PeriodicallySyncWorker @AssistedInject constructor(
+    @Assisted private val context: Context,
+    @Assisted params: WorkerParameters,
+    private val repository: ProblemsRepository
+) :
     CoroutineWorker(context, params) {
 
     companion object {
@@ -28,22 +35,33 @@ class SyncWorker(private val context: Context, params: WorkerParameters) :
         const val PREFERENCES_KEY = "periodically_sync"
 
         const val WORK_DELAY_HOURS = 8L
+
+        fun enqueuePeriodicallySync(context: Context) {
+            val constraints = Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build()
+
+            val syncWorkRequest = OneTimeWorkRequestBuilder<PeriodicallySyncWorker>()
+                .setInitialDelay(WORK_DELAY_HOURS, TimeUnit.HOURS)
+                .setConstraints(constraints)
+                .addTag(WORK_TAG)
+                .build()
+
+            WorkManager.getInstance(context)
+                .enqueueUniqueWork(WORK_TAG, ExistingWorkPolicy.KEEP, syncWorkRequest)
+        }
     }
 
     override suspend fun doWork(): Result {
         val settings = PreferenceManager.getDefaultSharedPreferences(context)
-        val isEnabled = settings.getBoolean(PREFERENCES_KEY, true)
+        val enabled = settings.getBoolean(PREFERENCES_KEY, true)
 
-        if (isEnabled) {
+        if (enabled) {
             createNotificationChannel()
             setForeground(ForegroundInfo(NOTIFICATION_ID, getNotification()))
 
-            // Sync problems with remote
-            WorkerUtil.enqueueQueryWork(context, QueryWorker.QUERY_TYPE_REFRESH, null)
-
-            // Next iteration
-            WorkerUtil.enqueueSyncWork(context)
-            return Result.success()
+            enqueuePeriodicallySync(context)
+            return repository.refreshProblems()
         }
 
         return Result.failure()

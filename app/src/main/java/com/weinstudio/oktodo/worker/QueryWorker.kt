@@ -1,4 +1,4 @@
-package com.weinstudio.oktodo.service
+package com.weinstudio.oktodo.worker
 
 import android.content.Context
 import android.util.Log
@@ -6,8 +6,7 @@ import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.google.gson.Gson
-import com.weinstudio.oktodo.data.api.ProblemsService
-import com.weinstudio.oktodo.data.db.dao.ProblemsDao
+import com.weinstudio.oktodo.data.ProblemsRepository
 import com.weinstudio.oktodo.data.model.Problem
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -17,8 +16,7 @@ import retrofit2.Response
 class QueryWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted params: WorkerParameters,
-    private val remoteSource: ProblemsService,
-    private val localSource: ProblemsDao
+    private val repository: ProblemsRepository
 
 ) : CoroutineWorker(context, params) {
 
@@ -65,55 +63,25 @@ class QueryWorker @AssistedInject constructor(
     }
 
     private suspend fun refreshProblems(): Result {
-        val response = remoteSource.getAll()
-        val remoteProblems = response.body()
-
-        if (response.isSuccessful && remoteProblems != null) {
-            val localProblems = localSource.getAll()
-
-            for (remoteProblem in remoteProblems) {
-                val localProblem = localProblems.find { it.id == remoteProblem.id }
-
-                // If the server has added
-                if (localProblem == null) {
-                    localSource.insert(remoteProblem)
-
-                    // If the server has updated
-                } else if (remoteProblem.updated >= localProblem.updated) {
-                    localSource.update(remoteProblem)
-
-                }
-            }
-
-            for (localProblem in localProblems) {
-                val remoteProblem = remoteProblems.find { it.id == localProblem.id }
-
-                // If the server has deleted
-                if (remoteProblem == null) {
-                    localSource.delete(localProblem)
-                }
-            }
-
-            return Result.success()
-
-        }
-
-        return Result.failure()
+        return repository.refreshProblems()
     }
 
-    private suspend fun insertProblem(problem: Problem): Result {
-        return handleResponse(remoteSource.insert(problem))
+    private suspend fun insertProblem(entryProblem: Problem): Result {
+        val response = repository.insertProblemRemote(entryProblem)
+        return handleResponse(response)
     }
 
-    private suspend fun updateProblem(problem: Problem): Result {
-        return handleResponse(remoteSource.update(problem.id, problem))
+    private suspend fun updateProblem(entryProblem: Problem): Result {
+        val response = repository.updateProblemRemote(entryProblem)
+        return handleResponse(response)
     }
 
-    private suspend fun deleteProblem(problem: Problem): Result {
-        return handleResponse(remoteSource.delete(problem.id))
+    private suspend fun deleteProblem(entryProblem: Problem): Result {
+        val response = repository.deleteProblemRemote(entryProblem)
+        return handleResponse(response)
     }
 
-    private fun <T> handleResponse(response: Response<T>): Result {
+    private fun handleResponse(response: Response<Problem>): Result {
         return if (response.isSuccessful) {
             Result.success()
 

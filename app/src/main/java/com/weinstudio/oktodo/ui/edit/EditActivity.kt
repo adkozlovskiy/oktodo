@@ -4,26 +4,24 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.core.content.res.ResourcesCompat
 import com.weinstudio.oktodo.R
 import com.weinstudio.oktodo.data.model.Problem
+import com.weinstudio.oktodo.databinding.ActivityEditBinding
 import com.weinstudio.oktodo.ui.edit.view.EditFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class EditActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityEditBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit)
 
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        binding = ActivityEditBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        toolbar.title = getString(R.string.problem)
-        toolbar.navigationIcon =
-            ResourcesCompat.getDrawable(resources, R.drawable.ic_close, theme)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.toolbar)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)

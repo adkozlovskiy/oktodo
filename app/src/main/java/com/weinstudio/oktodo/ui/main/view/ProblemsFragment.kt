@@ -43,6 +43,9 @@ class ProblemsFragment : Fragment(), EyeButtonListener {
     }
 
     companion object {
+
+        const val TAG = "problems_fragment"
+
         fun newInstance() = ProblemsFragment()
     }
 

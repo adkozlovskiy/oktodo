@@ -1,7 +1,8 @@
 package com.weinstudio.oktodo.di
 
+import com.google.gson.Gson
+import com.weinstudio.oktodo.data.api.HeaderInterceptor
 import com.weinstudio.oktodo.data.api.ProblemsService
-import com.weinstudio.oktodo.data.api.interceptor.HeaderInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -54,7 +55,13 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideGsonConverterFactory(): GsonConverterFactory {
-        return GsonConverterFactory.create()
+    fun provideGsonConverterFactory(gson: Gson): GsonConverterFactory {
+        return GsonConverterFactory.create(gson)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGson(): Gson {
+        return Gson()
     }
 }

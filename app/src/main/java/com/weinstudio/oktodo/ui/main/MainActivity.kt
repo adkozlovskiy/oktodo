@@ -4,9 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -21,13 +21,11 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private val callback by lazy {
-        supportFragmentManager.findFragmentByTag("problems fragment")
+        supportFragmentManager.findFragmentByTag(ProblemsFragment.TAG)
                 as EyeButtonListener
     }
 
-    val viewModel: MainViewModel by lazy {
-        ViewModelProvider(this).get(MainViewModel::class.java)
-    }
+    val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             val tasksFragment = ProblemsFragment.newInstance()
             val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.container, tasksFragment, "problems fragment")
+            transaction.replace(R.id.container, tasksFragment, ProblemsFragment.TAG)
             transaction.commit()
         }
 
@@ -50,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(bottomAppBar)
         bottomAppBar.setNavigationOnClickListener {
             val fragment = BottomSheetFragment.newInstance()
-            fragment.show(supportFragmentManager, "bottom sheet")
+            fragment.show(supportFragmentManager, BottomSheetFragment.TAG)
         }
 
         viewModel.isEyeEnabled.observe(this, {
