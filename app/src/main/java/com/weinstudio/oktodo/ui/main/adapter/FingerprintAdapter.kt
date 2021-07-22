@@ -15,6 +15,7 @@ class FingerprintAdapter(
     ItemDiffCallback(fingerprints)
 ) {
 
+    @Suppress("UNCHECKED_CAST")
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int

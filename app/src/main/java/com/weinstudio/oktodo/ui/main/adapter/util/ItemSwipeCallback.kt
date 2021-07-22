@@ -1,21 +1,25 @@
 package com.weinstudio.oktodo.ui.main.adapter.util
 
+import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.weinstudio.oktodo.R
+import com.weinstudio.oktodo.util.getDrawableCompat
 
-class ItemSwipeCallback(val onItemDelete: (Int) -> Unit, val onItemDone: (Int) -> Unit) :
+class ItemSwipeCallback(
+    private val onItemDelete: (Int) -> Unit,
+    private val onItemDone: (Int) -> Unit
+) :
     ItemTouchHelper.SimpleCallback(
         ItemTouchHelper.ACTION_STATE_IDLE,
         ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
     ) {
 
-    val background = ColorDrawable()
+    private val background = ColorDrawable()
 
     private val doneBackground = Color.parseColor("#559858")
     private val deleteBackground = Color.parseColor("#C54540")
@@ -42,15 +46,25 @@ class ItemSwipeCallback(val onItemDelete: (Int) -> Unit, val onItemDone: (Int) -
         }
     }
 
+    lateinit var context: Context
+
+    private val deleteResourceDrawable by lazy {
+        context.getDrawableCompat(R.drawable.ic_swipe_delete)
+    }
+
+    private val doneResourceDrawable by lazy {
+        context.getDrawableCompat(R.drawable.ic_done_28dp)
+    }
+
     override fun onChildDraw(
         c: Canvas, rv: RecyclerView, holder: RecyclerView.ViewHolder,
         dX: Float, dY: Float, aState: Int, isActive: Boolean
     ) {
 
-        val deleteIcon = ContextCompat.getDrawable(rv.context, R.drawable.ic_swipe_delete)!!
-        val doneIcon = ContextCompat.getDrawable(rv.context, R.drawable.ic_done_28dp)!!
-        val intrinsicWidth = deleteIcon.intrinsicWidth
-        val intrinsicHeight = deleteIcon.intrinsicHeight
+        context = rv.context
+
+        val intrinsicWidth = deleteResourceDrawable.intrinsicWidth
+        val intrinsicHeight = doneResourceDrawable.intrinsicHeight
 
         val itemView = holder.itemView
         val itemHeight = itemView.bottom - itemView.top
@@ -58,7 +72,7 @@ class ItemSwipeCallback(val onItemDelete: (Int) -> Unit, val onItemDone: (Int) -
         val iconMargin = (itemHeight - intrinsicHeight) / 2
         val iconTop = itemView.top + (itemHeight - intrinsicHeight) / 2
         val iconBottom = iconTop + intrinsicHeight
-        val (iconLeft, iconRight) = getIconPosHorizontal(
+        val (iconLeft, iconRight) = getIconPositionHorizontal(
             itemView,
             iconMargin,
             dX,
@@ -76,8 +90,8 @@ class ItemSwipeCallback(val onItemDelete: (Int) -> Unit, val onItemDone: (Int) -
             background.color = doneBackground
             background.draw(c)
 
-            doneIcon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
-            doneIcon.draw(c)
+            doneResourceDrawable.setBounds(iconLeft, iconTop, iconRight, iconBottom)
+            doneResourceDrawable.draw(c)
 
         } else if (dX < 0) {
             background.setBounds(
@@ -89,14 +103,14 @@ class ItemSwipeCallback(val onItemDelete: (Int) -> Unit, val onItemDone: (Int) -
             background.color = deleteBackground
             background.draw(c)
 
-            deleteIcon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
-            deleteIcon.draw(c)
+            deleteResourceDrawable.setBounds(iconLeft, iconTop, iconRight, iconBottom)
+            deleteResourceDrawable.draw(c)
         }
 
         super.onChildDraw(c, rv, holder, dX, dY, aState, isActive)
     }
 
-    private fun getIconPosHorizontal(iv: View, im: Int, dX: Float, iw: Int): Pair<Int, Int> {
+    private fun getIconPositionHorizontal(iv: View, im: Int, dX: Float, iw: Int): Pair<Int, Int> {
         val iconLeft: Int
         val iconRight: Int
 

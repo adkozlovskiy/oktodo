@@ -82,6 +82,7 @@ class ProblemsFragment : Fragment() {
         with(binding.recycler) {
             adapter = fingerprintAdapter
             layoutManager = LinearLayoutManager(context)
+            setHasFixedSize(true)
         }
 
         val itemTouchHelperCallback = ItemSwipeCallback(
@@ -95,11 +96,10 @@ class ProblemsFragment : Fragment() {
                 val problem = fingerprintAdapter.currentList[pos] as Problem
                 viewModel.changeDoneFlag(problem, problem.done.not())
 
-//                // Because of more smooth anim.
-//                if (isEyeEnabled()) {
-//                    fingerprintAdapter.notifyItemRemoved(pos)
-//                    fingerprintAdapter.notifyItemInserted(pos)
-//                }
+                // Because of more smooth anim.
+                if ((activity as MainActivity).viewModel.eyeButtonEnabledData.value == true) {
+                    fingerprintAdapter.notifyDataSetChanged()
+                }
             })
 
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
@@ -132,7 +132,9 @@ class ProblemsFragment : Fragment() {
         binding.toolbarSubtitle.text = subtitle
     }
 
-    private fun getFingerprints() = listOf(ProblemFingerprint(requireContext(), ::onProblemClick))
+    private fun getFingerprints() = listOf(
+        ProblemFingerprint(requireContext(), ::onProblemClick)
+    )
 
     override fun onDestroyView() {
         super.onDestroyView()
