@@ -37,10 +37,6 @@ class WorkerEnquirer @Inject constructor(
         enqueueQuery(QueryWorker.QUERY_TYPE_DELETE, entryProblem)
     }
 
-    fun enqueueRefresh() {
-        enqueueQuery(QueryWorker.QUERY_TYPE_REFRESH, null)
-    }
-
     private fun enqueueQuery(type: String, entryProblem: Problem?) {
         val body = gson.get().toJson(entryProblem)
         val inputData = Data.Builder()

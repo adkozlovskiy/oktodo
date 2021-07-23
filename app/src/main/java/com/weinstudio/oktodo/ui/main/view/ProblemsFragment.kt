@@ -20,6 +20,7 @@ import com.weinstudio.oktodo.ui.main.adapter.FingerprintAdapter
 import com.weinstudio.oktodo.ui.main.adapter.fingerprint.ProblemFingerprint
 import com.weinstudio.oktodo.ui.main.adapter.util.ItemSwipeCallback
 import com.weinstudio.oktodo.ui.main.viewmodel.ProblemsViewModel
+import com.weinstudio.oktodo.util.NetworkUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -47,6 +48,11 @@ class ProblemsFragment : Fragment() {
         fun newInstance() = ProblemsFragment()
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enqueueRefreshProblems()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -64,7 +70,7 @@ class ProblemsFragment : Fragment() {
         })
 
         binding.refreshButton.setOnClickListener {
-            viewModel.refreshProblems()
+            enqueueRefreshProblems()
 
             val pivotX = binding.refreshButton.width / 2
             val pivotY = binding.refreshButton.height / 2
@@ -134,6 +140,12 @@ class ProblemsFragment : Fragment() {
     private fun getFingerprints() = listOf(
         ProblemFingerprint(requireContext(), ::onProblemClick)
     )
+
+    private fun enqueueRefreshProblems() {
+        if (NetworkUtils.isConnectionGranted(requireContext())) {
+            viewModel.refreshProblems()
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

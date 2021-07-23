@@ -48,7 +48,7 @@ class ProblemsViewModel @Inject constructor(
         filteredFlow.value = flag
     }
 
-    fun refreshProblems() {
-        workerEnquirer.enqueueRefresh()
+    fun refreshProblems() = viewModelScope.launch {
+        repository.refreshProblems()
     }
 }

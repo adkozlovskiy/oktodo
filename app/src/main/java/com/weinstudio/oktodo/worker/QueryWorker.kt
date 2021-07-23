@@ -27,7 +27,6 @@ class QueryWorker @AssistedInject constructor(
         const val QUERY_TYPE_EXTRA_TAG = "query_type"
         const val QUERY_BODY_EXTRA_TAG = "query_body"
 
-        const val QUERY_TYPE_REFRESH = "refresh"
         const val QUERY_TYPE_INSERT = "insert"
         const val QUERY_TYPE_UPDATE = "update"
         const val QUERY_TYPE_DELETE = "delete"
@@ -40,7 +39,7 @@ class QueryWorker @AssistedInject constructor(
         val queryType = inputData.getString(QUERY_TYPE_EXTRA_TAG)
         val bodyString = inputData.getString(QUERY_BODY_EXTRA_TAG)
 
-        if (queryType != QUERY_TYPE_REFRESH && bodyString.isNullOrEmpty()) {
+        if (bodyString.isNullOrEmpty()) {
             return Result.failure()
         }
 
@@ -50,8 +49,6 @@ class QueryWorker @AssistedInject constructor(
         Log.d(WORK_TAG, "$queryType - $problem")
 
         return when (queryType) {
-            QUERY_TYPE_REFRESH -> refreshProblems()
-
             QUERY_TYPE_INSERT -> insertProblem(problem)
 
             QUERY_TYPE_UPDATE -> updateProblem(problem)
@@ -60,10 +57,6 @@ class QueryWorker @AssistedInject constructor(
 
             else -> Result.failure()
         }
-    }
-
-    private suspend fun refreshProblems(): Result {
-        return repository.refreshProblems()
     }
 
     private suspend fun insertProblem(entryProblem: Problem): Result {

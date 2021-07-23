@@ -31,8 +31,6 @@ class SplashActivity : AppCompatActivity() {
             settings.getBoolean(PeriodicallySyncWorker.PREFERENCES_KEY, true)
 
         with(viewModel) {
-            enqueueRefreshProblems()
-
             if (dailyNotificationsEnabled) {
                 enqueueDailyNotifications()
             }

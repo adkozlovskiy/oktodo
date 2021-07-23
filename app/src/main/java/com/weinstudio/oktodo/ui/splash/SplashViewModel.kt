@@ -7,12 +7,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-    private val workerEnquirer: WorkerEnquirer
+    private val workerEnquirer: WorkerEnquirer,
 ) : ViewModel() {
-
-    fun enqueueRefreshProblems() {
-        workerEnquirer.enqueueRefresh()
-    }
 
     fun enqueueDailyNotifications() {
         workerEnquirer.enqueueDailyNotifications()
