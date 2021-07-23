@@ -13,6 +13,7 @@ import com.weinstudio.oktodo.data.model.enums.Importance
 import com.weinstudio.oktodo.databinding.LayoutProblemBinding
 import com.weinstudio.oktodo.ui.main.adapter.base.BaseFingerprint
 import com.weinstudio.oktodo.ui.main.adapter.base.BaseViewHolder
+import com.weinstudio.oktodo.util.getColorCompat
 import com.weinstudio.oktodo.util.getDrawableCompat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -20,15 +21,33 @@ import java.util.*
 class ProblemFingerprint(context: Context, val onProblemClick: (p: Problem) -> Unit) :
     BaseFingerprint<LayoutProblemBinding, Problem> {
 
-    private val dateFormat = SimpleDateFormat(" dd MMMM yyyy HH:mm", Locale.getDefault())
+    private val dateFormat by lazy {
+        SimpleDateFormat(" dd MMMM yyyy HH:mm", Locale.getDefault())
+    }
 
-    private val highImportanceDrawable = context.getDrawableCompat(R.drawable.ic_high_priority)
-    private val lowImportanceDrawable = context.getDrawableCompat(R.drawable.ic_low_priority)
-    private val doneDrawable = context.getDrawableCompat(R.drawable.ic_problem_done)
+    private val highImportanceDrawable by lazy {
+        context.getDrawableCompat(R.drawable.ic_high_priority)
+    }
 
-    private val textSecondaryColor = context.getColor(R.color.text_secondary)
-    private val redPrimaryColor = context.getColor(R.color.red_primary)
-    private val untilString = context.getString(R.string.until)
+    private val lowImportanceDrawable by lazy {
+        context.getDrawableCompat(R.drawable.ic_low_priority)
+    }
+
+    private val doneDrawable by lazy {
+        context.getDrawableCompat(R.drawable.ic_problem_done)
+    }
+
+    private val textSecondaryColor by lazy {
+        context.getColorCompat(R.color.text_secondary)
+    }
+
+    private val redPrimaryColor by lazy {
+        context.getColorCompat(R.color.red_primary)
+    }
+
+    private val untilString by lazy {
+        context.getString(R.string.until)
+    }
 
     @LayoutRes
     override fun getLayoutId() = R.layout.layout_problem
