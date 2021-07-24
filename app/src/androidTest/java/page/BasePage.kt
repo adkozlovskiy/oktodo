@@ -1,4 +1,4 @@
-package pages
+package page
 
 abstract class BasePage {
 

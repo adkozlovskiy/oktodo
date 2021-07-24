@@ -1,35 +1,38 @@
-package com.weinstudio.oktodo.ui.main.view
+package _case
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule
+import com.weinstudio.oktodo.ui.main.view.MainActivity
 import org.junit.Rule
 import org.junit.Test
-import pages.EditPage
-import pages.MainPage
+import page.EditPage
+import page.MainPage
 
-class ProblemAddingTest {
+class CreatingProblemCase {
 
     @get:Rule
     val activityEditRule = ActivityScenarioRule(MainActivity::class.java)
 
     @Test
-    fun should_add_new_problem() {
+    fun shouldCreateProblem() {
         MainPage.obtain()
+            .assertOn()
             .clickCreateButton()
 
         EditPage.obtain()
             .assertOn()
             .inputTitle(TEST_TITLE)
             .selectImportance(TEST_IMPORTANCE)
-            .toggleDeadlineSwitch()
             .clickOkButton()
 
         MainPage.obtain()
-            .checkRecyclerViewHasNewItem(TEST_TITLE)
+            .assertOn()
+            .scrollToProblemInRecycler(TEST_TITLE)
     }
 
     @Test
-    fun should_show_error_text_when_empty_title() {
+    fun shouldShowErrorText_WhenEmptyTitle() {
         MainPage.obtain()
+            .assertOn()
             .clickCreateButton()
 
         EditPage.obtain()

@@ -1,4 +1,4 @@
-package pages
+package page
 
 import android.view.View
 import androidx.test.espresso.Espresso.onView
@@ -31,11 +31,6 @@ class EditPage : BasePage() {
         onView(withText(importance)).inRoot(isDialog()).check(matches(isDisplayed()))
             .perform(click())
         onView(withText("OK")).inRoot(isDialog()).check(matches(isDisplayed())).perform(click())
-        return this
-    }
-
-    fun toggleDeadlineSwitch(): EditPage {
-        onView(withId(R.id.switch_deadline)).perform(click())
         return this
     }
 
