@@ -1,8 +1,8 @@
 package com.weinstudio.oktodo.data
 
-import androidx.work.ListenableWorker
 import com.weinstudio.oktodo.data.api.ProblemsService
 import com.weinstudio.oktodo.data.db.ProblemsDao
+import com.weinstudio.oktodo.data.model.Hike
 import com.weinstudio.oktodo.data.model.Problem
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
@@ -54,8 +54,14 @@ class ProblemsRepository @Inject constructor(
         return remoteSource.update(entryProblem.id, entryProblem)
     }
 
-    suspend fun refreshProblems(): ListenableWorker.Result {
-        val remoteResponse = remoteSource.getAll()
+    suspend fun refreshProblems(): Hike {
+        val remoteResponse: Response<List<Problem>>
+        try {
+            remoteResponse = remoteSource.getAll()
+
+        } catch (ex: Exception) {
+            return Hike.Error(ex)
+        }
 
         if (remoteResponse.isSuccessful && remoteResponse.body() != null) {
             val remoteProblems = remoteResponse.body()!!
@@ -83,10 +89,8 @@ class ProblemsRepository @Inject constructor(
                     localSource.delete(localProblem)
                 }
             }
-
-            return ListenableWorker.Result.success()
+            return Hike.Success
         }
-
-        return ListenableWorker.Result.failure()
+        return Hike.Error()
     }
 }

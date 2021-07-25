@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.weinstudio.oktodo.R
 import com.weinstudio.oktodo.databinding.ActivityMainBinding
-import com.weinstudio.oktodo.ui.edit.EditActivity
+import com.weinstudio.oktodo.ui.edit.view.EditActivity
 import com.weinstudio.oktodo.ui.main.other.BottomSheetFragment
 import com.weinstudio.oktodo.ui.main.viewmodel.MainViewModel
 import com.weinstudio.oktodo.ui.settings.SettingsActivity

@@ -1,4 +1,4 @@
-package com.weinstudio.oktodo.ui.edit
+package com.weinstudio.oktodo.ui.edit.view
 
 import android.os.Bundle
 import android.view.Menu
@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.weinstudio.oktodo.R
 import com.weinstudio.oktodo.data.model.Problem
 import com.weinstudio.oktodo.databinding.ActivityEditBinding
+import com.weinstudio.oktodo.ui.edit.OkButtonListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,18 +25,10 @@ class EditActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
-        val problemStr: String? = intent.getStringExtra(Problem.PROBLEM_EXTRA_TAG)
-
         if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.container, EditFragment.newInstance(problemStr))
-                .commitNow()
+            val receivedProblemJson = intent.getStringExtra(Problem.PROBLEM_EXTRA_TAG)
+            showEditFragment(receivedProblemJson)
         }
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
-        return true
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -45,11 +38,26 @@ class EditActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_create) {
-            val listener = supportFragmentManager.findFragmentById(R.id.container)
-                    as OkButtonListener
+            val listener = getOkButtonListener()
             listener.onButtonPressed()
             return true
         }
         return false
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
+    private fun showEditFragment(problem: String?) {
+        val editFragment = EditFragment.newInstance(problem)
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container, editFragment)
+            .commitNow()
+    }
+
+    private fun getOkButtonListener(): OkButtonListener {
+        return supportFragmentManager.findFragmentById(R.id.container) as OkButtonListener
     }
 }

@@ -44,7 +44,7 @@
     <string name="choose_priority">Выберите приоритет</string>
     <string name="theme_light">Светлая</string>
     <string name="theme_dark">Тёмная</string>
-    <string name="choose_date">Выберите дату</string>
+    <string name="choose_deadline">Установите срок</string>
     <string name="invalid_title">Почему бы вам не сделать что-то?</string>
     <string name="until">до</string>
     <string name="daily_notifications">Ежедневные уведомления</string>
@@ -71,4 +71,7 @@
     <string name="sync_twelve">Каждые 12 часов</string>
     <string name="problem">Задача</string>
     <string name="cd_refresh_button">Кнопка для обновления задач</string>
+    <string name="network_unavailable">Мы не можем синхронизировать ваши задачи, так как вы не подключены к сети.</string>
+    <string name="loading_error">Что-то пошло не так при синхронизации задач</string>
+    <string name="retry">Повторить</string>
 </resources>

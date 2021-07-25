@@ -5,12 +5,13 @@ import androidx.test.espresso.PerformException
 import androidx.test.espresso.ViewAction
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.weinstudio.oktodo.R
 import com.weinstudio.oktodo.ui.main.adapter.fingerprint.ProblemFingerprint
 import exception.ProblemNotFoundException
-import org.hamcrest.Matchers.not
+import org.hamcrest.Matchers
 
 class MainPage : BasePage() {
 
@@ -19,6 +20,11 @@ class MainPage : BasePage() {
     }
 
     override fun assertOn(): MainPage {
+        onView(withTagValue(Matchers.`is`("main_activity_root"))).check(
+            ViewAssertions.matches(
+                isDisplayed()
+            )
+        )
         return this
     }
 

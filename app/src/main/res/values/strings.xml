@@ -48,7 +48,7 @@
 
     <string name="theme_light">Light</string>
     <string name="theme_dark">Dark</string>
-    <string name="choose_date">Choose date</string>
+    <string name="choose_deadline">Set deadline</string>
     <string name="invalid_title">Why don\'t you want to do something?</string>
     <string name="until">until</string>
     <string name="no_notifications">Disabled</string>
@@ -75,4 +75,7 @@
     <string name="sync_twelve">Every 12 hours</string>
     <string name="problem">Problem</string>
     <string name="cd_refresh_button">Button to refresh problems</string>
+    <string name="network_unavailable">We can\'t sync your problems because your internet connection is unavailable.</string>
+    <string name="loading_error">Something went wrong while syncing problems</string>
+    <string name="retry">Retry</string>
 </resources>

@@ -25,7 +25,7 @@
             </intent-filter>
 
         </activity>
-        <activity android:name="com.weinstudio.oktodo.ui.edit.EditActivity" />
+        <activity android:name="com.weinstudio.oktodo.ui.edit.view.EditActivity" />
         <activity android:name="com.weinstudio.oktodo.ui.settings.SettingsActivity" />
         <activity android:name="com.weinstudio.oktodo.ui.main.view.MainActivity" />
 

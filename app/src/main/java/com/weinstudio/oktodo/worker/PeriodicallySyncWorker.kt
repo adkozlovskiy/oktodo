@@ -13,6 +13,7 @@ import androidx.preference.PreferenceManager
 import androidx.work.*
 import com.weinstudio.oktodo.R
 import com.weinstudio.oktodo.data.ProblemsRepository
+import com.weinstudio.oktodo.data.model.Hike.Companion.completedSuccessful
 import com.weinstudio.oktodo.ui.splash.SplashActivity
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -61,7 +62,12 @@ class PeriodicallySyncWorker @AssistedInject constructor(
             setForeground(ForegroundInfo(NOTIFICATION_ID, getNotification()))
 
             enqueuePeriodicallySync(context)
-            return repository.refreshProblems()
+            val hike = repository.refreshProblems()
+
+            return if (hike.completedSuccessful()) {
+                Result.success()
+
+            } else Result.failure()
         }
 
         return Result.failure()

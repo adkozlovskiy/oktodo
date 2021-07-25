@@ -9,6 +9,7 @@ import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.google.android.material.textfield.TextInputLayout
 import com.weinstudio.oktodo.R
+import org.hamcrest.Matchers.`is`
 
 
 class EditPage : BasePage() {
@@ -18,6 +19,11 @@ class EditPage : BasePage() {
     }
 
     override fun assertOn(): EditPage {
+        onView(withTagValue(`is`("edit_activity_root"))).check(
+            matches(
+                isDisplayed()
+            )
+        )
         return this
     }
 
@@ -50,7 +56,7 @@ class EditPage : BasePage() {
                 if (view !is TextInputLayout) {
                     return false
                 }
-                val error = (view as TextInputLayout).error ?: return false
+                val error = view.error ?: return false
                 val hint = error.toString()
                 return expectedErrorText == hint
             }

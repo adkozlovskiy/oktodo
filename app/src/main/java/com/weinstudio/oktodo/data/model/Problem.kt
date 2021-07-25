@@ -1,6 +1,5 @@
 package com.weinstudio.oktodo.data.model
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
@@ -11,33 +10,35 @@ data class Problem(
 
     @PrimaryKey
     @SerializedName(value = "id")
-    val id: String,
+    val id: String = "",
 
-    @ColumnInfo(name = "text")
     @SerializedName(value = "text")
-    var text: String?,
+    var text: String = "",
 
-    @ColumnInfo(name = "deadline")
     @SerializedName(value = "deadline")
-    var deadline: Long?,
+    var deadline: Long? = null,
 
-    @ColumnInfo(name = "importance")
     @SerializedName(value = "importance")
-    val importance: Importance,
+    val importance: Importance = Importance.BASIC,
 
-    @ColumnInfo(name = "done")
     @SerializedName(value = "done")
-    val done: Boolean,
+    val done: Boolean = false,
 
-    @ColumnInfo(name = "created")
     @SerializedName("created_at")
-    val created: Long,
+    val created: Long = 0,
 
-    @ColumnInfo(name = "updated")
     @SerializedName("updated_at")
-    val updated: Long
+    val updated: Long = 0
 
 ) : ListItem {
+
+    fun hasDeadline(): Boolean {
+        return deadline != null
+    }
+
+    fun hasCreated(): Boolean {
+        return created != 0L
+    }
 
     companion object {
         const val PROBLEM_EXTRA_TAG = "problem_extra"

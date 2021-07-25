@@ -6,21 +6,27 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.LinearInterpolator
 import android.view.animation.RotateAnimation
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.weinstudio.oktodo.R
+import com.weinstudio.oktodo.data.model.Hike.Companion.completedWithError
+import com.weinstudio.oktodo.data.model.Hike.Companion.loading
 import com.weinstudio.oktodo.data.model.Problem
 import com.weinstudio.oktodo.databinding.FragmentProblemsBinding
-import com.weinstudio.oktodo.ui.edit.EditActivity
+import com.weinstudio.oktodo.ui.edit.view.EditActivity
 import com.weinstudio.oktodo.ui.main.adapter.FingerprintAdapter
 import com.weinstudio.oktodo.ui.main.adapter.fingerprint.ProblemFingerprint
 import com.weinstudio.oktodo.ui.main.adapter.util.ItemSwipeCallback
 import com.weinstudio.oktodo.ui.main.viewmodel.ProblemsViewModel
-import com.weinstudio.oktodo.util.NetworkUtils
+import com.weinstudio.oktodo.util.hasInternet
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -28,7 +34,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 class ProblemsFragment : Fragment() {
 
     private var _binding: FragmentProblemsBinding? = null
-
     private val binding get() = _binding!!
 
     private val fingerprintAdapter by lazy {
@@ -48,15 +53,12 @@ class ProblemsFragment : Fragment() {
         fun newInstance() = ProblemsFragment()
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enqueueRefreshProblems()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        viewModel.subscribeNetworkStateChanges()
+        observeNetworkStateChanges()
         _binding = FragmentProblemsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -64,24 +66,16 @@ class ProblemsFragment : Fragment() {
     @ExperimentalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         (activity as MainActivity).viewModel.eyeButtonEnabledData.observe(viewLifecycleOwner, {
             viewModel.setFilterFlag(!it)
         })
-
+        observeResponseState()
+        refreshProblems()
         binding.refreshButton.setOnClickListener {
-            enqueueRefreshProblems()
+            if (viewModel.isNetworkConnectionGranted()) {
+                refreshProblems()
 
-            val pivotX = binding.refreshButton.width / 2
-            val pivotY = binding.refreshButton.height / 2
-
-            val animation =
-                RotateAnimation(0f, 720f, pivotX.toFloat(), pivotY.toFloat())
-
-            animation.duration = 600L
-            animation.fillAfter = true
-
-            binding.refreshButton.startAnimation(animation)
+            } else showNetworkUnavailableDialog()
         }
 
         with(binding.recycler) {
@@ -141,14 +135,84 @@ class ProblemsFragment : Fragment() {
         ProblemFingerprint(requireContext(), ::onProblemClick)
     )
 
-    private fun enqueueRefreshProblems() {
-        if (NetworkUtils.isConnectionGranted(requireContext())) {
-            viewModel.refreshProblems()
+    private fun refreshProblems() {
+        val hikeLoading = viewModel.hikeState.value?.loading() ?: false
+        if (hikeLoading.not() && viewModel.isNetworkConnectionGranted()) {
+            viewModel.enqueueRefreshProblems()
         }
+        Log.d(TAG, "refreshProblems: $hikeLoading, ${viewModel.isNetworkConnectionGranted()}")
+    }
+
+    private fun startRefreshButtonAnimation() {
+        binding.refreshButton.post {
+            val pivotX = binding.refreshButton.width / 2
+            val pivotY = binding.refreshButton.height / 2
+
+            val animation =
+                RotateAnimation(0f, 720f, pivotX.toFloat(), pivotY.toFloat())
+
+            animation.duration = 600L
+            animation.interpolator = LinearInterpolator()
+            animation.repeatCount = Animation.INFINITE
+            animation.fillAfter = true
+            animation.fillBefore = true
+
+            binding.refreshButton.startAnimation(animation)
+        }
+    }
+
+    private fun stopRefreshButtonAnim() {
+        binding.refreshButton.clearAnimation()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        viewModel.unsubscribeNetworkStateChanges()
         _binding = null
+    }
+
+    private fun observeNetworkStateChanges() {
+        viewModel.networkState.observe(viewLifecycleOwner, { state ->
+            setRefreshButtonEnabled(state.hasInternet())
+        })
+    }
+
+    private fun setRefreshButtonEnabled(enabled: Boolean) {
+        binding.refreshButton.imageAlpha = if (enabled) 255 else 85
+    }
+
+    private fun showNetworkUnavailableDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setMessage(resources.getString(R.string.network_unavailable))
+            .setPositiveButton(resources.getString(android.R.string.ok)) { dialog, _ ->
+                dialog.cancel()
+            }
+            .show()
+    }
+
+    private fun showLoadingErrorSnack() {
+        val snack =
+            Snackbar.make(binding.root, getString(R.string.loading_error), Snackbar.LENGTH_LONG)
+        snack.anchorView = (activity as MainActivity).binding.fabCreate
+        snack.setAction(R.string.retry) {
+            refreshProblems()
+        }
+
+        snack.show()
+    }
+
+    private fun observeResponseState() {
+        viewModel.hikeState.observe(viewLifecycleOwner, { hike ->
+            Log.d(TAG, "observeResponseState: $hike")
+            if (hike.loading()) {
+                startRefreshButtonAnimation()
+
+            } else {
+                if (hike.completedWithError()) {
+                    showLoadingErrorSnack()
+                }
+                stopRefreshButtonAnim()
+            }
+        })
     }
 }

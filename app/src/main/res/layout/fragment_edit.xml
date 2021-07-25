@@ -7,7 +7,7 @@
     android:background="@color/background"
     android:clipToPadding="false"
     android:paddingBottom="40dp"
-    tools:context=".ui.edit.EditActivity">
+    tools:context=".ui.edit.view.EditActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -82,7 +82,7 @@
                 android:drawablePadding="12dp"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="16dp"
-                android:text="@string/choose_date"
+                android:text="@string/choose_deadline"
                 android:textColor="@color/text_secondary"
                 app:drawableStartCompat="@drawable/ic_calendar"
                 app:drawableTint="@color/icon_inner" />
