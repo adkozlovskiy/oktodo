@@ -41,7 +41,7 @@
     <string name="done">Сделано</string>
     <string name="my_problems">Мои задачи</string>
     <string name="no_deadline">Бессрочно</string>
-    <string name="choose_priority">Выберите приоритет</string>
+    <string name="choose_importance">Выберите приоритет</string>
     <string name="theme_light">Светлая</string>
     <string name="theme_dark">Тёмная</string>
     <string name="choose_deadline">Установите срок</string>

@@ -29,13 +29,13 @@ class PeriodicallySyncWorker @AssistedInject constructor(
 
     companion object {
 
-        const val WORK_TAG = "sync_work"
+        private const val WORK_TAG = "sync_work"
 
         const val NOTIFICATION_ID = 10003
         const val CHANNEL_ID = "periodically_sync"
         const val PREFERENCES_KEY = "periodically_sync"
 
-        const val WORK_DELAY_HOURS = 8L
+        private const val WORK_DELAY_HOURS = 8L
 
         fun enqueuePeriodicallySync(context: Context) {
             val constraints = Constraints.Builder()

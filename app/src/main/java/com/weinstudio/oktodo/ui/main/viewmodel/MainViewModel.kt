@@ -6,14 +6,13 @@ import androidx.lifecycle.ViewModel
 
 class MainViewModel : ViewModel() {
 
-    private val _eyeButtonEnabledData: MutableLiveData<Boolean> = MutableLiveData(true)
-
-    val eyeButtonEnabledData: LiveData<Boolean> = _eyeButtonEnabledData
+    private val _eyeButtonEnabled: MutableLiveData<Boolean> = MutableLiveData(true)
+    val eyeButtonEnabled: LiveData<Boolean> = _eyeButtonEnabled
 
     fun changeEyeButtonEnabled() {
-        _eyeButtonEnabledData.value = _eyeButtonEnabledData.value!!.not()
+        _eyeButtonEnabled.value = _eyeButtonEnabled.value!!.not()
     }
 
-    fun isEyeButtonEnabled() = _eyeButtonEnabledData.value!!
+    fun isEyeButtonEnabled() = _eyeButtonEnabled.value!!
 
 }

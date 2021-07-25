@@ -3,7 +3,6 @@ package com.weinstudio.oktodo.ui.edit.view
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,12 +32,20 @@ class EditFragment : Fragment(), OkButtonListener {
 
     private val viewModel: EditFragViewModel by viewModels()
 
-    private val importanceResourceStrings by lazy {
+    private val importanceStrings by lazy {
         mutableListOf<String>().apply {
             add(getString(R.string.low_priority))
             add(getString(R.string.default_priority))
             add(getString(R.string.high_priority))
         }
+    }
+
+    private val chooseImportanceString by lazy {
+        getString(R.string.choose_importance)
+    }
+
+    private val chooseDeadlineString by lazy {
+        getString(R.string.choose_deadline)
     }
 
     private val dateFormat = SimpleDateFormat("dd MMMM yyyy HH:mm", Locale.getDefault())
@@ -121,7 +128,8 @@ class EditFragment : Fragment(), OkButtonListener {
 
     private fun setDeadlineText(deadlineMillis: Long?) {
         if (deadlineMillis == null) {
-            binding.tvDeadlineProp.text = getString(R.string.choose_deadline)
+            binding.tvDeadlineProp.text = chooseDeadlineString
+
         } else {
             val deadlineDate = Date(deadlineMillis * 1000)
             binding.tvDeadlineProp.text = dateFormat.format(deadlineDate)
@@ -129,7 +137,7 @@ class EditFragment : Fragment(), OkButtonListener {
     }
 
     private fun setImportanceText(importanceValue: Int) {
-        binding.tvPriorityProp.text = importanceResourceStrings[importanceValue]
+        binding.tvPriorityProp.text = importanceStrings[importanceValue]
     }
 
     private fun checkDeadlineSwitch(checked: Boolean) {
@@ -148,11 +156,11 @@ class EditFragment : Fragment(), OkButtonListener {
     }
 
     private fun chooseDeadline() {
-        showDatePickerDialog { // onSelected()
-            showTimePickerDialog {
-                viewModel.setProblemDeadline(it)
-            }
-        }
+        showDatePickerDialog(onSelected = {
+            showTimePickerDialog(onSelected = { millis ->
+                viewModel.setProblemDeadline(millis)
+            })
+        })
     }
 
     private fun showDatePickerDialog(onSelected: () -> Unit) {
@@ -195,12 +203,12 @@ class EditFragment : Fragment(), OkButtonListener {
     }
 
     private fun chooseImportance() {
-        val items: Array<String> = importanceResourceStrings.toTypedArray()
+        val items: Array<String> = importanceStrings.toTypedArray()
 
         var selectedItemOrdinal = viewModel.getProblemValue().importance.value
 
         MaterialAlertDialogBuilder(requireContext())
-            .setTitle(getString(R.string.choose_priority))
+            .setTitle(chooseImportanceString)
             .setSingleChoiceItems(items, selectedItemOrdinal) { _, id ->
                 selectedItemOrdinal = id
             }
@@ -216,20 +224,14 @@ class EditFragment : Fragment(), OkButtonListener {
             return
         }
 
-        val problem = viewModel.problemProperties.value!!.copy()
+        val problem = viewModel.getProblemValue().copy(
+            text = binding.etTitle.text.toString()
+        )
 
-        if (!binding.switchDeadline.isChecked) {
-            problem.deadline = null
-        }
-
-        problem.text = binding.etTitle.text.toString()
-
-        if (!problem.hasCreated()) {
-            viewModel.insertProblem(problem)
-
-        } else {
+        if (problem.hasCreated()) {
             viewModel.updateProblem(problem)
-        }
+
+        } else viewModel.insertProblem(problem)
 
         activity?.finish()
     }

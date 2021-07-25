@@ -40,7 +40,7 @@ class EditFragViewModel @Inject constructor(
     }
 
     fun setProblemDeadline(deadlineMillis: Long?) {
-        val oldProblem = _problemProperties.value!!
+        val oldProblem = getProblemValue()
 
         val newProblem = oldProblem.copy(
             deadline = if (deadlineMillis == null) null else (deadlineMillis / 1000)
@@ -50,7 +50,7 @@ class EditFragViewModel @Inject constructor(
     }
 
     fun setProblemImportance(ordinal: Int) {
-        val oldProblem = _problemProperties.value!!
+        val oldProblem = getProblemValue()
         val importance = when (ordinal) {
             0 -> Importance.LOW
             1 -> Importance.BASIC
@@ -63,7 +63,7 @@ class EditFragViewModel @Inject constructor(
             importance = importance
         )
 
-        _problemProperties.value = newProblem
+        setProblemValue(newProblem)
     }
 
     fun insertProblem(problem: Problem) = viewModelScope.launch {

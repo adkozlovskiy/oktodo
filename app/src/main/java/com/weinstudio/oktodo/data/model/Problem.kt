@@ -13,10 +13,10 @@ data class Problem(
     val id: String = "",
 
     @SerializedName(value = "text")
-    var text: String = "",
+    val text: String = "",
 
     @SerializedName(value = "deadline")
-    var deadline: Long? = null,
+    val deadline: Long? = null,
 
     @SerializedName(value = "importance")
     val importance: Importance = Importance.BASIC,

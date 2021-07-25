@@ -11,9 +11,7 @@ import com.weinstudio.oktodo.R
 class BottomSheetFragment : BottomSheetDialogFragment() {
 
     companion object {
-
         const val TAG = "bottom_sheet_fragment"
-
         fun newInstance() = BottomSheetFragment()
     }
 
