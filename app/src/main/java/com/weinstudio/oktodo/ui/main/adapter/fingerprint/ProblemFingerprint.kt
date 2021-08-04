@@ -4,30 +4,55 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
+import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.DiffUtil
 import com.weinstudio.oktodo.R
-import com.weinstudio.oktodo.data.ListItem
-import com.weinstudio.oktodo.data.entity.Problem
-import com.weinstudio.oktodo.data.entity.enums.Importance
+import com.weinstudio.oktodo.data.model.ListItem
+import com.weinstudio.oktodo.data.model.Problem
+import com.weinstudio.oktodo.data.model.enums.Importance
 import com.weinstudio.oktodo.databinding.LayoutProblemBinding
 import com.weinstudio.oktodo.ui.main.adapter.base.BaseFingerprint
 import com.weinstudio.oktodo.ui.main.adapter.base.BaseViewHolder
+import com.weinstudio.oktodo.util.getColorCompat
+import com.weinstudio.oktodo.util.getDrawableCompat
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ProblemFingerprint(ctx: Context, val onProblemClick: (p: Problem) -> Unit) :
+class ProblemFingerprint(context: Context, val onProblemClick: (p: Problem) -> Unit) :
     BaseFingerprint<LayoutProblemBinding, Problem> {
 
-    val sdf = SimpleDateFormat(" dd MMMM yyyy HH:mm", Locale.getDefault())
+    private val dateFormat by lazy {
+        SimpleDateFormat(" dd MMMM yyyy HH:mm", Locale.getDefault())
+    }
 
-    val colorRed = ctx.getColor(R.color.red_primary)
-    val colorSecondary = ctx.getColor(R.color.text_secondary)
-    val until = ctx.getString(R.string.until)
+    private val highImportanceDrawable by lazy {
+        context.getDrawableCompat(R.drawable.ic_high_priority)
+    }
+
+    private val lowImportanceDrawable by lazy {
+        context.getDrawableCompat(R.drawable.ic_low_priority)
+    }
+
+    private val doneDrawable by lazy {
+        context.getDrawableCompat(R.drawable.ic_problem_done)
+    }
+
+    private val textSecondaryColor by lazy {
+        context.getColorCompat(R.color.text_secondary)
+    }
+
+    private val redPrimaryColor by lazy {
+        context.getColorCompat(R.color.red_primary)
+    }
+
+    private val untilString by lazy {
+        context.getString(R.string.until)
+    }
+
+    @LayoutRes
+    override fun getLayoutId() = R.layout.layout_problem
 
     override fun isRelativeItem(item: ListItem) = item is Problem
-
-    override fun getLayoutId() = R.layout.layout_problem
 
     override fun getViewHolder(
         inflater: LayoutInflater,
@@ -49,74 +74,68 @@ class ProblemFingerprint(ctx: Context, val onProblemClick: (p: Problem) -> Unit)
 
     override fun getDiffUtil() = diffUtil
 
-    inner class ProblemViewHolder(private val binding: LayoutProblemBinding) :
+    inner class ProblemViewHolder(binding: LayoutProblemBinding) :
         BaseViewHolder<LayoutProblemBinding, Problem>(binding) {
 
+        private val root = binding.root
+
+        private val tvTitle = binding.tvTitle
         private val tvDeadline = binding.tvDeadline
-        private val ivPriority = binding.ivPriority
+        private val ivImportance = binding.ivPriority
 
         override fun onBind(item: Problem) {
-            binding.root.setOnClickListener {
-                if (!item.done) {
-                    onProblemClick.invoke(item)
-                }
+            tvTitle.text = item.text
+
+            setImportanceDrawable(item.importance, item.done)
+            setDeadlineString(item.deadline, item.done)
+
+            root.setOnClickListener {
+                if (!item.done) onProblemClick(item)
             }
+        }
 
-            binding.tvTitle.text = item.text
+        private fun getDeadlineString(deadlineMillis: Long): String {
+            val deadlineDate = Date(deadlineMillis * 1000)
+            return untilString + dateFormat.format(deadlineDate)
+        }
 
-            if (!tvDeadline.isVisible) {
-                tvDeadline.visibility = View.VISIBLE
-            }
-
-            if (!ivPriority.isVisible) {
-                ivPriority.visibility = View.VISIBLE
-            }
-
-            val deadlineMillis = item.deadline
-
-            if (deadlineMillis != null) { // If task has deadline.
-                val deadlineDate = Date(deadlineMillis * 1000)
-                val deadlineStr = until + sdf.format(deadlineDate)
-                tvDeadline.text = deadlineStr
-
-            } else {
+        private fun setDeadlineString(deadlineMillis: Long?, problemDone: Boolean) {
+            if (deadlineMillis == null) {
                 tvDeadline.visibility = View.GONE
-            }
-
-            if (!item.done) {
-                if (deadlineMillis != null) {
-                    val currentMillis = Date().time
-                    tvDeadline.setTextColor(
-                        if (currentMillis > deadlineMillis * 1000) {
-                            colorRed
-
-                        } else colorSecondary
-                    )
-                }
-
-                when (item.importance) {
-                    Importance.IMPORTANT -> {
-                        ivPriority.setImageResource(R.drawable.ic_high_priority)
-                    }
-
-                    Importance.LOW -> {
-                        ivPriority.setImageResource(R.drawable.ic_low_priority)
-                    }
-
-                    Importance.BASIC -> {
-                        ivPriority.visibility = View.INVISIBLE
-                    }
-                }
 
             } else {
-                if (deadlineMillis != null) {
-                    tvDeadline.setTextColor(colorSecondary)
+                tvDeadline.visibility = View.VISIBLE
+                tvDeadline.text = getDeadlineString(deadlineMillis)
+
+                val currentMillis = Calendar.getInstance(Locale.getDefault()).timeInMillis
+                if (!problemDone && currentMillis > deadlineMillis * 1000) {
+                    tvDeadline.setTextColor(redPrimaryColor)
 
                 } else {
-                    tvDeadline.visibility = View.GONE
+                    tvDeadline.setTextColor(textSecondaryColor)
+                }
+            }
+        }
+
+        private fun setImportanceDrawable(importance: Importance, problemDone: Boolean) {
+            if (problemDone) {
+                ivImportance.visibility = View.VISIBLE
+                ivImportance.setImageDrawable(doneDrawable)
+
+            } else when (importance) {
+                Importance.IMPORTANT -> {
+                    ivImportance.visibility = View.VISIBLE
+                    ivImportance.setImageDrawable(highImportanceDrawable)
                 }
 
-                ivPriority.setImageResource(R.drawable.ic_problem_done)
+                Importance.LOW -> {
+                    ivImportance.visibility = View.VISIBLE
+                    ivImportance.setImageDrawable(lowImportanceDrawable)
+                }
+
+                Importance.BASIC -> {
+                    ivImportance.visibility = View.INVISIBLE
+                }
             }
         }
     }

@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.DiffUtil
 import androidx.viewbinding.ViewBinding
-import com.weinstudio.oktodo.data.ListItem
+import com.weinstudio.oktodo.data.model.ListItem
 
 interface BaseFingerprint<V : ViewBinding, I : ListItem> {
 

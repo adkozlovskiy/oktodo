@@ -3,7 +3,6 @@ package com.weinstudio.oktodo.ui.edit.view
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
-import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,32 +11,46 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
-import com.weinstudio.oktodo.App
 import com.weinstudio.oktodo.R
-import com.weinstudio.oktodo.data.entity.Problem
-import com.weinstudio.oktodo.data.entity.enums.Importance
+import com.weinstudio.oktodo.data.model.Problem
 import com.weinstudio.oktodo.databinding.FragmentEditBinding
 import com.weinstudio.oktodo.ui.edit.OkButtonListener
-import com.weinstudio.oktodo.ui.edit.viewmodel.EditViewModel
-import com.weinstudio.oktodo.ui.edit.viewmodel.EditViewModelFactory
+import com.weinstudio.oktodo.ui.edit.viewmodel.EditFragViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class EditFragment : Fragment(), OkButtonListener {
 
-    private val viewModel: EditViewModel by viewModels {
-        EditViewModelFactory((context?.applicationContext as App).repository)
-    }
+    @Inject
+    lateinit var gson: Gson
 
     private var _binding: FragmentEditBinding? = null
     private val binding get() = _binding!!
 
-    // Resources constants
-    private val importanceImportant by lazy { getString(R.string.high_priority) }
-    private val importanceBasic by lazy { getString(R.string.default_priority) }
-    private val importanceLow by lazy { getString(R.string.low_priority) }
+    private val viewModel: EditFragViewModel by viewModels()
+
+    private val importanceStrings by lazy {
+        mutableListOf<String>().apply {
+            add(getString(R.string.low_priority))
+            add(getString(R.string.default_priority))
+            add(getString(R.string.high_priority))
+        }
+    }
+
+    private val chooseImportanceString by lazy {
+        getString(R.string.choose_importance)
+    }
+
+    private val chooseDeadlineString by lazy {
+        getString(R.string.choose_deadline)
+    }
+
+    private val dateFormat = SimpleDateFormat("dd MMMM yyyy HH:mm", Locale.getDefault())
 
     companion object {
-
         @JvmStatic
         fun newInstance(problem: String?) = EditFragment().apply {
             arguments = Bundle().apply {
@@ -57,84 +70,97 @@ class EditFragment : Fragment(), OkButtonListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val problemExtra = arguments?.getString(Problem.PROBLEM_EXTRA_TAG)
+        val receivedProblemJson = arguments?.getString(Problem.PROBLEM_EXTRA_TAG)
+        val receivedProblem = gson.fromJson(receivedProblemJson, Problem::class.java)
 
-        if (!problemExtra.isNullOrEmpty()) {
-            val problem = Gson().fromJson(problemExtra, Problem::class.java)
-
-            // Setting text by default
-            binding.etTitle.setText(problem.text)
-
-            viewModel.problemData.value = problem
+        if (viewModel.problemProperties.value == null) {
+            viewModel.setProblemValue(receivedProblem ?: Problem())
         }
 
-        observeProblemChanges()
+        val problem = viewModel.getProblemValue()
+        binding.etTitle.setText(problem.text)
+        viewModel.initDeadlineCalendar(problem.deadline)
 
-        binding.cvDeadline.setOnClickListener { chooseDateTime() }
-        binding.cvPriority.setOnClickListener { chooseImportance() }
+        registerErrorStatusChangedListener()
 
-        observeSwitchChecking()
-
-        binding.switchDeadline.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.setDeadlineSwitchChecked(isChecked)
+        binding.cvDeadline.setOnClickListener {
+            chooseDeadline()
         }
 
-        binding.etTitle.addTextChangedListener { // afterTextChanged()
-            if (binding.tiTitle.isErrorEnabled && binding.etTitle.text.isNotBlank()) {
-                binding.tiTitle.error = null
+        binding.cvPriority.setOnClickListener {
+            chooseImportance()
+        }
+
+        binding.switchDeadline.setOnCheckedChangeListener { _, checked ->
+            animateDeadlineField(checked)
+
+            if (!checked) {
+                viewModel.setProblemDeadline(null)
             }
+        }
+
+        observePropertiesChanges()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun observePropertiesChanges() {
+        viewModel.problemProperties.observe(viewLifecycleOwner) { problem ->
+            val hasDeadline = problem.hasDeadline()
+            checkDeadlineSwitch(hasDeadline)
+            setDeadlineText(problem.deadline)
+
+            setImportanceText(problem.importance.value)
         }
     }
 
-    private fun observeProblemChanges() {
-        viewModel.problemData.observe(viewLifecycleOwner) { problem ->
+    private fun registerErrorStatusChangedListener() {
+        binding.etTitle.addTextChangedListener(
+            afterTextChanged = {
+                if (binding.tiTitle.isErrorEnabled && binding.etTitle.text.isNotBlank()) {
+                    binding.tiTitle.error = null
+                }
+            })
+    }
 
-            // Observing deadline
-            val deadline = problem.deadline
+    private fun setDeadlineText(deadlineMillis: Long?) {
+        if (deadlineMillis == null) {
+            binding.tvDeadlineProp.text = chooseDeadlineString
 
-            if (deadline != null) {
-                binding.tvDeadlineProp.text = DateUtils.formatDateTime(
-                    context,
-                    deadline * 1000,
-                    DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_YEAR
-                            or DateUtils.FORMAT_SHOW_TIME
-                )
-            }
-
-            // Observing importance
-            binding.tvPriorityProp.text = when (problem.importance) {
-
-                Importance.IMPORTANT -> importanceImportant
-
-                Importance.BASIC -> importanceBasic
-
-                Importance.LOW -> importanceLow
-
-            }
+        } else {
+            val deadlineDate = Date(deadlineMillis * 1000)
+            binding.tvDeadlineProp.text = dateFormat.format(deadlineDate)
         }
     }
 
-    private fun observeSwitchChecking() {
-        viewModel.deadlineSwitchChecked.observe(viewLifecycleOwner) { isChecked ->
-            binding.switchDeadline.isChecked = isChecked
+    private fun setImportanceText(importanceValue: Int) {
+        binding.tvPriorityProp.text = importanceStrings[importanceValue]
+    }
 
-            if (isChecked) {
-                binding.cvDeadline.visibility = View.VISIBLE
-                binding.cvDeadline.alpha = 0f
-                binding.cvDeadline.animate().alpha(1f)
+    private fun checkDeadlineSwitch(checked: Boolean) {
+        binding.switchDeadline.isChecked = checked
+    }
 
-            } else {
-                binding.cvDeadline.visibility = View.GONE
-            }
+    private fun animateDeadlineField(visible: Boolean) {
+        if (visible) {
+            binding.cvDeadline.visibility = View.VISIBLE
+            binding.cvDeadline.alpha = 0f
+            binding.cvDeadline.animate().alpha(1f)
+
+        } else {
+            binding.cvDeadline.visibility = View.GONE
         }
     }
 
-    private fun chooseDateTime() {
-        showDatePickerDialog { // onSelected()
-            showTimePickerDialog { // onSelected()
-                viewModel.updateDeadlineProp()
-            }
-        }
+    private fun chooseDeadline() {
+        showDatePickerDialog(onSelected = {
+            showTimePickerDialog(onSelected = { millis ->
+                viewModel.setProblemDeadline(millis)
+            })
+        })
     }
 
     private fun showDatePickerDialog(onSelected: () -> Unit) {
@@ -158,7 +184,7 @@ class EditFragment : Fragment(), OkButtonListener {
         picker.show()
     }
 
-    private fun showTimePickerDialog(onSelected: () -> Unit) {
+    private fun showTimePickerDialog(onSelected: (millis: Long) -> Unit) {
         val calendar = viewModel.deadlineCalendar
         TimePickerDialog(
             requireContext(),
@@ -168,7 +194,7 @@ class EditFragment : Fragment(), OkButtonListener {
                     set(Calendar.MINUTE, minute)
                 }
 
-                onSelected.invoke()
+                onSelected.invoke(calendar.timeInMillis)
             },
             calendar.get(Calendar.HOUR_OF_DAY),
             calendar.get(Calendar.MINUTE), true
@@ -177,23 +203,17 @@ class EditFragment : Fragment(), OkButtonListener {
     }
 
     private fun chooseImportance() {
-        val items = arrayOf(importanceLow, importanceBasic, importanceImportant)
+        val items: Array<String> = importanceStrings.toTypedArray()
 
-        var selectedItem = when (viewModel.problemData.value?.importance) {
-            Importance.LOW -> 0
-            Importance.BASIC -> 1
-            Importance.IMPORTANT -> 2
-
-            else -> throw IllegalStateException()
-        }
+        var selectedItemOrdinal = viewModel.getProblemValue().importance.value
 
         MaterialAlertDialogBuilder(requireContext())
-            .setTitle(getString(R.string.choose_priority))
-            .setSingleChoiceItems(items, selectedItem) { _, id ->
-                selectedItem = id
+            .setTitle(chooseImportanceString)
+            .setSingleChoiceItems(items, selectedItemOrdinal) { _, id ->
+                selectedItemOrdinal = id
             }
             .setPositiveButton(getString(R.string.ok)) { _, _ ->
-                viewModel.setImportanceProp(selectedItem)
+                viewModel.setProblemImportance(selectedItemOrdinal)
             }
             .show()
     }
@@ -204,20 +224,14 @@ class EditFragment : Fragment(), OkButtonListener {
             return
         }
 
-        val problem = viewModel.problemData.value!!.copy()
+        val problem = viewModel.getProblemValue().copy(
+            text = binding.etTitle.text.toString()
+        )
 
-        if (!binding.switchDeadline.isChecked) {
-            problem.deadline = null
-        }
-
-        problem.text = binding.etTitle.text.toString()
-
-        if (problem.created == -1L) {
-            viewModel.insertProblem(problem)
-
-        } else {
+        if (problem.hasCreated()) {
             viewModel.updateProblem(problem)
-        }
+
+        } else viewModel.insertProblem(problem)
 
         activity?.finish()
     }

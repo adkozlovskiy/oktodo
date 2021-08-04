@@ -1,30 +1,20 @@
 package com.weinstudio.oktodo
 
 import android.app.Application
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.preference.PreferenceManager
-import com.weinstudio.oktodo.data.db.ProblemsDatabase
-import com.weinstudio.oktodo.data.repository.ProblemsRepository
+import androidx.hilt.work.HiltWorkerFactory
+import androidx.work.Configuration
+import dagger.hilt.android.HiltAndroidApp
+import javax.inject.Inject
 
-class App : Application() {
+@HiltAndroidApp
+class App : Application(), Configuration.Provider {
 
-    private val localSource by lazy { ProblemsDatabase.getDatabase(this) }
+    @Inject
+    lateinit var workerFactory: HiltWorkerFactory
 
-    val repository by lazy {
-        ProblemsRepository(localSource.problemsDao(), this)
-    }
-
-    override fun onCreate() {
-        super.onCreate()
-        val settings = PreferenceManager.getDefaultSharedPreferences(this)
-
-        // Settings application theme
-        val theme = settings.getString("theme", "light")
-        if (theme == "light") {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        }
+    override fun getWorkManagerConfiguration(): Configuration {
+        return Configuration.Builder()
+            .setWorkerFactory(workerFactory)
+            .build();
     }
 }

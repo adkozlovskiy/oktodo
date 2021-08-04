@@ -40,10 +40,8 @@
     <!-- Toolbar -->
     <style name="Toolbar">
         <item name="android:windowContentOverlay">@null</item>
-        .
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">?attr/actionBarSize</item>
-        <item name="navigationIconTint">@color/icon_primary</item>
         <item name="android:background">@color/background</item>
         <item name="android:textColor">@color/text_primary</item>
     </style>
