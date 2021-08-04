@@ -20,22 +20,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private val eyeOpenedResourceDrawable by lazy {
-        getDrawableCompat(R.drawable.ic_eye_open)
-    }
-
-    private val eyeClosedResourceDrawable by lazy {
-        getDrawableCompat(R.drawable.ic_eye_close)
-    }
-
-    private val eyeOpenedResourceString by lazy {
-        getString(R.string.eye_enabled)
-    }
-
-    private val eyeClosedResourceString by lazy {
-        getString(R.string.eye_disabled)
-    }
-
     val viewModel: MainViewModel by viewModels()
 
     lateinit var binding: ActivityMainBinding
@@ -111,16 +95,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun setEyeButtonDrawable(enabled: Boolean) {
         eyeButton.icon = if (enabled) {
-            eyeOpenedResourceDrawable
+            getDrawableCompat(R.drawable.ic_eye_open)
 
-        } else eyeClosedResourceDrawable
+        } else getDrawableCompat(R.drawable.ic_eye_close)
     }
 
     private fun showEyeButtonSnack(enabled: Boolean) {
         val title = if (enabled) {
-            eyeOpenedResourceString
+            getString(R.string.eye_enabled)
 
-        } else eyeClosedResourceString
+        } else getString(R.string.eye_disabled)
 
         val snack = Snackbar.make(binding.root, title, Snackbar.LENGTH_LONG)
         snack.anchorView = binding.fabCreate
