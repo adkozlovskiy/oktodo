@@ -12,4 +12,4 @@
 ⚙ Hilt, Espresso
 
 ### Demonstration
-<img src="demonstration.gif" width="288" height="577" />
+<img src="demonstration.gif" width="288" height="657" />
